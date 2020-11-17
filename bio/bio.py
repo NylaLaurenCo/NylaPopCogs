@@ -170,8 +170,9 @@ class Bio(commands.Cog):
                     else:
                         warnings.append(f"Field '{arg}' not found")
             bioDict = data
-        embed = discord.Embed(color=16774132)
-        embed.title = f"{user.display_name}'s Bio"
+        server = ctx.message.guild.name
+        embed = discord.Embed(color=16774132,description=server)
+        embed.title = f"{user.display_name}'"
         embed.set_thumbnail(url=user.avatar_url)
         embed.set_footer(text="\n".join(warnings))
         for field, value in bioDict.items():
@@ -191,7 +192,8 @@ class Bio(commands.Cog):
         `[p]biosearch foo bar 'long name field'`
         """
         argsLower = [x.lower() for x in args]
-        embed = discord.Embed(color=16774132)
+        server = ctx.message.guild.name        
+        embed = discord.Embed(color=16774132,description=server)
         embed.title = "Bio Search"
         for member, conf in (await self.conf.all_users()).items():
             memberBio = conf.get("bio")
