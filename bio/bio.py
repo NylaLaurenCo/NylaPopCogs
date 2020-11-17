@@ -36,7 +36,7 @@ class Bio(commands.Cog):
             return
         bioFields = await self.conf.guild(ctx.guild).biofields()
         if len(bioFields):
-            await ctx.send("Bio fields available:\n"
+            await ctx.send("\n"
                             "".join(bioFields))
         else:
             await ctx.send("No bio fields available. Alert an admin!")
