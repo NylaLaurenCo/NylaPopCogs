@@ -18,6 +18,7 @@ class Account(commands.Cog):
             "Gender": None,
             "Job": None,
             "Email": None,
+            "Face Claim": None,
             "Other": None
         }
         default_guild = {
@@ -191,6 +192,28 @@ class Account(commands.Cog):
             await self.config.member(user).Email.set(email)
             data = discord.Embed(colour=user.colour)
             data.add_field(name="Congrats!:sparkles:",value="You have set your Email to {}".format(email))
+            await ctx.send(embed=data)
+ 
+    @update.command(pass_context=True, no_pm=True)
+    async def faceclaim(self, ctx, *, faceclaim):
+        """Make a face claim! :) This is useful for roleplaying or to prevent anyone from using the same profile picture as you."""
+
+        
+        server = ctx.guild
+        user = ctx.author
+        prefix = ctx.prefix
+        db = await self.config.guild(server).db()
+        image = {}
+
+        if user.id not in db:
+            data = discord.Embed(colour=user.colour)
+            data.add_field(name="Error:warning:",value="Sadly, this feature is only available for people who had registered for an account. \n\nYou can register for a account today for free. All you have to do is say `{}signup` and you'll be all set.".format(prefix))
+            await ctx.send(embed=data)
+        else:
+            await self.config.member(user).FaceClaim.set(faceclaim)
+            data = discord.Embed(colour=user.colour)
+            data.set_image(url=image)
+            data.add_field(name="Congrats!:sparkles:",value="You have set your Face Claim to {}".format(faceclaim))
             await ctx.send(embed=data)
 
     @update.command(pass_context=True, no_pm=True)
