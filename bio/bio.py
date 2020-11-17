@@ -172,7 +172,7 @@ class Bio(commands.Cog):
             bioDict = data
         server = ctx.message.guild.name
         embed = discord.Embed(color=16774132,description=server)
-        embed.title = f"{user.display_name}'"
+        embed.title = f"{user.display_name}"
         embed.set_thumbnail(url=user.avatar_url)
         embed.set_footer(text="\n".join(warnings))
         for field, value in bioDict.items():
