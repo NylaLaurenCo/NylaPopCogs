@@ -37,7 +37,7 @@ class Bio(commands.Cog):
         bioFields = await self.conf.guild(ctx.guild).biofields()
         if len(bioFields):
             await ctx.send("Bio fields available:\n"
-                            "\n".join(bioFields))
+                            "".join(bioFields))
         else:
             await ctx.send("No bio fields available. Alert an admin!")
 
@@ -170,12 +170,12 @@ class Bio(commands.Cog):
                     else:
                         warnings.append(f"Field '{arg}' not found")
             bioDict = data
-        embed = discord.Embed()
+        embed = discord.Embed(color=16774132)
         embed.title = f"{user.display_name}'s Bio"
         embed.set_thumbnail(url=user.avatar_url)
         embed.set_footer(text="\n".join(warnings))
         for field, value in bioDict.items():
-            embed.add_field(name=field, value=value, inline=False)
+            embed.add_field(name=field, value=value, inline=True)
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -191,7 +191,7 @@ class Bio(commands.Cog):
         `[p]biosearch foo bar 'long name field'`
         """
         argsLower = [x.lower() for x in args]
-        embed = discord.Embed()
+        embed = discord.Embed(color=16774132)
         embed.title = "Bio Search"
         for member, conf in (await self.conf.all_users()).items():
             memberBio = conf.get("bio")
