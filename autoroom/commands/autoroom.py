@@ -1,4 +1,4 @@
-"""The autoroom command."""
+"""The Private Room command."""
 import datetime
 from abc import ABC
 from typing import Union
@@ -19,8 +19,8 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
     async def room(self, ctx: commands.Context):
         """Organize Your Room."""
 
-    @autoroom.command(name="settings", aliases=["info"])
-    async def autoroom_settings(self, ctx: commands.Context):
+    @room.command(name="settings", aliases=["info"])
+    async def room_settings(self, ctx: commands.Context):
         """Display current settings."""
         member_channel = self._get_current_voice_channel(ctx.message.author)
         autoroom_info = await self._get_autoroom_info(member_channel)
@@ -59,24 +59,24 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
 
         await ctx.send(room_settings)
 
-    @autoroom.command()
+    @room.command()
     async def unlock(self, ctx: commands.Context):
         """The more the merrier! Unlock your room so others can enter!"""
         await self._process_allow_deny(ctx, True)
 
-    @autoroom.command()
+    @room.command()
     async def lock(self, ctx: commands.Context):
         """Lock your door, dude. No one can get in that's not already."""
         await self._process_allow_deny(ctx, False)
 
-    @autoroom.command(aliases=["add"])
+    @room.command(aliases=["add"])
     async def openfor(
         self, ctx: commands.Context, member_or_role: Union[discord.Role, discord.Member]
     ):
         """Open the door for a specific friend to allow them in!"""
         await self._process_allow_deny(ctx, True, member_or_role=member_or_role)
 
-    @autoroom.command(aliases=["ban"])
+    @room.command(aliases=["ban"])
     async def lockout(
         self, ctx: commands.Context, member_or_role: Union[discord.Role, discord.Member]
     ):
