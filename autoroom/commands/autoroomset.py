@@ -390,7 +390,7 @@ class AutoRoomSetCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
                 "Do note that you don't need to set any permissions on the Room Source channel for this "
                 "cog to work correctly. This functionality is for the advanced user with a complex server "
                 "structure, or for users that want to selectively enable/disable certain functionality "
-                "(e.g. video, voice activity/PTT, invites) in AutoRooms."
+                "(e.g. video, voice activity/PTT, invites) in Private Rooms."
             )
         )
 
