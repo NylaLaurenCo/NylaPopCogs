@@ -12,12 +12,12 @@ from ..pcx_lib import SettingDisplay, delete
 
 
 class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
-    """The autoroom command."""
+    """The Private Room Command"""
 
     @commands.group()
     @commands.guild_only()
-    async def autoroom(self, ctx: commands.Context):
-        """Manage your AutoRoom."""
+    async def room(self, ctx: commands.Context):
+        """Organize Your Room."""
 
     @autoroom.command(name="settings", aliases=["info"])
     async def autoroom_settings(self, ctx: commands.Context):
@@ -26,7 +26,7 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
         autoroom_info = await self._get_autoroom_info(member_channel)
         if not autoroom_info:
             hint = await ctx.send(
-                error(f"{ctx.message.author.mention}, you are not in an AutoRoom.")
+                error(f"{ctx.message.author.mention}, you are not in a room.")
             )
             await delete(ctx.message, delay=5)
             await delete(hint, delay=5)
@@ -60,32 +60,30 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
         await ctx.send(room_settings)
 
     @autoroom.command()
-    async def public(self, ctx: commands.Context):
-        """Make your AutoRoom public."""
+    async def unlock(self, ctx: commands.Context):
+        """The more the merrier! Unlock your room so others can enter!"""
         await self._process_allow_deny(ctx, True)
 
     @autoroom.command()
-    async def private(self, ctx: commands.Context):
-        """Make your AutoRoom private."""
+    async def lock(self, ctx: commands.Context):
+        """Lock your door, dude. No one can get in that's not already."""
         await self._process_allow_deny(ctx, False)
 
     @autoroom.command(aliases=["add"])
-    async def allow(
+    async def openfor(
         self, ctx: commands.Context, member_or_role: Union[discord.Role, discord.Member]
     ):
-        """Allow a user (or role) into your AutoRoom."""
+        """Open the door for a specific friend to allow them in!"""
         await self._process_allow_deny(ctx, True, member_or_role=member_or_role)
 
     @autoroom.command(aliases=["ban"])
-    async def deny(
+    async def lockout(
         self, ctx: commands.Context, member_or_role: Union[discord.Role, discord.Member]
     ):
-        """Deny a user (or role) from accessing your AutoRoom.
+        """Lock only a specific person out of your room. Sucks to suck.
 
-        If the user is already in your AutoRoom, they will be disconnected.
-
-        If a user is no longer able to access the room due to denying a role,
-        they too will be disconnected. Keep in mind that if the guild is using
+        If someone can no longer enter your room due to locking out a role,
+        they will be disconnected. Keep in mind that if the guild is using
         member roles, denying roles will probably not work as expected.
         """
         if await self._process_allow_deny(ctx, False, member_or_role=member_or_role):
@@ -103,12 +101,12 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
         *,
         member_or_role: Union[discord.Role, discord.Member] = None,
     ) -> bool:
-        """Actually do channel edit for allow/deny."""
+        """Unlock or lock your room."""
         channel = self._get_current_voice_channel(ctx.message.author)
         autoroom_info = await self._get_autoroom_info(channel)
         if not autoroom_info:
             hint = await ctx.send(
-                error(f"{ctx.message.author.mention}, you are not in an AutoRoom.")
+                error(f"{ctx.message.author.mention}, you are not in a room.")
             )
             await delete(ctx.message, delay=5)
             await delete(hint, delay=5)
@@ -116,7 +114,7 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
         if ctx.message.author != autoroom_info["owner"]:
             hint = await ctx.send(
                 error(
-                    f"{ctx.message.author.mention}, you are not the owner of this AutoRoom."
+                    f"{ctx.message.author.mention}, this isn't your room lol wtf."
                 )
             )
             await delete(ctx.message, delay=5)
@@ -132,26 +130,26 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
             and member_or_role == ctx.guild.default_role
             and [member_or_role] != autoroom_info["member_roles"]
         ):
-            denied_message = "this AutoRoom is using member roles, so the default role must remain denied."
+            denied_message = "this room is using roles, so the default role must remain denied."
         elif member_or_role in autoroom_info["member_roles"]:
             # allow/deny a member role -> modify all member roles
             member_or_role = autoroom_info["member_roles"]
         elif not allow:
             if member_or_role == ctx.guild.me:
-                denied_message = "why would I deny myself from entering your AutoRoom?"
+                denied_message = "lol nice try. I can enter anytime I want jerk."
             elif member_or_role == ctx.message.author:
-                denied_message = "don't be so hard on yourself! This is your AutoRoom!"
+                denied_message = "bruh. imagine trying to lock yourself out of your room."
             elif member_or_role == ctx.guild.owner:
                 denied_message = (
-                    "I don't know if you know this, but that's the guild owner... "
-                    "I can't deny them from entering your AutoRoom."
+                    "I don't know if you know this, but that's the server owner... "
+                    "I can't deny them from entering your room."
                 )
             elif await self.is_admin_or_admin_role(member_or_role):
-                denied_message = "that's an admin{}, so I can't deny them from entering your AutoRoom.".format(
+                denied_message = "wow " + <!@754805442881912954> + "! this person is trying to lock admins out of their room!".format(
                     " role" if isinstance(member_or_role, discord.Role) else ""
                 )
             elif await self.is_mod_or_mod_role(member_or_role):
-                denied_message = "that's a moderator{}, so I can't deny them from entering your AutoRoom.".format(
+                denied_message = "wow " + <!@752987344428073022> + "! this person is trying to lock mods out of their room!".format(
                     " role" if isinstance(member_or_role, discord.Role) else ""
                 )
         if denied_message:
@@ -182,7 +180,7 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
         if do_edit:
             await channel.edit(
                 overwrites=overwrites,
-                reason="AutoRoom: Permission change",
+                reason="Room: Permission change",
             )
         await ctx.tick()
         await delete(ctx.message, delay=5)
@@ -196,7 +194,7 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
         return None
 
     async def _get_autoroom_info(self, autoroom: discord.VoiceChannel):
-        """Get info for an AutoRoom, or None if the voice channel isn't an AutoRoom."""
+        """Get info for an room, or None if the voice channel isn't a room."""
         if not autoroom:
             return None
         owner_id = await self.config.channel(autoroom).owner()
