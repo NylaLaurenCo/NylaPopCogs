@@ -1,11 +1,11 @@
 {
     "name": "AutoRoom",
     "author": [
-        "PhasecoreX (PhasecoreX#0635)"
+        "XO, Hatsumi (♡‡ Hatsumi ‡♡#4612)"
     ],
     "short": "Automatic voice channel management.",
-    "description": "Allows for designating voice channels as AutoRoom sources. When a user joins an AutoRoom source, they will be moved into their own personal on-demand voice channel (AutoRoom). Once all users have left the AutoRoom, it is automatically deleted.",
-    "install_msg": "Thanks for installing AutoRoom!",
+    "description": "Allows for designating voice channels as Private Room creators. When a user joins a Private Room creator, they will be moved into their own private voice channel (Private Room). Once all users have left the Private Room, it is automatically deleted.",
+    "install_msg": "Thanks for installing PrivateRooms!",
     "tags": [
         "audio",
         "auto",
@@ -14,6 +14,6 @@
         "room",
         "voice"
     ],
-    "min_bot_version": "3.4.0",
+    "min_bot_version": "1.0.0",
     "end_user_data_statement": "This cog does not persistently store data or metadata about users."
 }
