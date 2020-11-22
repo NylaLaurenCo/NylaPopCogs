@@ -145,11 +145,12 @@ class AutoRoomCommands(MixinMeta, ABC, metaclass=CompositeMetaClass):
                     "I can't deny them from entering your room."
                 )
             elif await self.is_admin_or_admin_role(member_or_role):
-                denied_message = "Wow! You're trying to lock admins out of your room! I'm telling!".format(
+                denied_message = "Whoa you're trying to lock an admin{} out of your room. I'm soo telling.".format(
                     " role" if isinstance(member_or_role, discord.Role) else ""
                 )
             elif await self.is_mod_or_mod_role(member_or_role):
-                denied_message = "Wow! You're trying to lock mods out of your room! I'm telling!" role" if isinstance(member_or_role, discord.Role) else ""
+                denied_message = "Whoa you're trying to lock a moderator{} out of your room. I'm soo telling.".format(
+                    " role" if isinstance(member_or_role, discord.Role) else ""
                 )
         if denied_message:
             hint = await ctx.send(
