@@ -15,7 +15,7 @@ def anarcheck():
         if perm.kick_members:
             return True
         else:
-            await ctx.send(_("You need to give me permissions to kick members before using this cog."))
+            await ctx.send(_("You need to give me permissions to kick members first."))
             return False
     return commands.check(predicate)
 
@@ -51,7 +51,7 @@ class Anarchy(commands.Cog):
         }
         default_guild = {
             "cooldown": 2,
-            "threshold": 100 #Note that i have no idea on how much i should put by default, so better modify that depending on your needs
+            "threshold": 100
         }
         default_channel = {
             "ignored": False
@@ -123,6 +123,19 @@ class Anarchy(commands.Cog):
         for i in channels:
             await self.config.channel(i).ignore.set(True)
         await ctx.send(_("Channels {} successfully ignored.").format(" ".join([x.mention for x in channels])))
+        
+    @anarchyset.command(name="headofhouse")
+    @checks.mod()
+    @anarcheck()
+    async def headofhouserole(self, ctx: commands.Context, *roles: discord.Role):
+        """Sets the Head of House role
+        See [p]anarchyset headofhouse for more info"""
+        to_add = []
+        for r in roles:
+            to_add.append(r.id)
+
+        await self.config.guild(ctx.guild).headofhouse_roles.set(to_add)
+        await ctx.tick()     
 
     @anarchy.command(name="vote")
     @anarcheck()
@@ -141,15 +154,15 @@ class Anarchy(commands.Cog):
     @commands.cooldown(1, 60, commands.BucketType.member)
     async def anarchy_kick(self, ctx, member : discord.Member, *, reason : str = "Anarchy abuse"):
         """Kicks another user.
-        You can only kick another user if you have more votes than him.
-        Beware to not abuse this power !"""
+        You can only kick another user if you have more votes than them.
+        Do not abuse this power!"""
         authorp = await self.config.member(ctx.author).votes()
         threshold = await self.config.guild(ctx.guild).threshold()
         if authorp < threshold:
             return await ctx.send(_("You don't have enough votes yet !"))
         userp = await self.config.member(member).votes()
         if userp >= authorp:
-            return await ctx.send(_("You can't kick someone with more or same number of votes than you !"))
+            return await ctx.send(_("You can only kick someone if you have more rep than them."))
         else:
             await ctx.send(_("You have kicked {} !").format(member.mention))
             await member.kick(reason=reason)
