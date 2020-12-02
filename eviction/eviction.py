@@ -5,9 +5,9 @@ import asyncio
 import datetime
 from redbot.core.i18n import Translator, cog_i18n
 
-_ = Translator("Anarchy", __file__)
+_ = Translator("Eviction", __file__)
 
-def anarcheck():
+def evictcheck():
     async def predicate(ctx):
         if ctx.guild.id == 133049272517001216:
             return True ## Let's make an exception for #testing ? :)
@@ -15,7 +15,7 @@ def anarcheck():
         if perm.kick_members:
             return True
         else:
-            await ctx.send(_("You need to give me permissions to kick members first."))
+            await ctx.send(_("You need to give me permissions to kick members and manage roles first."))
             return False
     return commands.check(predicate)
 
@@ -38,7 +38,7 @@ def can_vote():
     return commands.check(predicate)
 
 @cog_i18n(_)
-class Anarchy(commands.Cog):
+class Eviction(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -84,29 +84,29 @@ class Anarchy(commands.Cog):
             return 3 * ratio
 
     @commands.group()
-    @anarcheck()
-    async def anarchy(self, ctx):
-        """Commands for anarchy cog."""
+    @evictcheck()
+    async def eviction(self, ctx):
+        """Commands for eviction cog."""
         pass
 
-    @anarchy.group(name="set")
+    @eviction.group(name="set")
     @checks.mod()
-    @anarcheck()
-    async def anarchyset(self, ctx):
-        """Configuration command for the anarchy cog."""
+    @evictcheck()
+    async def evictionset(self, ctx):
+        """Configuration command for the eviction cog."""
         pass
 
-    @anarchyset.command(name="threshold")
+    @evictionset.command(name="threshold")
     @checks.mod()
-    @anarcheck()
+    @evictcheck()
     async def set_threshold(self, ctx, threshold : int):
         """Modify the threshold needed to get mod role."""
         await self.config.guild(ctx.guild).modrole.set(threshold)
         await ctx.send(_("Server threshold successfully set to {} points.").format(threshold))
 
-    @anarchyset.command(name="cooldown")
+    @evictionset.command(name="cooldown")
     @checks.mod()
-    @anarcheck()
+    @evictcheck()
     async def set_cooldown(self, ctx, cooldown : int = 1):
         """Modify the cooldown between 2 counted messages.
         This settings is meant to not allow spammers to get any advantage.
@@ -114,9 +114,9 @@ class Anarchy(commands.Cog):
         await self.config.guild(ctx.guild).cooldown.set(cooldown)
         await ctx.send(_("Cooldown successfully set to {} seconds.").format(cooldown))
 
-    @anarchyset.command(name="ignore")
+    @evictionset.command(name="ignore")
     @checks.mod()
-    @anarcheck()
+    @evictcheck()
     async def ignore_channel(self, ctx, channels : commands.Greedy[discord.TextChannel]):
         """Make the cog ignore channels.
         Messages won't be counted in those channels."""
@@ -124,12 +124,12 @@ class Anarchy(commands.Cog):
             await self.config.channel(i).ignore.set(True)
         await ctx.send(_("Channels {} successfully ignored.").format(" ".join([x.mention for x in channels])))
         
-    @anarchyset.command(name="headofhouse")
+    @evictionset.command(name="headofhouse")
     @checks.mod()
-    @anarcheck()
+    @evictcheck()
     async def headofhouserole(self, ctx: commands.Context, *roles: discord.Role):
         """Sets the Head of House role
-        See [p]anarchyset headofhouse for more info"""
+        See [p]evictionset headofhouse for more info"""
         to_add = []
         for r in roles:
             to_add.append(r.id)
@@ -137,10 +137,10 @@ class Anarchy(commands.Cog):
         await self.config.guild(ctx.guild).headofhouse_roles.set(to_add)
         await ctx.tick()     
 
-    @anarchy.command(name="vote")
-    @anarcheck()
+    @eviction.command(name="vote")
+    @evictcheck()
     @can_vote()
-    async def anarchy_vote(self, ctx, member : discord.Member):
+    async def eviction_vote(self, ctx, member : discord.Member):
         """Vote for a member !"""
         if ctx.author == member:
             return await ctx.send(_("You can't vote for yourself ..."))
@@ -149,10 +149,10 @@ class Anarchy(commands.Cog):
         await self.config.member(member).votes.set(cur+amount)
         await ctx.send(_("You have voted for {} !").format(member.mention))
 
-    @anarchy.command(name="kick")
-    @anarcheck()
+    @eviction.command(name="kick")
+    @evictcheck()
     @commands.cooldown(1, 60, commands.BucketType.member)
-    async def anarchy_kick(self, ctx, member : discord.Member, *, reason : str = "Anarchy abuse"):
+    async def eviction_kick(self, ctx, member : discord.Member, *, reason : str = "Eviction abuse"):
         """Kicks another user.
         You can only kick another user if you have more votes than them.
         Do not abuse this power!"""
@@ -167,9 +167,9 @@ class Anarchy(commands.Cog):
             await ctx.send(_("You have kicked {} !").format(member.mention))
             await member.kick(reason=reason)
 
-    @anarchy.command(name="profile")
-    @anarcheck()
-    async def anarchy_profile(self, ctx, member : discord.Member = None):
+    @eviction.command(name="profile")
+    @evictcheck()
+    async def eviction_profile(self, ctx, member : discord.Member = None):
         """Show how much votes you - or someone else - have."""
         if member is None:
             member = ctx.author
