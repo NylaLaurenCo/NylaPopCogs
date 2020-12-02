@@ -124,18 +124,31 @@ class Eviction(commands.Cog):
             await self.config.channel(i).ignore.set(True)
         await ctx.send(_("Channels {} successfully ignored.").format(" ".join([x.mention for x in channels])))
         
-    @evictionset.command(name="headofhouse")
+    @evictionset.command(name="insider")
     @checks.mod()
     @evictcheck()
-    async def headofhouserole(self, ctx: commands.Context, *roles: discord.Role):
-        """Sets the Head of House role
-        See [p]evictionset headofhouse for more info"""
+    async def insiderrole(self, ctx: commands.Context, *roles: discord.Role):
+        """Sets the Insider role
+        See [p]evictionset insider for more info"""
         to_add = []
         for r in roles:
             to_add.append(r.id)
 
-        await self.config.guild(ctx.guild).headofhouse_roles.set(to_add)
+        await self.config.guild(ctx.guild).insider_roles.set(to_add)
         await ctx.tick()     
+        
+    @evictionset.command(name="outsider")
+    @checks.mod()
+    @evictcheck()
+    async def outsiderrole(self, ctx: commands.Context, *roles: discord.Role):
+        """Sets the Outsider role
+        See [p]evictionset outsider for more info"""
+        to_add = []
+        for r in roles:
+            to_add.append(r.id)
+
+        await self.config.guild(ctx.guild).outsider_roles.set(to_add)
+        await ctx.tick()          
 
     @eviction.command(name="vote")
     @evictcheck()
@@ -149,22 +162,22 @@ class Eviction(commands.Cog):
         await self.config.member(member).votes.set(cur+amount)
         await ctx.send(_("You have voted for {} !").format(member.mention))
 
-    @eviction.command(name="kick")
+    @eviction.command(name="evict")
     @evictcheck()
     @commands.cooldown(1, 60, commands.BucketType.member)
     async def eviction_kick(self, ctx, member : discord.Member, *, reason : str = "Eviction abuse"):
-        """Kicks another user.
-        You can only kick another user if you have more votes than them.
+        """Evict another member.
+        You can only kick another member from the house if you have more votes than them.
         Do not abuse this power!"""
         authorp = await self.config.member(ctx.author).votes()
         threshold = await self.config.guild(ctx.guild).threshold()
         if authorp < threshold:
-            return await ctx.send(_("You don't have enough votes yet !"))
+            return await ctx.send(_("You don't have enough votes."))
         userp = await self.config.member(member).votes()
         if userp >= authorp:
-            return await ctx.send(_("You can only kick someone if you have more rep than them."))
+            return await ctx.send(_("You can only kick someone if you have more votes than them."))
         else:
-            await ctx.send(_("You have kicked {} !").format(member.mention))
+            await ctx.send(_("{} has been evicted! Damnnnn somebody give them some milk!").format(member.mention))
             await member.kick(reason=reason)
 
     @eviction.command(name="profile")
