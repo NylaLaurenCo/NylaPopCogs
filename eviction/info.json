@@ -1,0 +1,11 @@
+{
+    "author": ["NylaPop"],
+    "min_bot_version": "1.0.0",
+    "description": "Let other members vote to kick their peers.",
+    "hidden": false,
+    "install_msg": "Thank you for installing this cog. Use `[p]help Anarchy` for commands.",
+    "required_cogs": {},
+    "requirements": [],
+    "short": "anarchy moderation cog",
+    "tags": ["anarchy", "moderation", "kick", "vote"]
+}
