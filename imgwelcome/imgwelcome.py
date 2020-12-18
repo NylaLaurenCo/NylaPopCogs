@@ -253,6 +253,6 @@ class ImgWelcome(M.Cog):
 		J=await C.config.guild(A.guild).CHANNEL();F=C.bot.get_channel(J);K=await C._create_welcome(A)
 		async with F.typing():await F.send(file=L.File(K,k))
 		M=await C.config.guild(A.guild).SPECIAL_USERS()
-		if(D(A.guild.members)%100==0 or D(A.guild.members)==1337)and M:O=f"Thanks {A.mention}, you're the ***{D(A.guild.members)}***th user on this server!";await F.send(O)
+		if(D(A.guild.members)%100==0 or D(A.guild.members)==1337)and M:O=f"Hey, congrats {A.mention}! You win a prize for being the ***{D(A.guild.members)}***th guest at Sumi's House! Visit https://discord.gg/ase2S37 to claim your gift.";await F.send(O)
 		P=N.datetime.strptime(B(A.created_at),'%Y-%m-%d %H:%M:%S.%f');G=N.datetime.now(N.timezone.utc);G=G.replace(tzinfo=E);H=G-P;Q=await C.config.guild(A.guild).ACCOUNT_WARNINGS()
-		if H.days<7 and Q:await F.send(f"This account was created less than a week ago ({H.days} days ago)")
+		if H.days<7 and Q:await F.send(f"Stranger danger! Mods have been notified that your account was created {H.days} days ago.")
