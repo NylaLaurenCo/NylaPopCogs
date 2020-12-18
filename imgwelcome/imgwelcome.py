@@ -57,7 +57,7 @@ class ImgWelcome(M.Cog):
 		if D(E)>=33:N((152,73),E,1,v,M);H.text((152,73),E,font=v,fill=V)
 		if not q:k=A5(K.guild.members,key=lambda m:m.joined_at).index(K)+1
 		else:k=I(q)
-		A2=B(k)+R._get_suffix(k);A3=B(K.guild.name)+'!'if D(B(K.guild.name))<=28 else B(K.guild.name)[:23]+'...';N((152,96),f"You are the {B(A2)} member",1,T,M);H.text((152,96),f"You are the {B(A2)} member",font=T,fill=x);N((152,116),AQ+A3,1,T,M);H.text((152,116),AQ+A3,font=T,fill=x);l=m();L.save(l,format='PNG');l.seek(0);return l
+		A2=B(k)+R._get_suffix(k);A3=B(K.guild.name)+'!'if D(B(K.guild.name))<=28 else B(K.guild.name)[:23]+'...';N((152,96),f"You're the {B(A2)} member",1,T,M);H.text((152,96),f"You're the {B(A2)} member",font=T,fill=x);N((152,116),AQ+A3,1,T,M);H.text((152,116),AQ+A3,font=T,fill=x);l=m();L.save(l,format='PNG');l.seek(0);return l
 	async def _circle_border(C,circle_img_size:J):
 		A=circle_img_size;B=[]
 		for E in range(D(A)):B.append(A[0]+8)
