@@ -1,0 +1,13 @@
+{
+	"author": [
+		"NylaPopCogs"
+	],
+	"description": "Imgwelcome for Kevin B.",
+    "install_msg": "Thanks for installing.",
+    "min_python_version": [3, 7, 0],
+    "permissions" : [
+		"manage_messages"
+	],
+	"short": "Imgwelcome for Kevin B.",
+	"type": "COG"
+}
