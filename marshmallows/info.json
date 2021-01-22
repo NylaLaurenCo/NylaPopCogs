@@ -1,0 +1,8 @@
+{
+    "author" : ["NylaPop"],
+    "install_msg" : "Thank you for installing my cog!",
+    "name" : "Marshmallows",
+    "short" : "Collect marshmallows from the cereal box!",
+    "description" : "Collect marshmallows from the cereal box or steal them from others.",
+    "tags" : ["marshmallows", "currency". "points", "credits"]
+}
