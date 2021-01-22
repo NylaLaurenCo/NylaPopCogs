@@ -202,9 +202,9 @@ class Marshmallows(commands.Cog):
         pos = 1
         pound_len = len(str(len(ids)))
         header = "{pound:{pound_len}}{score:{bar_len}}{name:2}\n".format(
-            pound="#",
-            name="Name",
-            score="Marshmallows",
+            pound="Rank",
+            name="Member",
+            score="#",
             pound_len=pound_len + 3,
             bar_len=pound_len + 9,
         )
