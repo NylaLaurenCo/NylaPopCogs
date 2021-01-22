@@ -95,7 +95,7 @@ class Marshmallows(commands.Cog):
                 target_id = random.choice(ids)
                 target = ctx.guild.get_member(target_id)
         if target.id == ctx.author.id:
-            return await ctx.send("Dude... did your really just try to steal from yourself?? <:13bruh_tf:743113446127698040>")
+            return await ctx.send("Dude... did you really just try to steal from yourself?? <:13bruh_tf:743113446127698040>")
         target_marshmallows = int(await self.config.member(target).marshmallows())
         if target_marshmallows == 0:
             return await ctx.send(
@@ -131,8 +131,7 @@ class Marshmallows(commands.Cog):
                 )
             author_marshmallows -= penalty
             await ctx.send(
-                f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **
-                ** <:so_love:754613619836321892> marshmallows in return. lol get rekt!"
+                f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> marshmallows in return. lol get rekt!"
             )
         next_steal = cur_time + await self.config.guild(ctx.guild).stealcd()
         await self.config.member(target).marshmallows.set(target_marshmallows)
