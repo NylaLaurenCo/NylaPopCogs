@@ -44,7 +44,7 @@ class Marshmallows(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def marshmallow(self, ctx: commands.Context):
+    async def openmallows(self, ctx: commands.Context):
         """Get your daily dose of marshmallows."""
         amount = int(await self.config.guild(ctx.guild).amount())
         marshmallows = int(await self.config.member(ctx.author).marshmallows())
@@ -78,7 +78,7 @@ class Marshmallows(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def steal(self, ctx: commands.Context, target: discord.Member = None):
+    async def stealmallows(self, ctx: commands.Context, target: discord.Member = None):
         """Steal marshmallows from members."""
         cur_time = calendar.timegm(ctx.message.created_at.utctimetuple())
         next_steal = await self.config.member(ctx.author).next_steal()
@@ -138,7 +138,7 @@ class Marshmallows(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def gift(self, ctx: commands.Context, target: discord.Member, amount: int):
+    async def gibbmallows(self, ctx: commands.Context, target: discord.Member, amount: int):
         """Gift someone some yummy marshmallows."""
         author_marshmallows = int(await self.config.member(ctx.author).marshmallows())
         if amount <= 0:
@@ -173,7 +173,7 @@ class Marshmallows(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def marshmallowexchange(self, ctx: commands.Context, amount: int):
+    async def buymallows(self, ctx: commands.Context, amount: int):
         """Exchange currency into marshmallows."""
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
@@ -193,7 +193,7 @@ class Marshmallows(commands.Cog):
 
     @commands.command(aliases=["marshmallowleaderboard"])
     @commands.guild_only()
-    async def marshmallowlb(self, ctx: commands.Context):
+    async def hoarders(self, ctx: commands.Context):
         """Display the server's marshmallow leaderboard."""
         ids = await self._get_ids(ctx)
         lst = []
