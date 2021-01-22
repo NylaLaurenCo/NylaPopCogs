@@ -71,7 +71,7 @@ class Marshmallows(commands.Cog):
             next_marshmallow = cur_time + await self.config.guild(ctx.guild).cooldown()
             await self.config.member(ctx.author).next_marshmallow.set(next_marshmallow)
             await self.config.member(ctx.author).marshmallows.set(marshmallows)
-            await ctx.send(f"Here is your {amount} :marshmallow:")
+            await ctx.send(f"Here is your {amount} <:so_love:754613619836321892>")
         else:
             dtime = self.display_time(next_marshmallow - cur_time)
             await ctx.send(f"Uh oh, you have to wait {dtime}.")
@@ -99,7 +99,7 @@ class Marshmallows(commands.Cog):
         target_marshmallows = int(await self.config.member(target).marshmallows())
         if target_marshmallows == 0:
             return await ctx.send(
-                f"Uh oh, {target.display_name} doesn't have any :marshmallow:"
+                f"Uh oh, {target.display_name} doesn't have any <:so_love:754613619836321892>"
             )
         success_chance = random.randint(1, 100)
         if success_chance > 90:
@@ -114,7 +114,7 @@ class Marshmallows(commands.Cog):
                     f"You stole any marshmallow of {target.display_name}."
                 )
             target_marshmallows -= stolen
-            await ctx.send(f"You stole {stolen} :marshmallow: from {target.display_name}!")
+            await ctx.send(f"You stole {stolen} <:so_love:754613619836321892> from {target.display_name}!")
         else:
             marshmallows_penalty = int(author_marshmallows * 0.25)
             if marshmallows_penalty == 0:
@@ -123,13 +123,13 @@ class Marshmallows(commands.Cog):
             target_marshmallows += penalty
             if self._max_balance_check(target_marshmallows):
                 return await ctx.send(
-                    f"Uh oh, you got caught while trying to steal {target.display_name}'s :marshmallow:\n"
+                    f"Uh oh, you got caught while trying to steal {target.display_name}'s <:so_love:754613619836321892>\n"
                     f"{target.display_name} has reached the maximum amount of marshmallows, "
                     "so you haven't lost any marshmallow."
                 )
             author_marshmallows -= penalty
             await ctx.send(
-                f"You got caught while trying to steal {target.display_name}'s :marshmallow:\nYour penalty is {penalty} :marshmallow: which they got!"
+                f"You got caught while trying to steal {target.display_name}'s <:so_love:754613619836321892>\nYour penalty is {penalty} <:so_love:754613619836321892> which they got!"
             )
         next_steal = cur_time + await self.config.guild(ctx.guild).stealcd()
         await self.config.member(target).marshmallows.set(target_marshmallows)
@@ -157,7 +157,7 @@ class Marshmallows(commands.Cog):
         await self.config.member(ctx.author).marshmallows.set(author_marshmallows)
         await self.config.member(target).marshmallows.set(target_marshmallows)
         await ctx.send(
-            f"{ctx.author.mention} has gifted {amount} :marshmallow: to {target.mention}"
+            f"{ctx.author.mention} has gifted {amount} <:so_love:754613619836321892> to {target.mention}"
         )
 
     @commands.command(aliases=["jar"])
@@ -166,10 +166,10 @@ class Marshmallows(commands.Cog):
         """Check how many marshmallows you have."""
         if not target:
             marshmallows = int(await self.config.member(ctx.author).marshmallows())
-            await ctx.send(f"You have {marshmallows} :marshmallow:")
+            await ctx.send(f"You have {marshmallows} <:so_love:754613619836321892>")
         else:
             marshmallows = int(await self.config.member(target).marshmallows())
-            await ctx.send(f"{target.display_name} has {marshmallows} :marshmallow:")
+            await ctx.send(f"{target.display_name} has {marshmallows} <:so_love:754613619836321892>")
 
     @commands.command()
     @commands.guild_only()
@@ -189,7 +189,7 @@ class Marshmallows(commands.Cog):
         marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(marshmallows)
         currency = await bank.get_currency_name(ctx.guild)
-        await ctx.send(f"You have exchanged {amount} {currency} and got {new_marshmallows} :marshmallow:\nYou now have {marshmallows} :marshmallow:")
+        await ctx.send(f"You have exchanged {amount} {currency} and got {new_marshmallows} <:so_love:754613619836321892>\nYou now have {marshmallows} <:so_love:754613619836321892>")
 
     @commands.command(aliases=["marshmallowleaderboard"])
     @commands.guild_only()
@@ -332,7 +332,7 @@ class Marshmallows(commands.Cog):
                 f"Uh oh, amount can't be greater than {_MAX_BALANCE:,}."
             )
         await self.config.member(target).marshmallows.set(amount)
-        await ctx.send(f"Set {target.mention}'s balance to {amount} :marshmallow:")
+        await ctx.send(f"Set {target.mention}'s balance to {amount} <:so_love:754613619836321892>")
 
     @setmarshmallows.command(name="add")
     async def setmarshmallows_add(
@@ -348,7 +348,7 @@ class Marshmallows(commands.Cog):
                 f"Uh oh, {target.display_name} has reached the maximum amount of marshmallows."
             )
         await self.config.member(target).marshmallows.set(target_marshmallows)
-        await ctx.send(f"Added {amount} :marshmallow: to {target.mention}'s balance.")
+        await ctx.send(f"Added {amount} <:so_love:754613619836321892> to {target.mention}'s balance.")
 
     @setmarshmallows.command(name="take")
     async def setmarshmallows_take(
@@ -362,7 +362,7 @@ class Marshmallows(commands.Cog):
             target_marshmallows -= amount
             await self.config.member(target).marshmallows.set(target_marshmallows)
             await ctx.send(
-                f"Took away {amount} :marshmallow: from {target.mention}'s balance."
+                f"Took away {amount} <:so_love:754613619836321892> from {target.mention}'s balance."
             )
         else:
             await ctx.send(f"{target.mention} doesn't have enough :marshmallows:")
@@ -389,7 +389,7 @@ class Marshmallows(commands.Cog):
         await self.config.guild(ctx.guild).rate.set(rate)
         currency = await bank.get_currency_name(ctx.guild)
         test_amount = 100*rate
-        await ctx.send(f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} :marshmallow:")
+        await ctx.send(f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} <:so_love:754613619836321892>")
 
     @setmarshmallows.group(autohelp=True)
     async def role(self, ctx):
@@ -404,19 +404,19 @@ class Marshmallows(commands.Cog):
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
         await self.config.role(role).marshmallows.set(amount)
-        await ctx.send(f"Gaining {role.name} will now give {amount} :marshmallow:")
+        await ctx.send(f"Gaining {role.name} will now give {amount} <:so_love:754613619836321892>")
 
     @role.command(name="del")
     async def setmarshmallows_role_del(self, ctx: commands.Context, role: discord.Role):
         """Delete marshmallows for role."""
         await self.config.role(role).marshmallows.set(0)
-        await ctx.send(f"Gaining {role.name} will now not give any :marshmallow:")
+        await ctx.send(f"Gaining {role.name} will now not give any <:so_love:754613619836321892>")
 
     @role.command(name="show")
     async def setmarshmallows_role_show(self, ctx: commands.Context, role: discord.Role):
         """Show how many marshmallows a role gives."""
         marshmallows = int(await self.config.role(role).marshmallows())
-        await ctx.send(f"Gaining {role.name} gives {marshmallows} :marshmallow:")
+        await ctx.send(f"Gaining {role.name} gives {marshmallows} <:so_love:754613619836321892>")
 
     @role.command(name="multiplier")
     async def setmarshmallows_role_multiplier(
@@ -428,7 +428,7 @@ class Marshmallows(commands.Cog):
         if multiplier <= 0:
             return await ctx.send("Uh oh, multiplier has to be more than 0.")
         await self.config.role(role).multiplier.set(multiplier)
-        await ctx.send(f"Users with {role.name} will now get {multiplier} times more :marshmallow:")
+        await ctx.send(f"Users with {role.name} will now get {multiplier} times more <:so_love:754613619836321892>")
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
