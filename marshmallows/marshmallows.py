@@ -17,9 +17,9 @@ from redbot.core.bot import Red
 _MAX_BALANCE = 2 ** 63 - 1
 
 
-class Cookies(commands.Cog):
+class Marshmallows(commands.Cog):
     """
-    Collect cookies.
+    Collect marshmallows.
     """
 
     __author__ = "saurichable"
@@ -39,18 +39,18 @@ class Cookies(commands.Cog):
             stealcd=43200,
             rate=0.5,
         )
-        self.config.register_member(cookies=0, next_cookie=0, next_steal=0)
-        self.config.register_role(cookies=0, multiplier=1)
+        self.config.register_member(marshmallows=0, next_marshmallow=0, next_steal=0)
+        self.config.register_role(marshmallows=0, multiplier=1)
 
     @commands.command()
     @commands.guild_only()
-    async def cookie(self, ctx: commands.Context):
-        """Get your daily dose of cookies."""
+    async def marshmallow(self, ctx: commands.Context):
+        """Get your daily dose of marshmallows."""
         amount = int(await self.config.guild(ctx.guild).amount())
-        cookies = int(await self.config.member(ctx.author).cookies())
+        marshmallows = int(await self.config.member(ctx.author).marshmallows())
         cur_time = calendar.timegm(ctx.message.created_at.utctimetuple())
-        next_cookie = await self.config.member(ctx.author).next_cookie()
-        if cur_time >= next_cookie:
+        next_marshmallow = await self.config.member(ctx.author).next_marshmallow()
+        if cur_time >= next_marshmallow:
             if amount != 0:
                 multipliers = []
                 for role in ctx.author.roles:
@@ -58,32 +58,32 @@ class Cookies(commands.Cog):
                     if not role_multiplier:
                         role_multiplier = 1
                     multipliers.append(role_multiplier)
-                cookies += (amount * max(multipliers)) 
+                marshmallows += (amount * max(multipliers)) 
             else:
                 minimum = int(await self.config.guild(ctx.guild).minimum())
                 maximum = int(await self.config.guild(ctx.guild).maximum())
                 amount = int(random.choice(list(range(minimum, maximum))))
-                cookies += amount
-            if self._max_balance_check(cookies):
+                marshmallows += amount
+            if self._max_balance_check(marshmallows):
                 return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of cookies that you can put in your bag. :frowning:"
+                    "Uh oh, you have reached the maximum amount of marshmallows that you can put in your bag. :frowning:"
                 )
-            next_cookie = cur_time + await self.config.guild(ctx.guild).cooldown()
-            await self.config.member(ctx.author).next_cookie.set(next_cookie)
-            await self.config.member(ctx.author).cookies.set(cookies)
-            await ctx.send(f"Here is your {amount} :cookie:")
+            next_marshmallow = cur_time + await self.config.guild(ctx.guild).cooldown()
+            await self.config.member(ctx.author).next_marshmallow.set(next_marshmallow)
+            await self.config.member(ctx.author).marshmallows.set(marshmallows)
+            await ctx.send(f"Here is your {amount} :marshmallow:")
         else:
-            dtime = self.display_time(next_cookie - cur_time)
+            dtime = self.display_time(next_marshmallow - cur_time)
             await ctx.send(f"Uh oh, you have to wait {dtime}.")
 
     @commands.command()
     @commands.guild_only()
     async def steal(self, ctx: commands.Context, target: discord.Member = None):
-        """Steal cookies from members."""
+        """Steal marshmallows from members."""
         cur_time = calendar.timegm(ctx.message.created_at.utctimetuple())
         next_steal = await self.config.member(ctx.author).next_steal()
         enabled = await self.config.guild(ctx.guild).stealing()
-        author_cookies = int(await self.config.member(ctx.author).cookies())
+        author_marshmallows = int(await self.config.member(ctx.author).marshmallows())
         if not enabled:
             return await ctx.send("Uh oh, stealing is disabled.")
         if cur_time < next_steal:
@@ -96,85 +96,85 @@ class Cookies(commands.Cog):
                 target = ctx.guild.get_member(target_id)
         if target.id == ctx.author.id:
             return await ctx.send("Uh oh, you can't steal from yourself.")
-        target_cookies = int(await self.config.member(target).cookies())
-        if target_cookies == 0:
+        target_marshmallows = int(await self.config.member(target).marshmallows())
+        if target_marshmallows == 0:
             return await ctx.send(
-                f"Uh oh, {target.display_name} doesn't have any :cookie:"
+                f"Uh oh, {target.display_name} doesn't have any :marshmallow:"
             )
         success_chance = random.randint(1, 100)
         if success_chance > 90:
-            cookies_stolen = int(target_cookies * 0.5)
-            if cookies_stolen == 0:
-                cookies_stolen = 1
-            stolen = random.randint(1, cookies_stolen)
-            author_cookies += stolen
-            if self._max_balance_check(author_cookies):
+            marshmallows_stolen = int(target_marshmallows * 0.5)
+            if marshmallows_stolen == 0:
+                marshmallows_stolen = 1
+            stolen = random.randint(1, marshmallows_stolen)
+            author_marshmallows += stolen
+            if self._max_balance_check(author_marshmallows):
                 return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of cookies that you can put in your bag. :frowning:\n"
-                    f"You stole any cookie of {target.display_name}."
+                    "Uh oh, you have reached the maximum amount of marshmallows that you can put in your bag. :frowning:\n"
+                    f"You stole any marshmallow of {target.display_name}."
                 )
-            target_cookies -= stolen
-            await ctx.send(f"You stole {stolen} :cookie: from {target.display_name}!")
+            target_marshmallows -= stolen
+            await ctx.send(f"You stole {stolen} :marshmallow: from {target.display_name}!")
         else:
-            cookies_penalty = int(author_cookies * 0.25)
-            if cookies_penalty == 0:
-                cookies_penalty = 1
-            penalty = random.randint(1, cookies_penalty)
-            target_cookies += penalty
-            if self._max_balance_check(target_cookies):
+            marshmallows_penalty = int(author_marshmallows * 0.25)
+            if marshmallows_penalty == 0:
+                marshmallows_penalty = 1
+            penalty = random.randint(1, marshmallows_penalty)
+            target_marshmallows += penalty
+            if self._max_balance_check(target_marshmallows):
                 return await ctx.send(
-                    f"Uh oh, you got caught while trying to steal {target.display_name}'s :cookie:\n"
-                    f"{target.display_name} has reached the maximum amount of cookies, "
-                    "so you haven't lost any cookie."
+                    f"Uh oh, you got caught while trying to steal {target.display_name}'s :marshmallow:\n"
+                    f"{target.display_name} has reached the maximum amount of marshmallows, "
+                    "so you haven't lost any marshmallow."
                 )
-            author_cookies -= penalty
+            author_marshmallows -= penalty
             await ctx.send(
-                f"You got caught while trying to steal {target.display_name}'s :cookie:\nYour penalty is {penalty} :cookie: which they got!"
+                f"You got caught while trying to steal {target.display_name}'s :marshmallow:\nYour penalty is {penalty} :marshmallow: which they got!"
             )
         next_steal = cur_time + await self.config.guild(ctx.guild).stealcd()
-        await self.config.member(target).cookies.set(target_cookies)
-        await self.config.member(ctx.author).cookies.set(author_cookies)
+        await self.config.member(target).marshmallows.set(target_marshmallows)
+        await self.config.member(ctx.author).marshmallows.set(author_marshmallows)
         await self.config.member(ctx.author).next_steal.set(next_steal)
 
     @commands.command()
     @commands.guild_only()
     async def gift(self, ctx: commands.Context, target: discord.Member, amount: int):
-        """Gift someone some yummy cookies."""
-        author_cookies = int(await self.config.member(ctx.author).cookies())
+        """Gift someone some yummy marshmallows."""
+        author_marshmallows = int(await self.config.member(ctx.author).marshmallows())
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
         if target.id == ctx.author.id:
             return await ctx.send("Why would you do that?")
-        if amount > author_cookies:
-            return await ctx.send("You don't have enough cookies yourself!")
-        target_cookies = int(await self.config.member(target).cookies())
-        target_cookies += amount
-        if self._max_balance_check(target_cookies):
+        if amount > author_marshmallows:
+            return await ctx.send("You don't have enough marshmallows yourself!")
+        target_marshmallows = int(await self.config.member(target).marshmallows())
+        target_marshmallows += amount
+        if self._max_balance_check(target_marshmallows):
             return await ctx.send(
-                f"Uh oh, {target.display_name} has reached the maximum amount of cookies that they can have in their bag. :frowning:"
+                f"Uh oh, {target.display_name} has reached the maximum amount of marshmallows that they can have in their bag. :frowning:"
             )
-        author_cookies -= amount
-        await self.config.member(ctx.author).cookies.set(author_cookies)
-        await self.config.member(target).cookies.set(target_cookies)
+        author_marshmallows -= amount
+        await self.config.member(ctx.author).marshmallows.set(author_marshmallows)
+        await self.config.member(target).marshmallows.set(target_marshmallows)
         await ctx.send(
-            f"{ctx.author.mention} has gifted {amount} :cookie: to {target.mention}"
+            f"{ctx.author.mention} has gifted {amount} :marshmallow: to {target.mention}"
         )
 
     @commands.command(aliases=["jar"])
     @commands.guild_only()
-    async def cookies(self, ctx: commands.Context, target: discord.Member = None):
-        """Check how many cookies you have."""
+    async def marshmallows(self, ctx: commands.Context, target: discord.Member = None):
+        """Check how many marshmallows you have."""
         if not target:
-            cookies = int(await self.config.member(ctx.author).cookies())
-            await ctx.send(f"You have {cookies} :cookie:")
+            marshmallows = int(await self.config.member(ctx.author).marshmallows())
+            await ctx.send(f"You have {marshmallows} :marshmallow:")
         else:
-            cookies = int(await self.config.member(target).cookies())
-            await ctx.send(f"{target.display_name} has {cookies} :cookie:")
+            marshmallows = int(await self.config.member(target).marshmallows())
+            await ctx.send(f"{target.display_name} has {marshmallows} :marshmallow:")
 
     @commands.command()
     @commands.guild_only()
-    async def cookieexchange(self, ctx: commands.Context, amount: int):
-        """Exchange currency into cookies."""
+    async def marshmallowexchange(self, ctx: commands.Context, amount: int):
+        """Exchange currency into marshmallows."""
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
 
@@ -183,18 +183,18 @@ class Cookies(commands.Cog):
         await bank.withdraw_credits(ctx.author, amount)
 
         rate = await self.config.guild(ctx.guild).rate()
-        new_cookies = amount * rate
+        new_marshmallows = amount * rate
 
-        cookies = await self.config.member(ctx.author).cookies()
-        cookies += new_cookies
-        await self.config.member(ctx.author).cookies.set(cookies)
+        marshmallows = await self.config.member(ctx.author).marshmallows()
+        marshmallows += new_marshmallows
+        await self.config.member(ctx.author).marshmallows.set(marshmallows)
         currency = await bank.get_currency_name(ctx.guild)
-        await ctx.send(f"You have exchanged {amount} {currency} and got {new_cookies} :cookie:\nYou now have {cookies} :cookie:")
+        await ctx.send(f"You have exchanged {amount} {currency} and got {new_marshmallows} :marshmallow:\nYou now have {marshmallows} :marshmallow:")
 
-    @commands.command(aliases=["cookieleaderboard"])
+    @commands.command(aliases=["marshmallowleaderboard"])
     @commands.guild_only()
-    async def cookielb(self, ctx: commands.Context):
-        """Display the server's cookie leaderboard."""
+    async def marshmallowlb(self, ctx: commands.Context):
+        """Display the server's marshmallow leaderboard."""
         ids = await self._get_ids(ctx)
         lst = []
         pos = 1
@@ -202,7 +202,7 @@ class Cookies(commands.Cog):
         header = "{pound:{pound_len}}{score:{bar_len}}{name:2}\n".format(
             pound="#",
             name="Name",
-            score="Cookies",
+            score="Marshmallows",
             pound_len=pound_len + 3,
             bar_len=pound_len + 9,
         )
@@ -212,18 +212,18 @@ class Cookies(commands.Cog):
             if not a:
                 continue
             name = a.display_name
-            cookies = await self.config.member(a).cookies()
-            if cookies == 0:
+            marshmallows = await self.config.member(a).marshmallows()
+            if marshmallows == 0:
                 continue
-            score = "Cookies"
+            score = "Marshmallows"
             if a_id != ctx.author.id:
                 temp_msg += (
-                    f"{f'{pos}.': <{pound_len+2}} {cookies: <{pound_len+8}} {name}\n"
+                    f"{f'{pos}.': <{pound_len+2}} {marshmallows: <{pound_len+8}} {name}\n"
                 )
             else:
                 temp_msg += (
                     f"{f'{pos}.': <{pound_len+2}} "
-                    f"{cookies: <{pound_len+8}} "
+                    f"{marshmallows: <{pound_len+8}} "
                     f"<<{name}>>\n"
                 )
             if pos % 10 == 0:
@@ -244,27 +244,27 @@ class Cookies(commands.Cog):
     @commands.group(autohelp=True)
     @checks.admin_or_permissions(manage_guild=True)
     @commands.guild_only()
-    async def setcookies(self, ctx):
-        """Admin settings for cookies."""
+    async def setmarshmallows(self, ctx):
+        """Admin settings for marshmallows."""
         pass
 
-    @setcookies.command(name="amount")
-    async def setcookies_amount(self, ctx: commands.Context, amount: int):
-        """Set the amount of cookies members can obtain.
+    @setmarshmallows.command(name="amount")
+    async def setmarshmallows_amount(self, ctx: commands.Context, amount: int):
+        """Set the amount of marshmallows members can obtain.
 
         If 0, members will get a random amount."""
         if amount < 0:
             return await ctx.send("Uh oh, the amount cannot be negative.")
         if self._max_balance_check(amount):
             return await ctx.send(
-                f"Uh oh, you can't set an amount of cookies greater than {_MAX_BALANCE:,}."
+                f"Uh oh, you can't set an amount of marshmallows greater than {_MAX_BALANCE:,}."
             )
         await self.config.guild(ctx.guild).amount.set(amount)
         if amount != 0:
-            await ctx.send(f"Members will receive {amount} cookies.")
+            await ctx.send(f"Members will receive {amount} marshmallows.")
         else:
             pred = MessagePredicate.valid_int(ctx)
-            await ctx.send("What's the minimum amount of cookies members can obtain?")
+            await ctx.send("What's the minimum amount of marshmallows members can obtain?")
             try:
                 await self.bot.wait_for("message", timeout=30, check=pred)
             except asyncio.TimeoutError:
@@ -272,7 +272,7 @@ class Cookies(commands.Cog):
             minimum = pred.result
             await self.config.guild(ctx.guild).minimum.set(minimum)
 
-            await ctx.send("What's the maximum amount of cookies members can obtain?")
+            await ctx.send("What's the maximum amount of marshmallows members can obtain?")
             try:
                 await self.bot.wait_for("message", timeout=30, check=pred)
             except asyncio.TimeoutError:
@@ -281,12 +281,12 @@ class Cookies(commands.Cog):
             await self.config.guild(ctx.guild).maximum.set(maximum)
 
             await ctx.send(
-                f"Members will receive a random amount of cookies between {minimum} and {maximum}."
+                f"Members will receive a random amount of marshmallows between {minimum} and {maximum}."
             )
 
-    @setcookies.command(name="cooldown", aliases=["cd"])
-    async def setcookies_cd(self, ctx: commands.Context, seconds: int):
-        """Set the cooldown for `[p]cookie`.
+    @setmarshmallows.command(name="cooldown", aliases=["cd"])
+    async def setmarshmallows_cd(self, ctx: commands.Context, seconds: int):
+        """Set the cooldown for `[p]marshmallow`.
 
         This is in seconds! Default is 86400 seconds (24 hours)."""
         if seconds <= 0:
@@ -294,8 +294,8 @@ class Cookies(commands.Cog):
         await self.config.guild(ctx.guild).cooldown.set(seconds)
         await ctx.send(f"Set the cooldown to {seconds} seconds.")
 
-    @setcookies.command(name="stealcooldown", aliases=["stealcd"])
-    async def setcookies_stealcd(self, ctx: commands.Context, seconds: int):
+    @setmarshmallows.command(name="stealcooldown", aliases=["stealcd"])
+    async def setmarshmallows_stealcd(self, ctx: commands.Context, seconds: int):
         """Set the cooldown for `[p]steal`.
 
         This is in seconds! Default is 43200 seconds (12 hours)."""
@@ -304,9 +304,9 @@ class Cookies(commands.Cog):
         await self.config.guild(ctx.guild).stealcd.set(seconds)
         await ctx.send(f"Set the cooldown to {seconds} seconds.")
 
-    @setcookies.command(name="steal")
-    async def setcookies_steal(self, ctx: commands.Context, on_off: bool = None):
-        """Toggle cookie stealing for current server. 
+    @setmarshmallows.command(name="steal")
+    async def setmarshmallows_steal(self, ctx: commands.Context, on_off: bool = None):
+        """Toggle marshmallow stealing for current server. 
 
         If `on_off` is not provided, the state will be flipped."""
         target_state = (
@@ -320,115 +320,115 @@ class Cookies(commands.Cog):
         else:
             await ctx.send("Stealing is now disabled.")
 
-    @setcookies.command(name="set")
-    async def setcookies_set(
+    @setmarshmallows.command(name="set")
+    async def setmarshmallows_set(
         self, ctx: commands.Context, target: discord.Member, amount: int
     ):
-        """Set someone's amount of cookies."""
+        """Set someone's amount of marshmallows."""
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
         if self._max_balance_check(amount):
             return await ctx.send(
                 f"Uh oh, amount can't be greater than {_MAX_BALANCE:,}."
             )
-        await self.config.member(target).cookies.set(amount)
-        await ctx.send(f"Set {target.mention}'s balance to {amount} :cookie:")
+        await self.config.member(target).marshmallows.set(amount)
+        await ctx.send(f"Set {target.mention}'s balance to {amount} :marshmallow:")
 
-    @setcookies.command(name="add")
-    async def setcookies_add(
+    @setmarshmallows.command(name="add")
+    async def setmarshmallows_add(
         self, ctx: commands.Context, target: discord.Member, amount: int
     ):
-        """Add cookies to someone."""
+        """Add marshmallows to someone."""
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
-        target_cookies = int(await self.config.member(target).cookies())
-        target_cookies += amount
-        if self._max_balance_check(target_cookies):
+        target_marshmallows = int(await self.config.member(target).marshmallows())
+        target_marshmallows += amount
+        if self._max_balance_check(target_marshmallows):
             return await ctx.send(
-                f"Uh oh, {target.display_name} has reached the maximum amount of cookies."
+                f"Uh oh, {target.display_name} has reached the maximum amount of marshmallows."
             )
-        await self.config.member(target).cookies.set(target_cookies)
-        await ctx.send(f"Added {amount} :cookie: to {target.mention}'s balance.")
+        await self.config.member(target).marshmallows.set(target_marshmallows)
+        await ctx.send(f"Added {amount} :marshmallow: to {target.mention}'s balance.")
 
-    @setcookies.command(name="take")
-    async def setcookies_take(
+    @setmarshmallows.command(name="take")
+    async def setmarshmallows_take(
         self, ctx: commands.Context, target: discord.Member, amount: int
     ):
-        """Take cookies away from someone."""
+        """Take marshmallows away from someone."""
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
-        target_cookies = int(await self.config.member(target).cookies())
-        if amount <= target_cookies:
-            target_cookies -= amount
-            await self.config.member(target).cookies.set(target_cookies)
+        target_marshmallows = int(await self.config.member(target).marshmallows())
+        if amount <= target_marshmallows:
+            target_marshmallows -= amount
+            await self.config.member(target).marshmallows.set(target_marshmallows)
             await ctx.send(
-                f"Took away {amount} :cookie: from {target.mention}'s balance."
+                f"Took away {amount} :marshmallow: from {target.mention}'s balance."
             )
         else:
-            await ctx.send(f"{target.mention} doesn't have enough :cookies:")
+            await ctx.send(f"{target.mention} doesn't have enough :marshmallows:")
 
-    @setcookies.command(name="reset")
-    async def setcookies_reset(self, ctx: commands.Context, confirmation: bool = False):
-        """Delete all cookies from all members."""
+    @setmarshmallows.command(name="reset")
+    async def setmarshmallows_reset(self, ctx: commands.Context, confirmation: bool = False):
+        """Delete all marshmallows from all members."""
         if not confirmation:
             return await ctx.send(
-                "This will delete **all** cookies from all members. This action **cannot** be undone.\n"
-                f"If you're sure, type `{ctx.clean_prefix}setcookies reset yes`."
+                "This will delete **all** marshmallows from all members. This action **cannot** be undone.\n"
+                f"If you're sure, type `{ctx.clean_prefix}setmarshmallows reset yes`."
             )
         for member in ctx.guild.members:
-            cookies = int(await self.config.member(member).cookies())
-            if cookies != 0:
-                await self.config.member(member).cookies.set(0)
-        await ctx.send("All cookies have been deleted from all members.")
+            marshmallows = int(await self.config.member(member).marshmallows())
+            if marshmallows != 0:
+                await self.config.member(member).marshmallows.set(0)
+        await ctx.send("All marshmallows have been deleted from all members.")
 
-    @setcookies.command(name="rate")
-    async def setcookies_rate(self, ctx: commands.Context, rate: Union[int, float]):
-        """Set the exchange rate for `[p]cookieexchange`."""
+    @setmarshmallows.command(name="rate")
+    async def setmarshmallows_rate(self, ctx: commands.Context, rate: Union[int, float]):
+        """Set the exchange rate for `[p]marshmallowexchange`."""
         if rate <= 0:
             return await ctx.send("Uh oh, rate has to be more than 0.")
         await self.config.guild(ctx.guild).rate.set(rate)
         currency = await bank.get_currency_name(ctx.guild)
         test_amount = 100*rate
-        await ctx.send(f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} :cookie:")
+        await ctx.send(f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} :marshmallow:")
 
-    @setcookies.group(autohelp=True)
+    @setmarshmallows.group(autohelp=True)
     async def role(self, ctx):
-        """Cookie rewards for roles."""
+        """Marshmallow rewards for roles."""
         pass
 
     @role.command(name="add")
-    async def setcookies_role_add(
+    async def setmarshmallows_role_add(
         self, ctx: commands.Context, role: discord.Role, amount: int
     ):
-        """Set cookies for role."""
+        """Set marshmallows for role."""
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
-        await self.config.role(role).cookies.set(amount)
-        await ctx.send(f"Gaining {role.name} will now give {amount} :cookie:")
+        await self.config.role(role).marshmallows.set(amount)
+        await ctx.send(f"Gaining {role.name} will now give {amount} :marshmallow:")
 
     @role.command(name="del")
-    async def setcookies_role_del(self, ctx: commands.Context, role: discord.Role):
-        """Delete cookies for role."""
-        await self.config.role(role).cookies.set(0)
-        await ctx.send(f"Gaining {role.name} will now not give any :cookie:")
+    async def setmarshmallows_role_del(self, ctx: commands.Context, role: discord.Role):
+        """Delete marshmallows for role."""
+        await self.config.role(role).marshmallows.set(0)
+        await ctx.send(f"Gaining {role.name} will now not give any :marshmallow:")
 
     @role.command(name="show")
-    async def setcookies_role_show(self, ctx: commands.Context, role: discord.Role):
-        """Show how many cookies a role gives."""
-        cookies = int(await self.config.role(role).cookies())
-        await ctx.send(f"Gaining {role.name} gives {cookies} :cookie:")
+    async def setmarshmallows_role_show(self, ctx: commands.Context, role: discord.Role):
+        """Show how many marshmallows a role gives."""
+        marshmallows = int(await self.config.role(role).marshmallows())
+        await ctx.send(f"Gaining {role.name} gives {marshmallows} :marshmallow:")
 
     @role.command(name="multiplier")
-    async def setcookies_role_multiplier(
+    async def setmarshmallows_role_multiplier(
         self, ctx: commands.Context, role: discord.Role, multiplier: int
     ):
-        """Set cookies multipler for role. Disabled when random amount is enabled.
+        """Set marshmallows multipler for role. Disabled when random amount is enabled.
         
         Default is 1 (aka the same amount)."""
         if multiplier <= 0:
             return await ctx.send("Uh oh, multiplier has to be more than 0.")
         await self.config.role(role).multiplier.set(multiplier)
-        await ctx.send(f"Users with {role.name} will now get {multiplier} times more :cookie:")
+        await ctx.send(f"Users with {role.name} will now get {multiplier} times more :marshmallow:")
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -437,17 +437,17 @@ class Cookies(commands.Cog):
         after_roles = [list(a - b)][0]
         if after_roles:
             for role in after_roles:
-                cookies = int(await self.config.role(role).cookies())
-                if cookies != 0:
-                    old_cookies = int(await self.config.member(after).cookies())
-                    new_cookies = old_cookies + cookies
-                    if self._max_balance_check(new_cookies):
+                marshmallows = int(await self.config.role(role).marshmallows())
+                if marshmallows != 0:
+                    old_marshmallows = int(await self.config.member(after).marshmallows())
+                    new_marshmallows = old_marshmallows + marshmallows
+                    if self._max_balance_check(new_marshmallows):
                         continue
-                    await self.config.member(after).cookies.set(new_cookies)
+                    await self.config.member(after).marshmallows.set(new_marshmallows)
 
     async def _get_ids(self, ctx):
         data = await self.config.all_members(ctx.guild)
-        ids = sorted(data, key=lambda x: data[x]["cookies"], reverse=True)
+        ids = sorted(data, key=lambda x: data[x]["marshmallows"], reverse=True)
         return ids
 
     @staticmethod
