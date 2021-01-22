@@ -169,7 +169,7 @@ class Marshmallows(commands.Cog):
         """Check how many marshmallows you have."""
         if not target:
             marshmallows = int(await self.config.member(ctx.author).marshmallows())
-            await ctx.send(f"You have {marshmallows} <:so_love:754613619836321892>. Yum!")
+            await ctx.send(f"You have {marshmallows} <:so_love:754613619836321892> Yum!")
         else:
             marshmallows = int(await self.config.member(target).marshmallows())
             await ctx.send(f"{target.display_name} has {marshmallows} <:so_love:754613619836321892>. Sweet!")
