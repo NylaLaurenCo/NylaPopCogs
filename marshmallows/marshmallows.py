@@ -66,15 +66,15 @@ class Marshmallows(commands.Cog):
                 marshmallows += amount
             if self._max_balance_check(marshmallows):
                 return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of marshmallows that you can put in your bag. :frowning:"
+                    "LOL you can't hoard anymore marshmallows fatty! <a:13lol_point:743118114019082241>"
                 )
             next_marshmallow = cur_time + await self.config.guild(ctx.guild).cooldown()
             await self.config.member(ctx.author).next_marshmallow.set(next_marshmallow)
             await self.config.member(ctx.author).marshmallows.set(marshmallows)
-            await ctx.send(f"Here is your {amount} <:so_love:754613619836321892>")
+            await ctx.send(f"You opened a bag of marshmallows and found {amount} <:so_love:754613619836321892> inside! Yumm!")
         else:
             dtime = self.display_time(next_marshmallow - cur_time)
-            await ctx.send(f"Uh oh, you have to wait {dtime}.")
+            await ctx.send(f"Stop being greedy. You can get another bag of marshmallows in {dtime}.")
 
     @commands.command()
     @commands.guild_only()
@@ -85,7 +85,7 @@ class Marshmallows(commands.Cog):
         enabled = await self.config.guild(ctx.guild).stealing()
         author_marshmallows = int(await self.config.member(ctx.author).marshmallows())
         if not enabled:
-            return await ctx.send("Uh oh, stealing is disabled.")
+            return await ctx.send("lol stealing isn't allowed... loser.")
         if cur_time < next_steal:
             dtime = self.display_time(next_steal - cur_time)
             return await ctx.send(f"Uh oh, you have to wait {dtime}.")
@@ -95,41 +95,43 @@ class Marshmallows(commands.Cog):
                 target_id = random.choice(ids)
                 target = ctx.guild.get_member(target_id)
         if target.id == ctx.author.id:
-            return await ctx.send("Uh oh, you can't steal from yourself.")
+            return await ctx.send("Dude... did your really just try to steal from yourself?? <:13bruh_tf:743113446127698040>")
         target_marshmallows = int(await self.config.member(target).marshmallows())
         if target_marshmallows == 0:
             return await ctx.send(
-                f"Uh oh, {target.display_name} doesn't have any <:so_love:754613619836321892>"
+                f"OMG GUYS {target.display_name} DOESN'T HAVE ANY MARSHMALLOWS LOL! WHAT A POOR!!! <:13lol_bitch_please:728864625352900638> <a:13lol_point:743118114019082241>"
             )
-        success_chance = random.randint(1, 100)
-        if success_chance > 90:
-            marshmallows_stolen = int(target_marshmallows * 0.5)
+        success_chance = random.randint(30, 100)
+        mallows_int = random.randint(1, 100)
+        mallows_stolen = float(mallows_int / 100)
+        if success_chance > 69:
+            marshmallows_stolen = int(target_marshmallows * mallows_stolen)
             if marshmallows_stolen == 0:
                 marshmallows_stolen = 1
             stolen = random.randint(1, marshmallows_stolen)
             author_marshmallows += stolen
             if self._max_balance_check(author_marshmallows):
                 return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of marshmallows that you can put in your bag. :frowning:\n"
-                    f"You stole any marshmallow of {target.display_name}."
+                    "LOL you can't hoard anymore marshmallows fatty! <a:13lol_point:743118114019082241>\n"
+                    f"You stole ZERO <:so_love:754613619836321892> from {target.display_name}."
                 )
             target_marshmallows -= stolen
             await ctx.send(f"You stole {stolen} <:so_love:754613619836321892> from {target.display_name}!")
         else:
-            marshmallows_penalty = int(author_marshmallows * 0.25)
+            marshmallows_penalty = int(author_marshmallows * mallows_stolen)
             if marshmallows_penalty == 0:
                 marshmallows_penalty = 1
             penalty = random.randint(1, marshmallows_penalty)
             target_marshmallows += penalty
             if self._max_balance_check(target_marshmallows):
                 return await ctx.send(
-                    f"Uh oh, you got caught while trying to steal {target.display_name}'s <:so_love:754613619836321892>\n"
-                    f"{target.display_name} has reached the maximum amount of marshmallows, "
-                    "so you haven't lost any marshmallow."
+                    f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\n"
+                    f"Lucky for you {target.display_name} is a fatass. They don't have room to hoard anymore marshmallows, "
+                    "so you haven't lost any."
                 )
             author_marshmallows -= penalty
             await ctx.send(
-                f"You got caught while trying to steal {target.display_name}'s <:so_love:754613619836321892>\nYour penalty is {penalty} <:so_love:754613619836321892> which they got!"
+                f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> in return. lol get rekt!"
             )
         next_steal = cur_time + await self.config.guild(ctx.guild).stealcd()
         await self.config.member(target).marshmallows.set(target_marshmallows)
@@ -142,22 +144,22 @@ class Marshmallows(commands.Cog):
         """Gift someone some yummy marshmallows."""
         author_marshmallows = int(await self.config.member(ctx.author).marshmallows())
         if amount <= 0:
-            return await ctx.send("Uh oh, amount has to be more than 0.")
+            return await ctx.send("I can't give nothing, dude.")
         if target.id == ctx.author.id:
             return await ctx.send("Why would you do that?")
         if amount > author_marshmallows:
-            return await ctx.send("You don't have enough marshmallows yourself!")
+            return await ctx.send("You don't have enough marshmallows yourself! lol... lesser.")
         target_marshmallows = int(await self.config.member(target).marshmallows())
         target_marshmallows += amount
         if self._max_balance_check(target_marshmallows):
             return await ctx.send(
-                f"Uh oh, {target.display_name} has reached the maximum amount of marshmallows that they can have in their bag. :frowning:"
+                f"Geezus. {target.display_name} has been hoarding marshmallows as if the world is ending. I'm putting a stop to this."
             )
         author_marshmallows -= amount
         await self.config.member(ctx.author).marshmallows.set(author_marshmallows)
         await self.config.member(target).marshmallows.set(target_marshmallows)
         await ctx.send(
-            f"{ctx.author.mention} has gifted {amount} <:so_love:754613619836321892> to {target.mention}"
+            f"Aww {ctx.author.mention} gave {amount} <:so_love:754613619836321892> to {target.mention}. So sweet."
         )
 
     @commands.command(aliases=["jar"])
@@ -166,20 +168,20 @@ class Marshmallows(commands.Cog):
         """Check how many marshmallows you have."""
         if not target:
             marshmallows = int(await self.config.member(ctx.author).marshmallows())
-            await ctx.send(f"You have {marshmallows} <:so_love:754613619836321892>")
+            await ctx.send(f"You have {marshmallows} <:so_love:754613619836321892>. Yum!")
         else:
             marshmallows = int(await self.config.member(target).marshmallows())
-            await ctx.send(f"{target.display_name} has {marshmallows} <:so_love:754613619836321892>")
+            await ctx.send(f"{target.display_name} has {marshmallows} <:so_love:754613619836321892>. Sweet!")
 
     @commands.command()
     @commands.guild_only()
     async def buymallows(self, ctx: commands.Context, amount: int):
-        """Exchange currency into marshmallows."""
+        """Buy marshmallows."""
         if amount <= 0:
-            return await ctx.send("Uh oh, amount has to be more than 0.")
+            return await ctx.send("Are you okay?")
 
         if not await bank.can_spend(ctx.author, amount):
-            return await ctx.send(f"Uh oh, you cannot afford this.")
+            return await ctx.send(f"lol check your balance and think about your life choices")
         await bank.withdraw_credits(ctx.author, amount)
 
         rate = await self.config.guild(ctx.guild).rate()
@@ -189,12 +191,12 @@ class Marshmallows(commands.Cog):
         marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(marshmallows)
         currency = await bank.get_currency_name(ctx.guild)
-        await ctx.send(f"You have exchanged {amount} {currency} and got {new_marshmallows} <:so_love:754613619836321892>\nYou now have {marshmallows} <:so_love:754613619836321892>")
+        await ctx.send(f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>")
 
     @commands.command(aliases=["marshmallowleaderboard"])
     @commands.guild_only()
     async def hoarders(self, ctx: commands.Context):
-        """Display the server's marshmallow leaderboard."""
+        """See the server's top marshmallow hoarders."""
         ids = await self._get_ids(ctx)
         lst = []
         pos = 1
@@ -254,10 +256,10 @@ class Marshmallows(commands.Cog):
 
         If 0, members will get a random amount."""
         if amount < 0:
-            return await ctx.send("Uh oh, the amount cannot be negative.")
+            return await ctx.send("The amount cannot be negative.")
         if self._max_balance_check(amount):
             return await ctx.send(
-                f"Uh oh, you can't set an amount of marshmallows greater than {_MAX_BALANCE:,}."
+                f"You can't set an amount greater than {_MAX_BALANCE:,}."
             )
         await self.config.guild(ctx.guild).amount.set(amount)
         if amount != 0:
@@ -286,7 +288,7 @@ class Marshmallows(commands.Cog):
 
     @setmarshmallows.command(name="cooldown", aliases=["cd"])
     async def setmarshmallows_cd(self, ctx: commands.Context, seconds: int):
-        """Set the cooldown for `[p]marshmallow`.
+        """Set the cooldown for `[p]openmallows`.
 
         This is in seconds! Default is 86400 seconds (24 hours)."""
         if seconds <= 0:
@@ -296,7 +298,7 @@ class Marshmallows(commands.Cog):
 
     @setmarshmallows.command(name="stealcooldown", aliases=["stealcd"])
     async def setmarshmallows_stealcd(self, ctx: commands.Context, seconds: int):
-        """Set the cooldown for `[p]steal`.
+        """Set the cooldown for `[p]stealmallows`.
 
         This is in seconds! Default is 43200 seconds (12 hours)."""
         if seconds <= 0:
