@@ -131,7 +131,8 @@ class Marshmallows(commands.Cog):
                 )
             author_marshmallows -= penalty
             await ctx.send(
-                f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> in return. lol get rekt!"
+                f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **
+                ** <:so_love:754613619836321892> marshmallows in return. lol get rekt!"
             )
         next_steal = cur_time + await self.config.guild(ctx.guild).stealcd()
         await self.config.member(target).marshmallows.set(target_marshmallows)
