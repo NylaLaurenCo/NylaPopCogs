@@ -1,7 +1,7 @@
 {
   "author" : ["NylaPop", "XOHatsumi"],
   "install_msg" : "Thank you for installing Bump Reminder. This requires the ForceMention cog to be installed and loaded from **this** repo.\n`[p]cog install Phen-Cogs forcemention`",
-  "name" : "BumpReminder",
+  "name" : "DisboardReminder",
   "short" : "Set a reminder to bump on Disboard.",
   "description" : "Set a reminder to bump on Disboard.",
   "tags" : ["Disboard", "Reminder", "bump"],
