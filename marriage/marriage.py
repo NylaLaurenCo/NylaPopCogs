@@ -8,16 +8,16 @@ from redbot.core.utils.predicates import MessagePredicate
 
 from redbot.core.bot import Red
 
-__author__ = "saurichable"
+__author__ = "NylaPop"
 
 
 class Marriage(commands.Cog):
     """
-    Marriage cog with some extra shit
+    Marriage with some extra stuff :eyes:
     """
 
-    __author__ = "saurichable"
-    __version__ = "1.4.5"
+    __author__ = "NylaPop"
+    __version__ = "1.0.0"
 
     def __init__(self, bot: Red):
         self.bot = bot
@@ -30,20 +30,23 @@ class Marriage(commands.Cog):
             current=[],
             divorced=False,
             exes=[],
-            about="I'm mysterious",
+            about="Who's asking? <:13look_shrek:717577462292283482>",
             crush=None,
             marcount=0,
             temper=100,
             gifts={
-                "flower": 0,
-                "sweets": 0,
-                "alcohol": 0,
                 "loveletter": 0,
-                "food": 0,
+                "flowers": 0,
+                "sweets": 0,
+                "coffee": 0,
+                "snack": 0,
+                "shopping": 0,
                 "makeup": 0,
+                "nudes": 0,
                 "car": 0,
-                "yacht": 0,
                 "house": 0,
+                "yacht": 0,
+                "money": 0,
             },
         )
         self.config.register_guild(
@@ -52,24 +55,45 @@ class Marriage(commands.Cog):
             divprice=2,
             currency=0,
             multi=False,
-            shit={
+            stuff={
                 "flirt": [5, 0],
-                "fuck": [15, 0],
-                "dinner": [15, 0],
-                "date": [10, 0],
-                "flower": [5, 5],
-                "sweets": [5, 5],
-                "alcohol": [5, 5],
-                "loveletter": [5, 1],
-                "food": [5, 10],
-                "makeup": [5, 20],
-                "car": [15, 500],
-                "yacht": [30, 1000],
-                "house": [60, 25000],
+                "glance": [1, 0],
+                "stare": [3, 0],
+                "wink": [5, 0],
+                "kiss": [10, 0],
+                "hold hands": [7, 0],
+                "hug": [15, 0],
+                "seks": [45, 0],
+                "yell": [-20, 0],
+                "push": [-60, 0],
+                "slap": [-80, 0],
+                "punch": [-95, 0],
+                "kick": [-95, 0],
+                "stomp": [-100, 0],
+                "breakfast": [20, 30],
+                "lunch": [20, 30],
+                "dinner": [20, 100],
+                "snack": [15, 10],
+                "date": [10, 150],
+                "flowers": [15, 60],
+                "sweets": [20, 20],
+                "coffee": [5, 5],
+                "drinks": [10, 60],
+                "shopping": [40, 1000],
+                "pamper": [45, 500],
+                "loveletter": [10, 0],
+                "sext": [25, 0],
+                "nudes": [30, 0],
+                "makeup": [8, 100],
+                "car": [50, 35000],
+                "house": [90, 500000],
+                "yacht": [100, 1000000],
+                "vacation": [60, 5000],
+                "money": [45, 5000],
             },
         )
 
-    # "shit": [temper, price]
+    # "stuff": [temper, price]
     # "gift": owned pcs
 
     @commands.group(autohelp=True)
@@ -81,8 +105,8 @@ class Marriage(commands.Cog):
 
     @marriage.command(name="toggle")
     async def marriage_toggle(self, ctx: commands.Context, on_off: bool = None):
-        """Toggle Marriage for current server. 
-        
+        """Toggle Marriage for current server.
+
         If `on_off` is not provided, the state will be flipped."""
         target_state = (
             on_off
@@ -98,14 +122,14 @@ class Marriage(commands.Cog):
     @checks.is_owner()
     @marriage.command(name="currency")
     async def marriage_currency(self, ctx: commands.Context, currency: int):
-        """Set the currency that should be used. 0 for Red's economy, 1 for SauriCogs' cookies"""
+        """Set the currency. 0 for global currency, 1 for marshmallows"""
         if currency != 0:
             if currency != 1:
-                return await ctx.send("Uh oh, currency can only be 0 or 1.")
-            loaded = self.bot.get_cog("Cookies")
+                return await ctx.send("Um currency can only be 0 or 1.")
+            loaded = self.bot.get_cog("Marshmallows")
             if not loaded:
                 return await ctx.send(
-                    f"Uh oh, Cookies isn't loaded. Load it using `{ctx.clean_prefix}load cookies`"
+                    f"Um Marshmallows isn't loaded. Load it using `{ctx.clean_prefix}load marshmallows`"
                 )
         await self.config.guild(ctx.guild).currency.set(currency)
         await ctx.tick()
@@ -123,20 +147,20 @@ class Marriage(commands.Cog):
     @marriage.command(name="marprice")
     async def marriage_marprice(self, ctx: commands.Context, price: int):
         """Set the price for getting married.
-        
+
         With each past marriage, the cost of getting married is 50% more"""
         if price <= 0:
-            return await ctx.send("Uh oh, price cannot be 0 or less.")
+            return await ctx.send("Um price cannot be 0 or less.")
         await self.config.guild(ctx.guild).marprice.set(price)
         await ctx.tick()
 
     @marriage.command(name="divprice")
     async def marriage_divprice(self, ctx: commands.Context, multiplier: int):
         """Set the MULTIPLIER for getting divorced.
-        
+
         This is a multiplier, not the price! Default is 2."""
         if multiplier <= 1:
-            return await ctx.send("Uh oh, that ain't a valia multiplier.")
+            return await ctx.send("Um that ain't a valia multiplier.")
         await self.config.guild(ctx.guild).divprice.set(multiplier)
         await ctx.tick()
 
@@ -149,29 +173,50 @@ class Marriage(commands.Cog):
         Temper has to be in range 1 to 100. Negative actions (f.e. flirting with someone other than one's spouse) should have negative temper.
         !!! Remember that starting point for everyone is 100 == happy and satisfied, 0 == leave their spouse"""
         available = [
-            "flirt",
-            "fuck",
-            "dinner",
-            "date",
-            "flower",
-            "sweets",
-            "alcohol",
-            "loveletter",
-            "food",
-            "makeup",
-            "car",
-            "yacht",
-            "house",
+          "flirt",
+          "glance",
+          "stare",
+          "wink",
+          "kiss",
+          "hold hands",
+          "hug",
+          "seks",
+          "yell",
+          "push",
+          "slap",
+          "punch",
+          "kick",
+          "stomp",
+          "breakfast",
+          "lunch",
+          "dinner",
+          "snack",
+          "date",
+          "flowers",
+          "sweets",
+          "coffee",
+          "drinks",
+          "shopping",
+          "pamper",
+          "loveletter",
+          "sext",
+          "nudes",
+          "makeup",
+          "car",
+          "house",
+          "yacht",
+          "vacation",
+          "money",
         ]
         if action not in available:
             return await ctx.send(f"Available actions/gifts are: {available}")
         if temper < 0:
-            return await ctx.send("Uh oh, temper has to be 0 or more.")
+            return await ctx.send("Um temper has to be 0 or more.")
         if temper > 100:
-            return await ctx.send("Uh oh, temper has to be 100 or less.")
-        action = await self.config.guild(ctx.guild).shit.get_raw(action)
+            return await ctx.send("Um temper has to be 100 or less.")
+        action = await self.config.guild(ctx.guild).stuff.get_raw(action)
         action[0] = temper
-        await self.config.guild(ctx.guild).shit.get_raw(action)
+        await self.config.guild(ctx.guild).stuff.get_raw(action)
 
     @marriage.command(name="changeprice")
     async def marriage_changeprice(
@@ -179,45 +224,66 @@ class Marriage(commands.Cog):
     ):
         """Set the action's/gift's price"""
         available = [
-            "flirt",
-            "fuck",
-            "dinner",
-            "date",
-            "flower",
-            "sweets",
-            "alcohol",
-            "loveletter",
-            "food",
-            "makeup",
-            "car",
-            "yacht",
-            "house",
+          "flirt",
+          "glance",
+          "stare",
+          "wink",
+          "kiss",
+          "hold hands",
+          "hug",
+          "seks",
+          "yell",
+          "push",
+          "slap",
+          "punch",
+          "kick",
+          "stomp",
+          "breakfast",
+          "lunch",
+          "dinner",
+          "snack",
+          "date",
+          "flowers",
+          "sweets",
+          "coffee",
+          "drinks",
+          "shopping",
+          "pamper",
+          "loveletter",
+          "sext",
+          "nudes",
+          "makeup",
+          "car",
+          "house",
+          "yacht",
+          "vacation",
+          "money",
         ]
         if action not in available:
             return await ctx.send(f"Available actions/gifts are: {available}")
         if price < 0:
-            return await ctx.send("Uh oh, price has to be 0 or more.")
-        action_data = await self.config.guild(ctx.guild).shit.get_raw(action)
-        await self.config.guild(ctx.guild).shit.set_raw(action, value=[action_data[0], price])
+            return await ctx.send("Um price has to be 0 or more.")
+        action_data = await self.config.guild(ctx.guild).stuff.get_raw(action)
+        await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action_data[0], price])
         await ctx.tick()
 
     @commands.guild_only()
     @commands.command()
-    async def addabout(self, ctx: commands.Context, *, about: str):
-        """Add your about text"""
+    async def lovelife(self, ctx: commands.Context, *, about: str):
+        """Describe your love life."""
         if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         if len(about) > 1000:
-            return await ctx.send("Uh oh, this is not an essay.")
+            return await ctx.send("WTF are you writing a research paper??! <:dog_wtf:802959590408323133>")
         await self.config.member(ctx.author).about.set(about)
         await ctx.tick()
 
     @commands.guild_only()
     @commands.command()
-    async def about(self, ctx: commands.Context, member: discord.Member = None):
-        """Display your or someone else's about"""
+    async def relationship(self, ctx: commands.Context, member: discord.Member = None):
+        """See your or someone else's relationship status"""
         if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         if not member:
             member = ctx.author
         conf = self.config.member(member)
@@ -278,8 +344,8 @@ class Marriage(commands.Cog):
             currency = await bank.get_currency_name(ctx.guild)
             bal = await bank.get_balance(member)
         else:
-            bal = int(await self.bot.get_cog("Cookies").config.member(member).cookies())
-            currency = ":cookie:"
+            bal = int(await self.bot.get_cog("Marshmallows").config.member(member).marshmallows())
+            currency = "<:so_love:754613619836321892>"
         gifts = await conf.gifts.get_raw()
         giftos = []
         for gift in gifts:
@@ -297,10 +363,10 @@ class Marriage(commands.Cog):
         else:
             gift_text = humanize_list(giftos)
         e = discord.Embed(colour=member.color)
-        e.set_author(name=f"{member.name}'s Profile", icon_url=member.avatar_url)
+        e.set_author(name=f"{member.name}'s Lovelife", icon_url=member.avatar_url)
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member.avatar_url)
-        e.add_field(name="About:", value=await conf.about(), inline=False)
+        e.add_field(name="Overheard:", value=await conf.about(), inline=False)
         e.add_field(name="Status:", value=rs_status)
         if is_married:
             e.add_field(name=spouse_header, value=spouse_text)
@@ -308,7 +374,7 @@ class Marriage(commands.Cog):
         e.add_field(name="Temper:", value=await conf.temper())
         e.add_field(name="Been married:", value=been_married)
         if await conf.marcount() != 0:
-            e.add_field(name="Ex spouses:", value=ex_text)
+            e.add_field(name="Exes:", value=ex_text)
         e.add_field(name="Balance:", value=f"{bal} {currency}")
         e.add_field(name="Available gifts:", value=gift_text)
 
@@ -319,7 +385,7 @@ class Marriage(commands.Cog):
     async def exes(self, ctx: commands.Context, member: discord.Member = None):
         """Display your or someone else's exes"""
         if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         if not member:
             member = ctx.author
         exes_ids = await self.config.member(member).exes()
@@ -341,30 +407,30 @@ class Marriage(commands.Cog):
     async def crush(self, ctx: commands.Context, member: discord.Member = None):
         """Tell us who you have a crush on"""
         if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         if not member:
             await self.config.member(ctx.author).crush.set(None)
         else:
             if member.id == ctx.author.id:
-                return await ctx.send("You cannot have a crush on yourself!")
+                return await ctx.send("You cannot have a crush on yourself.")
             await self.config.member(ctx.author).crush.set(member.id)
         await ctx.tick()
 
     @commands.guild_only()
     @commands.command()
     async def marry(self, ctx: commands.Context, member: discord.Member):
-        """Marry the love of your life!"""
+        """Marry the love of your life."""
         if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         if member.id == ctx.author.id:
-            return await ctx.send("You cannot marry yourself!")
+            return await ctx.send("You cannot marry yourself.")
         if member.id in await self.config.member(ctx.author).current():
-            return await ctx.send("You two are already married!")
+            return await ctx.send("You two are already married.")
         if not await self.config.guild(ctx.guild).multi():
             if await self.config.member(ctx.author).married():
-                return await ctx.send("You're already married!")
+                return await ctx.send("You're already married.")
             if await self.config.member(member).married():
-                return await ctx.send("They're already married!")
+                return await ctx.send("They're already married.")
         await ctx.send(
             f"{ctx.author.mention} has asked {member.mention} to marry them!\n"
             f"{member.mention}, what do you say?"
@@ -372,7 +438,7 @@ class Marriage(commands.Cog):
         pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
         await self.bot.wait_for("message", check=pred)
         if not pred.result:
-            return await ctx.send("Oh no... I was looking forward to the cerenomy...")
+            return await ctx.send("Damn... I was looking forward to the ceremony...")
         default_amount = await self.config.guild(ctx.guild).marprice()
         author_marcount = await self.config.member(ctx.author).marcount()
         target_marcount = await self.config.member(member).marcount()
@@ -397,29 +463,29 @@ class Marriage(commands.Cog):
                     await bank.withdraw_credits(ctx.author, amount)
                     await bank.withdraw_credits(member, amount)
                 else:
-                    return await ctx.send(f"Uh oh, you two cannot afford this...")
+                    return await ctx.send(f"imagine being this poor")
             else:
-                return await ctx.send(f"Uh oh, you two cannot afford this...")
+                return await ctx.send(f"imagine being this poor")
         else:
-            author_cookies = int(
-                await self.bot.get_cog("Cookies").config.member(ctx.author).cookies()
+            author_marshmallows = int(
+                await self.bot.get_cog("Marshmallows").config.member(ctx.author).marshmallows()
             )
-            target_cookies = int(
-                await self.bot.get_cog("Cookies").config.member(member).cookies()
+            target_marshmallows = int(
+                await self.bot.get_cog("Marshmallows").config.member(member).marshmallows()
             )
-            end_amount = f"{amount} :cookie:"
-            if amount <= author_cookies:
-                if amount <= target_cookies:
-                    await self.bot.get_cog("Cookies").config.member(
+            end_amount = f"{amount} <:so_love:754613619836321892>"
+            if amount <= author_marshmallows:
+                if amount <= target_marshmallows:
+                    await self.bot.get_cog("Marshmallows").config.member(
                         ctx.author
-                    ).cookies.set(author_cookies - amount)
-                    await self.bot.get_cog("Cookies").config.member(member).cookies.set(
-                        target_cookies - amount
+                    ).marshmallows.set(author_marshmallows - amount)
+                    await self.bot.get_cog("Marshmallows").config.member(member).marshmallows.set(
+                        target_marshmallows - amount
                     )
                 else:
-                    return await ctx.send(f"Uh oh, you two cannot afford this...")
+                    return await ctx.send(f"imagine being this poor")
             else:
-                return await ctx.send(f"Uh oh, you two cannot afford this...")
+                return await ctx.send(f"imagine being this poor")
         await self.config.member(ctx.author).marcount.set(author_marcount + 1)
         await self.config.member(member).marcount.set(target_marcount + 1)
 
@@ -448,11 +514,11 @@ class Marriage(commands.Cog):
     ):
         """Divorce your current spouse"""
         if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         if member.id == ctx.author.id:
-            return await ctx.send("You cannot divorce yourself!")
+            return await ctx.send("You cannot divorce yourself.")
         if member.id not in await self.config.member(ctx.author).current():
-            return await ctx.send("You two aren't married!")
+            return await ctx.send("You two aren't married.")
         if not court:
             await ctx.send(
                 f"{ctx.author.mention} wants to divorce you, {member.mention}, do you accept?\n"
@@ -487,43 +553,43 @@ class Marriage(commands.Cog):
                             await bank.withdraw_credits(member, amount)
                         else:
                             return await ctx.send(
-                                f"Uh oh, you two cannot afford this... But you can force a court by "
-                                "doing `{ctx.clean_prefix}divorce {member.mention} yes`"
+                                f"lmaoooo you're too broke to divorce! <:pepe_lol_point:802951769096585276> You can petition the courts like a poor to do it for free.  "
+                                "Type `{ctx.clean_prefix}divorce {member.mention} yes`"
                             )
                     else:
                         return await ctx.send(
-                            f"Uh oh, you two cannot afford this... But you can force a court by "
-                            "doing `{ctx.clean_prefix}divorce {member.mention} yes`"
+                            f"lmaoooo you're too broke to divorce! <:pepe_lol_point:802951769096585276> You can petition the courts like a poor to do it for free.  "
+                            "Type `{ctx.clean_prefix}divorce {member.mention} yes`"
                         )
                 else:
-                    author_cookies = int(
-                        await self.bot.get_cog("Cookies")
+                    author_marshmallows = int(
+                        await self.bot.get_cog("Marshmallows")
                         .config.member(ctx.author)
-                        .cookies()
+                        .marshmallows()
                     )
-                    target_cookies = int(
-                        await self.bot.get_cog("Cookies")
+                    target_marshmallows = int(
+                        await self.bot.get_cog("Marshmallows")
                         .config.member(member)
-                        .cookies()
+                        .marshmallows()
                     )
-                    end_amount = f"You both paid {amount} :cookie:"
-                    if amount <= author_cookies:
-                        if amount <= target_cookies:
-                            await self.bot.get_cog("Cookies").config.member(
+                    end_amount = f"You both paid {amount} <:so_love:754613619836321892>"
+                    if amount <= author_marshmallows:
+                        if amount <= target_marshmallows:
+                            await self.bot.get_cog("Marshmallows").config.member(
                                 ctx.author
-                            ).cookies.set(author_cookies - amount)
-                            await self.bot.get_cog("Cookies").config.member(
+                            ).marshmallows.set(author_marshmallows - amount)
+                            await self.bot.get_cog("Marshmallows").config.member(
                                 member
-                            ).cookies.set(target_cookies - amount)
+                            ).marshmallows.set(target_marshmallows - amount)
                         else:
                             return await ctx.send(
-                                f"Uh oh, you two cannot afford this... But you can force a court by "
-                                "doing `{ctx.clean_prefix}divorce {member.mention} yes`"
+                                f"lmaoooo you're too broke to divorce! <:pepe_lol_point:802951769096585276> You can petition the courts like a poor to do it for free.  "
+                                "Type `{ctx.clean_prefix}divorce {member.mention} yes`"
                             )
                     else:
                         return await ctx.send(
-                            f"Uh oh, you two cannot afford this... But you can force a court by "
-                            "doing `{ctx.clean_prefix}divorce {member.mention} yes`"
+                            f"lmaoooo you're too broke to divorce! <:pepe_lol_point:802951769096585276> You can petition the courts like a poor to do it for free.  "
+                            "Type `{ctx.clean_prefix}divorce {member.mention} yes`"
                         )
             else:
                 court = True
@@ -540,22 +606,22 @@ class Marriage(commands.Cog):
                 await bank.withdraw_credits(ctx.author, aamount)
                 await bank.withdraw_credits(member, tamount)
             else:
-                author_cookies = int(
-                    await self.bot.get_cog("Cookies")
+                author_marshmallows = int(
+                    await self.bot.get_cog("Marshmallows")
                     .config.member(ctx.author)
-                    .cookies()
+                    .marshmallows()
                 )
-                target_cookies = int(
-                    await self.bot.get_cog("Cookies").config.member(member).cookies()
+                target_marshmallows = int(
+                    await self.bot.get_cog("Marshmallows").config.member(member).marshmallows()
                 )
-                aamount = int(round(author_cookies * court_multiplier))
-                tamount = int(round(target_cookies * court_multiplier))
-                end_amount = f"{ctx.author.name} paid {aamount} :cookie:, {member.name} paid {tamount} :cookie:"
-                await self.bot.get_cog("Cookies").config.member(ctx.author).cookies.set(
-                    author_cookies - aamount
+                aamount = int(round(author_marshmallows * court_multiplier))
+                tamount = int(round(target_marshmallows * court_multiplier))
+                end_amount = f"{ctx.author.name} paid {aamount} <:so_love:754613619836321892>, {member.name} paid {tamount} <:so_love:754613619836321892>"
+                await self.bot.get_cog("Marshmallows").config.member(ctx.author).marshmallows.set(
+                    author_marshmallows - aamount
                 )
-                await self.bot.get_cog("Cookies").config.member(member).cookies.set(
-                    target_cookies - tamount
+                await self.bot.get_cog("Marshmallows").config.member(member).marshmallows.set(
+                    target_marshmallows - tamount
                 )
         async with self.config.member(ctx.author).current() as acurrent:
             acurrent.remove(member.id)
@@ -588,33 +654,108 @@ class Marriage(commands.Cog):
         gc = self.config.guild
         mc = self.config.member
         if not await gc(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
+            return await ctx.send("Marriage is off for this server. Ask staff to turn it on.")
         consent = 1
         if action == "flirt":
             endtext = (
-                f":heart_eyes: {ctx.author.mention} is flirting with {member.mention}"
+                f"<a:pepe_flirt:802960898641231883> {ctx.author.mention} is flirting with {member.mention}"
             )
-        elif action == "fuck":
+        elif action == "seks":
             consent = 0
+        elif action == "breakfast":
+            endtext = (
+                f":pancakes: :bacon: {ctx.author.mention} made {member.mention} a delicious breakfast."
+            )
+        elif action == "lunch":
+            endtext = (
+                f":bento: {ctx.author.mention} took {member.mention} out for lunch. It was tasty!"
+            )
         elif action == "dinner":
             endtext = (
-                f":ramen: {ctx.author.mention} took {member.mention} on a fancy dinner"
+                f":lobster: {ctx.author.mention} took {member.mention} on a fancy dinner."
             )
         elif action == "date":
             endtext = (
-                f":relaxed: {ctx.author.mention} took {member.mention} on a nice date"
+                f":people_holding_hands: {ctx.author.mention} spent time with {member.mention} on a nice, relaxing date."
+            )
+        elif action == "drinks":
+            endtext = (
+                f":cocktail: {ctx.author.mention} took {member.mention} out for drinks and got a lil' tipsy!"
+            )
+        elif action == "pamper":
+            endtext = (
+                f"<:pepe_adore:802951856846405652> {ctx.author.mention} pampered {member.mention} with love, affection and gift cards to self-care."
+            )
+        elif action == "sext":
+            endtext = (
+                f"<:xo_love_u_aod:611242952882389042> {ctx.author.mention} sent {member.mention} some naughty text messages. <a:hatsu_love:802963021127352320>"
+            )
+        elif action == "vacation":
+            endtext = (
+                f":airplane: {ctx.author.mention} treated {member.mention} to a much needed 5-star vacation."
+            )
+        elif action == "glance":
+            endtext = (
+                f"<:13look:717577461046444053> {ctx.author.mention} snuck a quick glance at {member.mention}! What if they looked back? :flushed:"
+            )
+        elif action == "stare":
+            endtext = (
+                f"<:13look_shrek:717577462292283482> {ctx.author.mention} is staring seductively at {member.mention}! <a:a_w_lick:743119153312956517>"
+            )
+        elif action == "wink":
+            endtext = (
+                f"<a:13lewd_wink:749841311883985019> {ctx.author.mention} just winked at {member.mention}. It's clear they want one thing. :flushed:"
+            )
+        elif action == "kiss":
+            endtext = (
+                f":kiss: {ctx.author.mention} gave {member.mention} a romantic kiss."
+            )
+        elif action == "hold hands":
+            endtext = (
+                f"<a:stars_aod:612360693932621844> {ctx.author.mention} took {member.mention}'s hands in theirs and felt sparks. Aww."
+            )
+        elif action == "hug":
+            endtext = (
+                f"<a:hatsu_love:802963021127352320> {ctx.author.mention} gently grabs {member.mention} and hugs them close."
+            )
+        elif action == "yell":
+            endtext = (
+                f"<:13eyes:754285875453624330> {ctx.author.mention} yelled so loudly at {member.mention} that all the neighbors could hear! <:13sb_look:736425355417485362>"
+            )
+        elif action == "push":
+            endtext = (
+                f"<:13eyes2:754285875416006706> {ctx.author.mention} pushed {member.mention} and made them fall into a cabinet. Oh sh-!"
+            )
+        elif action == "slap":
+            endtext = (
+                f"<a:k_k_slap:733372281639665688> {ctx.author.mention} reached back and slapped {member.mention} **HARD** across the face!"
+            )
+        elif action == "punch":
+            endtext = (
+                f"<a:square_up:796218591866912799> WTF!! {ctx.author.mention} punched {member.mention} in the face and knocked out a tooth!"
+            )
+        elif action == "kick":
+            endtext = (
+                f":scream: OMGSH! {ctx.author.mention} JUST KICKED {member.mention}! I hope they're okay!"
+            )
+        elif action == "stomp":
+            endtext = (
+                f"**WTF!!!** {ctx.author.mention} **CURB STOMPED {member.mention}!** THEIR EARS ARE BLEEDING!!!"
             )
         elif action == "gift":
             gifts = [
-                "flower",
-                "sweets",
-                "alcohol",
                 "loveletter",
-                "food",
+                "flowers",
+                "sweets",
+                "coffee",
+                "snack",
+                "shopping",
                 "makeup",
+                "nudes",
                 "car",
-                "yacht",
                 "house",
+                "yacht",
+                "money",
             ]
             if item not in gifts:
                 return await ctx.send(f"Available gifts are: {gifts}")
@@ -623,16 +764,16 @@ class Marriage(commands.Cog):
             )
         else:
             return await ctx.send(
-                "Available actions are: `flirt`, `fuck`, `dinner`, `date`, and `gift`"
+                "Available actions are: `flirt`, `glance`, `stare`, `wink`, `kiss`, `hold hands`, `hug`, `seks`, `yell`, `push`, `slap`, `punch`, `kick`, `stomp`, `breakfast`, `lunch`, `dinner`, `date`, `drinks`, `pamper`, `sext`, `vacation`, `gift`"
             )
         if action == "gift":
             author_gift = await mc(ctx.author).gifts.get_raw(item)
             member_gift = await mc(member).gifts.get_raw(item)
-            action = await gc(ctx.guild).shit.get_raw(item)
+            action = await gc(ctx.guild).stuff.get_raw(item)
             temper = action[0]
             price = action[1]
         else:
-            action = await gc(ctx.guild).shit.get_raw(action)
+            action = await gc(ctx.guild).stuff.get_raw(action)
             temper = action[0]
             price = action[1]
             author_gift = 0
@@ -645,21 +786,21 @@ class Marriage(commands.Cog):
                     member_gift += 1
                     author_gift -= 1
                 else:
-                    return await ctx.send("Uh oh, you cannot afford this.")
+                    return await ctx.send("You don't even have enough money. Stop wasting my time.")
             else:
-                author_cookies = int(
-                    await self.bot.get_cog("Cookies")
+                author_marshmallows = int(
+                    await self.bot.get_cog("Marshmallows")
                     .config.member(ctx.author)
-                    .cookies()
+                    .marshmallows()
                 )
-                if price <= author_cookies:
-                    await self.bot.get_cog("Cookies").config.member(
+                if price <= author_marshmallows:
+                    await self.bot.get_cog("Marshmallows").config.member(
                         ctx.author
-                    ).cookies.set(author_cookies - price)
+                    ).marshmallows.set(author_marshmallows - price)
                     member_gift += 1
                     author_gift -= 1
                 else:
-                    return await ctx.send("Uh oh, you cannot afford this.")
+                    return await ctx.send("You don't even have enough money. Stop wasting my time.")
         else:
             author_gift -= 1
             member_gift += 1
@@ -669,14 +810,14 @@ class Marriage(commands.Cog):
             await mc(member).gifts.set_raw(item, value=member_gift)
         if consent == 0:
             await ctx.send(
-                f"{ctx.author.mention} wants to bang you, {member.mention}, give consent?"
+                f"<a:cheeks:802995703123017728> {ctx.author.mention} wants to bang you, {member.mention}. Give consent? <a:4dance_peen:735923702394519674>"
             )
             pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
             try:
                 await self.bot.wait_for("message", timeout=60, check=pred)
             except asyncio.TimeoutError:
                 return await ctx.send(
-                    "They took too long. Try again later, please. (You didn't lose any temper.)"
+                    "lol if you have to think that hard, it's a no."
                 )
             if pred.result:
                 t_temp = await mc(member).temper()
@@ -693,14 +834,14 @@ class Marriage(commands.Cog):
                         await mc(ctx.author).temper.set(a_temp + temper)
                     else:
                         await mc(ctx.author).temper.set(100)
-                endtext = f":smirk: {ctx.author.mention} banged {member.mention}"
+                endtext = f"<:okay_daddy:802980074268786706> {ctx.author.mention} banged {member.mention}. It was **amazing**. <a:13shake:729474123578998834>"
             else:
                 a_temp = await mc(ctx.author).temper()
                 if temper < a_temp:
                     await mc(ctx.author).temper.set(a_temp - temper)
                 else:
                     await mc(ctx.author).temper.set(0)
-                endtext = "They refused to bang you."
+                endtext = "<:simp_hand:802963169576222770> lol they refused to bang you and you were forced to use your hand. <:simp_pills:802995365838192692>"
         else:
             t_temp = await mc(member).temper()
             t_missing = 100 - t_temp
@@ -750,22 +891,22 @@ class Marriage(commands.Cog):
                             await bank.withdraw_credits(ctx.author, abal)
                             await bank.deposit_credits(spouse, abal)
                         else:
-                            author_cookies = int(
-                                await self.bot.get_cog("Cookies")
+                            author_marshmallows = int(
+                                await self.bot.get_cog("Marshmallows")
                                 .config.member(ctx.author)
-                                .cookies()
+                                .marshmallows()
                             )
-                            spouse_cookies = int(
-                                await self.bot.get_cog("Cookies")
+                            spouse_marshmallows = int(
+                                await self.bot.get_cog("Marshmallows")
                                 .config.member(spouse)
-                                .cookies()
+                                .marshmallows()
                             )
-                            await self.bot.get_cog("Cookies").config.member(
+                            await self.bot.get_cog("Marshmallows").config.member(
                                 ctx.author
-                            ).cookies.set(0)
-                            await self.bot.get_cog("Cookies").config.member(
+                            ).marshmallows.set(0)
+                            await self.bot.get_cog("Marshmallows").config.member(
                                 spouse
-                            ).cookies.set(spouse_cookies + author_cookies)
-                        endtext = f"{endtext}\n:broken_heart: {ctx.author.mention} has made {spouse.mention} completely unhappy "
-                        "with their actions so {spouse.mention} left them and took all their money!"
+                            ).marshmallows.set(spouse_marshmallows + author_marshmallows)
+                        endtext = f"{endtext}\nLOL! {ctx.author.mention} was a **horrible** partner to {spouse.mention}, "
+                        "so {spouse.mention} left them and took all their money! What a loser <:lol_dicaprio:802981845645787186> "
         await ctx.send(endtext)
