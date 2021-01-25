@@ -113,7 +113,7 @@ class SettingsMixin(MixinMeta):
     @commands.guild_only()
     @lstyle_set.command(name="failure-rate", usage="<rob | crime | slut> <amount>", aliases=["failurerate"])
     async def failure_set(self, ctx, job: str, amount: int):
-        """Set the failure rate for crimes, sllutting and robbing."""
+        """Set the failure rate for crimes, slutting and robbing."""
         if job not in ["rob", "crime", "slut"]:
             return await ctx.send("Invalid job.")
         if amount < 1 or amount > 100:

@@ -448,7 +448,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
             colour=discord.Color.green(),
-            description="You slip {}'s wallet from their pocket and find {} inside. Nice!".format(
+            description="You slip {}'s wallet from their pocket and find {} bucks inside. Nice!".format(
                 user.name, humanize_number(stolen)
             ),
             timestamp=ctx.message.created_at,
