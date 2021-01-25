@@ -23,8 +23,8 @@ class CompositeMetaClass(type(commands.Cog), type(ABC)):
     metaclass."""
 
 
-class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=CompositeMetaClass):
-    """Unbelievaboat Commands."""
+class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=CompositeMetaClass):
+    """Lifestyle Commands."""
 
     __version__ = "0.5.4"
 
@@ -40,15 +40,16 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             "cooldowns": {
                 "workcd": 14400,
                 "crimecd": 14400,
+                "slutcd": 14400,
                 "robcd": 86400,
                 "withdrawcd": 1,
                 "depositcd": 1,
             },
             "defaultreplies": True,
-            "replies": {"crimereplies": [], "workreplies": []},
+            "replies": {"crimereplies": [], "workreplies": []}, "slutreplies": []},
             "rob": [],
-            "payouts": {"crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
-            "failrates": {"crime": 50, "rob": 70},
+            "payouts": {"crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}}, "slut": {"max": 250, "min": 10}},
+            "failrates": {"crime": 50, "rob": 70, "slut": 50},
             "fines": {"max": 250, "min": 10},
             "interest": 5,
             "disable_wallet": False,
@@ -70,6 +71,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             "cooldowns": {
                 "workcd": None,
                 "crimecd": None,
+                "slutcd": None,
                 "robcd": None,
                 "depositcd": None,
                 "withdrawcd": None,
@@ -93,7 +95,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             if user_id in member_dict:
                 usr = await self.config.member_from_ids(guild_id, user_id).all()
                 wallets.append(guild_id, usr["wallet"])
-        contents = f"Unbelievaboat Account for Discord user with ID {user_id}:\n**Global**\n- Wallet: {data['wallet']}\n"
+        contents = f"Lifestyle Account for Discord user with ID {user_id}:\n**Global**\n- Wallet: {data['wallet']}\n"
         if wallets:
             contents += "**Guilds**"
             for bal in wallets:
@@ -150,7 +152,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
                 await self.walletremove(ctx.author, randint)
                 embed = discord.Embed(
                     colour=discord.Color.red(),
-                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and fined {amount}.",
+                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 interestfee = await self.config.guild(ctx.guild).interest()
@@ -161,37 +163,38 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.red(),
-                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and fined {amount}. You did not have enough cash in your wallet and thus it was taken from your bank with a {interestfee}% interest fee ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {interestfee}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
                     embed = discord.Embed(
                         colour=discord.Color.red(),
-                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and fined {amount}. You did not have enough cash to pay the fine and are now bankrupt.",
+                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
             if await bank.can_spend(ctx.author, randint):
                 await bank.withdraw_credits(ctx.author, randint)
                 embed = discord.Embed(
                     colour=discord.Color.red(),
-                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and fined {amount}.",
+                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 await bank.set_balance(ctx.author, 0)
                 embed = discord.Embed(
                     colour=discord.Color.red(),
-                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and fined {amount}. You did not have enough cash to pay the fine and are now bankrupt.",
+                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                 )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     async def cdnotice(self, user, cooldown, job):
         response = {
-            "work": f"\N{NEGATIVE SQUARED CROSS MARK} You cannot work for another {cooldown}.",
-            "crime": f"\N{NEGATIVE SQUARED CROSS MARK} You cannot commit a crime for another {cooldown}.",
-            "rob": f"\N{NEGATIVE SQUARED CROSS MARK} You cannot rob a person for another {cooldown}.",
-            "withdraw": f"\N{NEGATIVE SQUARED CROSS MARK} You cannot withdraw any more cash for another {cooldown}.",
-            "deposit": f"\N{NEGATIVE SQUARED CROSS MARK} You cannot deposit any more cash for another {cooldown}.",
+            "work": f"\N{NEGATIVE SQUARED CROSS MARK} You won't get promoted being a kiss ass. You're on break for '{cooldown}.",
+            "crime": f"\N{NEGATIVE SQUARED CROSS MARK} Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
+            "slut": f"\N{NEGATIVE SQUARED CROSS MARK} Geez slow down. You can't slut for {cooldown}.",
+            "rob": f"\N{NEGATIVE SQUARED CROSS MARK} The police are still on your trail. Wait {cooldown} for things to cool down.",
+            "withdraw": f"\N{NEGATIVE SQUARED CROSS MARK} The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
+            "deposit": f"\N{NEGATIVE SQUARED CROSS MARK} Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
         embed = discord.Embed(colour=discord.Color.red(), description=response[job])
         embed.set_author(name=user, icon_url=user.avatar_url)
@@ -210,7 +213,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
         """
         if destination.lower() not in ["bank", "wallet"]:
             return await ctx.send(
-                "You've supplied an invalid destination, you can choose to add it to a bank or their wallet.\nIf no destination is supplied it will default to their wallet."
+                "Do you **want** people to get robbed?? Choose their bank or their wallet.\nOr choose nothing, and I'll give it in cash."
             )
 
         failedmsg = ""
@@ -222,13 +225,13 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
                     pass
                 except BalanceTooHigh as e:
                     await bank.set_balance(ctx.author, e.max_balance)
-                    failedmsg += f"Failed to add {amount} to {user} due to the max wallet balance limit. Their cash has been set to the max balance.\n"
+                    failedmsg += f"{user}'s bank is full. I gave them {amount} in cash.\n"
         else:
             for user in role.members:
                 try:
                     await self.walletdeposit(ctx, user, amount)
                 except ValueError:
-                    failedmsg += f"Failed to add {amount} to {user} due to the max wallet balance limit. Their cash has been set to the max balance.\n"
+                    failedmsg += f"{user} is holding the max amount of cash. I couldn't give them {amount}.\n"
         if failedmsg:
             for page in pagify(failedmsg):
                 await ctx.send(page)
@@ -247,7 +250,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
         """
         if destination.lower() not in ["bank", "wallet"]:
             return await ctx.send(
-                "You've supplied an invalid destination, you can choose to add it to a bank or their wallet.\nIf no destination is supplied it will default to their wallet."
+                "Do you **want** people to get robbed?? Choose their bank or their wallet.\nOr choose nothing, and I'll give it in cash."
             )
         if destination.lower() == "bank":
             for user in role.members:
@@ -297,13 +300,13 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             try:
                 await self.walletdeposit(ctx, ctx.author, wage)
             except ValueError:
-                embed.description += f"\nYou've reached the maximum amount of {await bank.get_currency_name(ctx.guild)}s in your wallet!"
+                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
             try:
                 await bank.deposit_credits(ctx.author, wage)
             except BalanceTooHigh as e:
                 await bank.set_balance(ctx.author, e.max_balance)
-                embed.description += f"\nYou've reached the maximum amount of {await bank.get_currency_name(ctx.guild)}s in your bank!"
+                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
 
         await ctx.send(embed=embed)
 
@@ -320,7 +323,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
-        fail = random.randint(1, 100)
+        fail = random.randint(0, 100)
         if fail < failrates["crime"]:
             return await self.fine(ctx, "crime")
         payouts = await conf.payouts()
@@ -348,13 +351,63 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             try:
                 await self.walletdeposit(ctx, ctx.author, wage)
             except ValueError:
-                embed.description += f"\nYou've reached the maximum amount of {await bank.get_currency_name(ctx.guild)}s in your wallet!"
+                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
             try:
                 await bank.deposit_credits(ctx.author, wage)
             except BalanceTooHigh as e:
                 await bank.set_balance(ctx.author, e.max_balance)
-                embed.description += f"\nYou've reached the maximum amount of {await bank.get_currency_name(ctx.guild)}s in your bank!"
+                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.bot_has_permissions(embed_links=True)
+    async def slut(self, ctx):
+        """Slut for money, it's easy and fast."""
+        if ctx.assume_yes:
+            return await ctx.send("This command can't be scheduled.")
+        cdcheck = await self.cdcheck(ctx, "slutcd")
+        if isinstance(cdcheck, tuple):
+            embed = await self.cdnotice(ctx.author, cdcheck[1], "slut")
+            return await ctx.send(embed=embed)
+        conf = await self.configglobalcheck(ctx)
+        failrates = await conf.failrates()
+        fail = random.randint(0, 100)
+        if fail < failrates["slut"]:
+            return await self.fine(ctx, "slut")
+        payouts = await conf.payouts()
+        wage = random.randint(payouts["slut"]["min"], payouts["slut"]["max"])
+        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        if await conf.defaultreplies():
+            job = random.choice(slut)
+            line = job.format(amount=wagesentence)
+            linenum = slut.index(job)
+        else:
+            replies = await conf.replies()
+            if not replies["slutreplies"]:
+                return await ctx.send(
+                    "You have custom replies enabled yet haven't added any replies yet."
+                )
+            job = random.choice(replies["slutreplies"])
+            line = job.format(amount=wagesentence)
+            linenum = replies["slutreplies"].index(job)
+        embed = discord.Embed(
+            colour=discord.Color.green(), description=line, timestamp=ctx.message.created_at
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Reply #{}".format(linenum))
+        if not await self.walletdisabledcheck(ctx):
+            try:
+                await self.walletdeposit(ctx, ctx.author, wage)
+            except ValueError:
+                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+        else:
+            try:
+                await bank.deposit_credits(ctx.author, wage)
+            except BalanceTooHigh as e:
+                await bank.set_balance(ctx.author, e.max_balance)
+                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -373,7 +426,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
-        fail = random.randint(1, 100)
+        fail = random.randint(0, 100)
         if fail < failrates["rob"]:
             return await self.fine(ctx, "rob")
         userbalance = await self.walletbalance(user)
@@ -382,7 +435,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             if finechance > 5:
                 embed = discord.Embed(
                     colour=discord.Color.red(),
-                    description="You steal {}'s wallet but there was nothing of value inside.".format(
+                    description="You steal {}'s wallet when they're not looking. Fortunately for them it's empty.".format(
                         user.name
                     ),
                     timestamp=ctx.message.created_at,
@@ -395,7 +448,7 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
             colour=discord.Color.green(),
-            description="You steal {}'s wallet and find {} inside.".format(
+            description="You slip {}'s wallet from their pocket and find {} inside. Nice!".format(
                 user.name, humanize_number(stolen)
             ),
             timestamp=ctx.message.created_at,
@@ -405,5 +458,5 @@ class Unbelievaboat(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Com
             await self.walletdeposit(ctx, ctx.author, stolen)
             await self.walletremove(user, stolen)
         except ValueError:
-            embed.description += f"\nAfter stealing the cash, you notice your wallet is now full!"
+            embed.description += f"\nOop. After stealing the cash, you notice your **own** wallet is full. You were forced to return the cash since you can't make off with it."
         await ctx.send(embed=embed)
