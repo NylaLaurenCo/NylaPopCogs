@@ -125,31 +125,31 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @lstyle_set.command(name="fine-rate", usage="<min | max> <amount>", aliases=["finerate"])
-    async def fine_set(self, ctx, min_or_max: str, amount: int):
-        """Set the min or max fine rate for crimes and slutting."""
+    @lstyle_set.command(name="bail-amount", usage="<min | max> <amount>", aliases=["bail"])
+    async def bail_set(self, ctx, min_or_max: str, amount: int):
+        """Set the min or max bail amount for crimes and slutting."""
         if min_or_max not in ["max", "min"]:
             return await ctx.send("You must choose between min or max.")
         conf = await self.configglobalcheck(ctx)
-        async with conf.fines() as fines:
-            fines[min_or_max] = amount
+        async with conf.bailamounts() as bailamounts:
+            bailamounts[min_or_max] = amount
         await ctx.tick()
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @lstyle_set.command(name="interest-rate", usage="<amount>", aliases=["interestrate"])
-    async def interest_set(self, ctx, amount: int):
-        """Set the interest rate if unable to pay a fine from wallet."""
+    @lstyle_set.command(name="fine-percent", usage="<amount>", aliases=["finepercent","fines"])
+    async def fine_set(self, ctx, amount: int):
+        """Set the fine percentage if unable to pay bail in cash."""
         if amount < 1 or amount > 100:
             return await ctx.send("Amount must be between 0-100.")
-        await self.config.guild(ctx.guild).interest.set(amount)
+        await self.config.guild(ctx.guild).fine.set(amount)
         await ctx.tick()
 
     @commands.guild_only()
     @check_global_setting_admin()
     @lstyle_set.command(name="add-reply")
     async def add_reply(self, ctx, job, *, reply: str):
-        """Add a custom reply for working or crime.
+        """Add a custom reply for working, slutting or crime.
 
         Put {amount} in place of where you want the amount earned to be.
         """
@@ -301,13 +301,13 @@ class SettingsMixin(MixinMeta):
         failrates = data["failrates"]
         embed.add_field(
             name="Fail Rates",
-            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Interest Fee**: {data['interest']}%",
+            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Fine**: {data['fine']}%",
             inline=True,
         )
-        fines = data["fines"]
+        bailamounts = data["bailamounts"]
         embed.add_field(
-            name="Fines",
-            value=f"**Max**: {humanize_number(fines['max'])}\n**Min**: {humanize_number(fines['min'])}",
+            name="BailAmounts",
+            value=f"**Max**: {humanize_number(bailamounts['max'])}\n**Min**: {humanize_number(bailamounts['min'])}",
             inline=True,
         )
         embed.add_field(name="Cooldown Settings", value=cooldownmsg, inline=True)

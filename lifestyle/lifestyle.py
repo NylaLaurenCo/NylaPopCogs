@@ -50,8 +50,8 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "rob": [],
             "payouts": {"slut": {"max": 300, "min": 10}, "crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
             "failrates": {"slut": 50, "crime": 50, "rob": 70},
-            "fines": {"max": 250, "min": 10},
-            "interest": 5,
+            "bailamounts": {"max": 250, "min": 10},
+            "fine": 5,
             "disable_wallet": False,
             "roulette_toggle": True,
             "roulette_time": 60,
@@ -141,10 +141,10 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             cd[job] = int(datetime.datetime.utcnow().timestamp())
         return True
 
-    async def fine(self, ctx, job):
+    async def bail(self, ctx, job):
         conf = await self.configglobalcheck(ctx)
-        fines = await conf.fines()
-        randint = random.randint(fines["min"], fines["max"])
+        bailamounts = await conf.bailamounts()
+        randint = random.randint(bailamounts["min"], bailamounts["max"])
         amount = str(humanize_number(randint)) + " " + await bank.get_currency_name(ctx.guild)
         userconf = await self.configglobalcheckuser(ctx.author)
         if not await self.walletdisabledcheck(ctx):
@@ -155,15 +155,15 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                     description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
                 )
             else:
-                interestfee = await self.config.guild(ctx.guild).interest()
+                finepercent = await self.config.guild(ctx.guild).fine()
                 fee = int(
-                    randint * float(f"1.{interestfee if interestfee >= 10 else f'0{interestfee}'}")
+                    randint * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
                 )
                 if await bank.can_spend(ctx.author, fee):
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.red(),
-                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {interestfee}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
@@ -325,7 +325,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         failrates = await conf.failrates()
         fail = random.randint(0, 100)
         if fail < failrates["crime"]:
-            return await self.fine(ctx, "crime")
+            return await self.bail(ctx, "crime")
         payouts = await conf.payouts()
         wage = random.randint(payouts["crime"]["min"], payouts["crime"]["max"])
         wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
@@ -375,7 +375,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         failrates = await conf.failrates()
         fail = random.randint(0, 100)
         if fail < failrates["slut"]:
-            return await self.fine(ctx, "slut")
+            return await self.bail(ctx, "slut")
         payouts = await conf.payouts()
         wage = random.randint(payouts["slut"]["min"], payouts["slut"]["max"])
         wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
@@ -428,11 +428,11 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         failrates = await conf.failrates()
         fail = random.randint(0, 100)
         if fail < failrates["rob"]:
-            return await self.fine(ctx, "rob")
+            return await self.bail(ctx, "rob")
         userbalance = await self.walletbalance(user)
         if userbalance <= 50:
-            finechance = random.randint(1, 10)
-            if finechance > 5:
+            bailchance = random.randint(1, 10)
+            if bailchance > 5:
                 embed = discord.Embed(
                     colour=discord.Color.red(),
                     description="You steal {}'s wallet when they're not looking. Fortunately for them it's empty.".format(
@@ -443,7 +443,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 return await ctx.send(embed=embed)
             else:
-                return await self.fine(ctx, "rob")
+                return await self.bail(ctx, "rob")
         modifier = roll()
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
