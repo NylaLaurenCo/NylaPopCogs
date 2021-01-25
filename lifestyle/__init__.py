@@ -1,4 +1,4 @@
-from .unbelievaboat import Unbelievaboat
+from .lifestyle import Lifestyle
 
 __red_end_user_data_statement__ = (
     "This cog stores data attached to a users ID for intent of showing a balance.\n"
@@ -8,4 +8,4 @@ __red_end_user_data_statement__ = (
 
 
 def setup(bot):
-    bot.add_cog(Unbelievaboat(bot))
+    bot.add_cog(Lifestyle(bot))

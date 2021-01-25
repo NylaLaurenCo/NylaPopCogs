@@ -1,19 +1,22 @@
 {
   "author": [
-    "flare(flare#0001)"
+    "NylaPop"
   ],
-  "install_msg": "Unbelievaboat economy commands converted for Red use.",
-  "name": "Unbelievaboat",
+  "install_msg": "Lifestyle economy commands for creating your destiny.",
+  "name": "Lifestyle",
   "disabled": false,
-  "short": "Unbelievaboat economy commands converted for Red use.",
-  "description": "Unbelievaboat economy commands converted for Red use..",
+  "short": "Lifestyle economy commands for creating your destiny.",
+  "description": "Lifestyle economy commands for creating your destiny..",
   "tags": [
     "economy",
-    "unbelievaboat",
+    "lifestyle",
     "rob",
-    "work"
+    "work",
+    "slut"
   ],
-  "requirements": ["tabulate"],
+  "requirements": [
+    "tabulate"
+  ],
   "min_bot_version": "3.4.0",
   "hidden": false
 }

@@ -27,10 +27,10 @@ def check_global_setting_admin():
 def wallet_disabled_check():
     async def predicate(ctx):
         if await bank.is_global():
-            return await ctx.bot.get_cog("Unbelievaboat").config.disable_wallet()
+            return await ctx.bot.get_cog("Lifestyle").config.disable_wallet()
         if ctx.guild is None:
             return False
-        return await ctx.bot.get_cog("Unbelievaboat").config.guild(ctx.guild).disable_wallet()
+        return await ctx.bot.get_cog("Lifestyle").config.guild(ctx.guild).disable_wallet()
 
     return commands.check(predicate)
 
@@ -38,9 +38,9 @@ def wallet_disabled_check():
 def roulette_disabled_check():
     async def predicate(ctx):
         if await bank.is_global():
-            return await ctx.bot.get_cog("Unbelievaboat").config.roulette_toggle()
+            return await ctx.bot.get_cog("Lifestyle").config.roulette_toggle()
         if ctx.guild is None:
             return False
-        return await ctx.bot.get_cog("Unbelievaboat").config.guild(ctx.guild).roulette_toggle()
+        return await ctx.bot.get_cog("Lifestyle").config.guild(ctx.guild).roulette_toggle()
 
     return commands.check(predicate)

@@ -13,14 +13,14 @@ from .functions import chunks
 class SettingsMixin(MixinMeta):
     """Settings."""
 
-    @commands.group(name="unbset", aliases=["unb-set"])
+    @commands.group(name="lstyleset", aliases=["lstyle-set"])
     @check_global_setting_admin()
     @commands.guild_only()
-    async def unb_set(self, ctx):
-        """Manage various settings for Unbelievaboat."""
+    async def lstyle_set(self, ctx):
+        """Manage various settings for Lifestyle."""
 
     @commands.guild_only()
-    @unb_set.command(name="cooldown")
+    @lstyle_set.command(name="cooldown")
     async def cooldown_set(
         self,
         ctx,
@@ -37,7 +37,7 @@ class SettingsMixin(MixinMeta):
         The time can be formatted as so `1h30m` etc. Valid times are hours, minutes and seconds.
         """
         job = job.lower()
-        if job not in ["work", "crime", "rob", "deposit", "withdraw"]:
+        if job not in ["slut", "work", "crime", "rob", "deposit", "withdraw"]:
             return await ctx.send("Invalid job.")
         seconds = time.total_seconds()
         if seconds < 30:
@@ -46,6 +46,7 @@ class SettingsMixin(MixinMeta):
             "work": "workcd",
             "crime": "crimecd",
             "rob": "robcd",
+            "slut": "slutcd",
             "deposit": "depositcd",
             "withdraw": "withdrawcd",
         }
@@ -56,10 +57,10 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="payout", usage="<work | crime> <min | max> <amount>")
+    @lstyle_set.command(name="payout", usage="<work | crime | slut> <min | max> <amount>")
     async def payout_set(self, ctx, job: str, min_or_max: str, amount: int):
         """Set the min or max payout for working or crimes."""
-        if job not in ["work", "crime"]:
+        if job not in ["work", "crime", "slut"]:
             return await ctx.send("Invalid job.")
         if min_or_max not in ["max", "min"]:
             return await ctx.send("You must choose between min or max.")
@@ -70,7 +71,7 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="betting", usage="<min | max> <amount>")
+    @lstyle_set.command(name="betting", usage="<min | max> <amount>")
     async def betting_set(self, ctx, min_or_max: str, amount: int):
         """Set the min or max betting amounts."""
         if min_or_max not in ["max", "min"]:
@@ -82,7 +83,7 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.group(name="wallet")
+    @lstyle_set.group(name="wallet")
     async def wallet_set(self, ctx):
         """Wallet Settings."""
 
@@ -110,13 +111,13 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="failure-rate", usage="<rob | crime> <amount>", aliases=["failurerate"])
+    @lstyle_set.command(name="failure-rate", usage="<rob | crime | slut> <amount>", aliases=["failurerate"])
     async def failure_set(self, ctx, job: str, amount: int):
         """Set the failure rate for crimes and robbing."""
-        if job not in ["rob", "crime"]:
+        if job not in ["rob", "crime", "slut"]:
             return await ctx.send("Invalid job.")
-        if amount < 50 or amount > 100:
-            return await ctx.send("Amount must be higher than 50 or less than 100")
+        if amount < 1 or amount > 100:
+            return await ctx.send("Amount must be between 0-100".)
         conf = await self.configglobalcheck(ctx)
         async with conf.failrates() as failrates:
             failrates[job] = amount
@@ -124,7 +125,7 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="fine-rate", usage="<min | max> <amount>", aliases=["finerate"])
+    @lstyle_set.command(name="fine-rate", usage="<min | max> <amount>", aliases=["finerate"])
     async def fine_set(self, ctx, min_or_max: str, amount: int):
         """Set the min or max fine rate for crimes."""
         if min_or_max not in ["max", "min"]:
@@ -136,28 +137,28 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="interest-rate", usage="<amount>", aliases=["interestrate"])
+    @lstyle_set.command(name="interest-rate", usage="<amount>", aliases=["interestrate"])
     async def interest_set(self, ctx, amount: int):
         """Set the interest rate if unable to pay a fine from wallet."""
-        if amount < 1 or amount > 99:
-            return await ctx.send("Amount must be higher than 1 or less than 99")
+        if amount < 1 or amount > 100:
+            return await ctx.send("Amount must be between 0-100.")
         await self.config.guild(ctx.guild).interest.set(amount)
         await ctx.tick()
 
     @commands.guild_only()
     @check_global_setting_admin()
-    @unb_set.command(name="add-reply")
+    @lstyle_set.command(name="add-reply")
     async def add_reply(self, ctx, job, *, reply: str):
         """Add a custom reply for working or crime.
 
         Put {amount} in place of where you want the amount earned to be.
         """
-        if job not in ["work", "crime"]:
+        if job not in ["work", "crime", "slut"]:
             return await ctx.send("Invalid job.")
         if "{amount}" not in reply:
             return await ctx.send("{amount} must be present in the reply.")
         conf = await self.configglobalcheck(ctx)
-        jobreplies = {"work": "workreplies", "crime": "crimereplies"}
+        jobreplies = {"work": "workreplies", "crime": "crimereplies", "slut": "slutreplies"}
         async with conf.replies() as replies:
             if reply in replies[jobreplies[job]]:
                 return await ctx.send("That is already a response.")
@@ -167,12 +168,12 @@ class SettingsMixin(MixinMeta):
 
     @commands.guild_only()
     @check_global_setting_admin()
-    @unb_set.command(name="del-reply")
+    @lstyle_set.command(name="del-reply")
     async def del_reply(self, ctx, job, *, id: int):
         """Delete a custom reply."""
-        if job not in ["work", "crime"]:
+        if job not in ["work", "crime", "slut"]:
             return await ctx.send("Invalid job.")
-        jobreplies = {"work": "workreplies", "crime": "crimereplies"}
+        jobreplies = {"work": "workreplies", "crime": "crimereplies", "slut": "slutreplies"}
         conf = await self.configglobalcheck(ctx)
         async with conf.replies() as replies:
             if not replies[jobreplies[job]]:
@@ -184,12 +185,12 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="list-replies")
+    @lstyle_set.command(name="list-replies")
     async def list_reply(self, ctx, job):
         """List custom replies."""
-        if job not in ["work", "crime"]:
+        if job not in ["work", "crime", "slut"]:
             return await ctx.send("Invalid job.")
-        jobreplies = {"work": "workreplies", "crime": "crimereplies"}
+        jobreplies = {"work": "workreplies", "crime": "crimereplies", "slut": "slutreplies"}
         conf = await self.configglobalcheck(ctx)
         async with conf.replies() as replies:
             if not replies[jobreplies[job]]:
@@ -209,7 +210,7 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="default-replies", usage="<enable | disable>")
+    @lstyle_set.command(name="default-replies", usage="<enable | disable>")
     async def default_replies(self, ctx, enable: bool):
         """Whether to use the default replies to work and crime."""
         conf = await self.configglobalcheck(ctx)
@@ -244,6 +245,14 @@ class SettingsMixin(MixinMeta):
                 crimecd = humanize_timedelta(seconds=jobcd["crimecd"] - time)
             else:
                 crimecd = "Ready to use."
+        if cd["slutcd"] is None:
+            slutcd = "Ready to use."
+        else:
+            time = int(datetime.datetime.utcnow().timestamp()) - cd["slutcd"]
+            if time < jobcd["slutcd"]:
+                slutcd = humanize_timedelta(seconds=jobcd["slutcd"] - time)
+            else:
+                slutcd = "Ready to use."
         if not await self.walletdisabledcheck(ctx):
             if cd["robcd"] is None:
                 robcd = "Ready to use."
@@ -255,41 +264,44 @@ class SettingsMixin(MixinMeta):
                     robcd = "Ready to use."
         else:
             robcd = "Disabled."
-        msg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nRob Cooldown: `{}`".format(
-            workcd, crimecd, robcd
+        msg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nSlut Cooldown: `{}`\nRob Cooldown: `{}`".format(
+            workcd, crimecd, slutcd, robcd
         )
         await ctx.maybe_send_embed(msg)
 
-    @unb_set.command()
+    @lstyle_set.command()
     @check_global_setting_admin()
     @commands.guild_only()
     @commands.bot_has_permissions(embed_links=True)
     async def settings(self, ctx):
-        """Current unbelievaboat settings."""
+        """Current lifestyle settings."""
         conf = await self.configglobalcheck(ctx)
         data = await conf.all()
         cooldowns = data["cooldowns"]
         workcd = humanize_timedelta(seconds=cooldowns["workcd"])
         robcd = humanize_timedelta(seconds=cooldowns["robcd"])
         crimecd = humanize_timedelta(seconds=cooldowns["crimecd"])
-        cooldownmsg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nRob Cooldown: `{}`".format(
-            workcd, crimecd, robcd
+        slutcd = humanize_timedelta(seconds=cooldowns["slutcd"])
+        cooldownmsg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nSlut Cooldown: `{}`\nRob Cooldown: `{}`".format(
+            workcd, crimecd, slutcd, robcd
         )
-        embed = discord.Embed(colour=ctx.author.colour, title="Unbelievaboat Settings")
+        embed = discord.Embed(colour=ctx.author.colour, title="Lifestyle Settings")
         embed.add_field(
             name="Using Default Replies?",
             value="Yes" if data["defaultreplies"] else "No",
             inline=True,
         )
         payouts = data["payouts"]
+        slutpayout = f"**Max**: {humanize_number(payouts['slut']['max'])}\n**Min**: {humanize_number(payouts['slut']['min'])}"
         crimepayout = f"**Max**: {humanize_number(payouts['crime']['max'])}\n**Min**: {humanize_number(payouts['crime']['min'])}"
         workpayout = f"**Max**: {humanize_number(payouts['work']['max'])}\n**Min**: {humanize_number(payouts['work']['min'])}"
         embed.add_field(name="Work Payouts", value=workpayout, inline=True)
         embed.add_field(name="Crime Payouts", value=crimepayout, inline=True)
+        embed.add_field(name="Slut Payouts", value=slutpayout, inline=True)
         failrates = data["failrates"]
         embed.add_field(
             name="Fail Rates",
-            value=f"**Crime**: {failrates['crime']}%\n**Rob**: {failrates['rob']}%\n**Interest Fee**: {data['interest']}%",
+            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Interest Fee**: {data['interest']}%",
             inline=True,
         )
         fines = data["fines"]
