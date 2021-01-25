@@ -362,7 +362,7 @@ class Marriage(commands.Cog):
             gift_text = "None"
         else:
             gift_text = humanize_list(giftos)
-        e = discord.Embed(colour=member.color)
+        e = discord.Embed(colour=member.color, description="*Note: This is just for roleplay/pretend and is not real.*\n<:sh_space:755971083210981426>")
         e.set_author(name=f"{member.name}'s Lovelife", icon_url=member.avatar_url)
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member.avatar_url)
