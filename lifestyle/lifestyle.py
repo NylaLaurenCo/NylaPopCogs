@@ -46,7 +46,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 "depositcd": 1,
             },
             "defaultreplies": True,
-            "replies": {"crimereplies": [], "workreplies": []}, "slutreplies": []},
+            "replies": {"crimereplies": [], "slutreplies": [], "workreplies": []},
             "rob": [],
             "payouts": {"crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}}, "slut": {"max": 250, "min": 10}},
             "failrates": {"crime": 50, "rob": 70, "slut": 50},
