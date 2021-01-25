@@ -33,7 +33,7 @@ class Marriage(commands.Cog):
             about="Who's asking? <:13look_shrek:717577462292283482>",
             crush=None,
             marcount=0,
-            temper=100,
+            happiness=100,
             gifts={
                 "loveletter": 0,
                 "flowers": 0,
@@ -93,7 +93,7 @@ class Marriage(commands.Cog):
             },
         )
 
-    # "stuff": [temper, price]
+    # "stuff": [happiness, price]
     # "gift": owned pcs
 
     @commands.group(autohelp=True)
@@ -164,13 +164,13 @@ class Marriage(commands.Cog):
         await self.config.guild(ctx.guild).divprice.set(multiplier)
         await ctx.tick()
 
-    @marriage.command(name="changetemper")
-    async def marriage_changetemper(
-        self, ctx: commands.Context, action: str, temper: int
+    @marriage.command(name="changehappiness")
+    async def marriage_changehappiness(
+        self, ctx: commands.Context, action: str, happiness: int
     ):
-        """Set the action's/gift's temper
+        """Set the action's/gift's happiness
 
-        Temper has to be in range 1 to 100. Negative actions (f.e. flirting with someone other than one's spouse) should have negative temper.
+        Happiness has to be in range 1 to 100. Negative actions (f.e. flirting with someone other than one's spouse) should have negative happiness.
         !!! Remember that starting point for everyone is 100 == happy and satisfied, 0 == leave their spouse"""
         available = [
           "flirt",
@@ -210,12 +210,12 @@ class Marriage(commands.Cog):
         ]
         if action not in available:
             return await ctx.send(f"Available actions/gifts are: {available}")
-        if temper < 0:
-            return await ctx.send("Um temper has to be 0 or more.")
-        if temper > 100:
-            return await ctx.send("Um temper has to be 100 or less.")
+        if happiness < 0:
+            return await ctx.send("Um happiness has to be 0 or more.")
+        if happiness > 100:
+            return await ctx.send("Um happiness has to be 100 or less.")
         action = await self.config.guild(ctx.guild).stuff.get_raw(action)
-        action[0] = temper
+        action[0] = happiness
         await self.config.guild(ctx.guild).stuff.get_raw(action)
 
     @marriage.command(name="changeprice")
@@ -371,12 +371,12 @@ class Marriage(commands.Cog):
         if is_married:
             e.add_field(name=spouse_header, value=spouse_text)
         e.add_field(name="Crush:", value=crush)
-        e.add_field(name="Temper:", value=await conf.temper())
-        e.add_field(name="Been married:", value=been_married)
+        e.add_field(name="Happiness:", value=await conf.happiness())
+        e.add_field(name="x Married:", value=been_married)
         if await conf.marcount() != 0:
             e.add_field(name="Exes:", value=ex_text)
-        e.add_field(name="Balance:", value=f"{bal} {currency}")
-        e.add_field(name="Available gifts:", value=gift_text)
+        e.add_field(name="Assets:", value=f"{bal} {currency}")
+        e.add_field(name="Owned Gifts:", value=gift_text)
 
         await ctx.send(embed=e)
 
@@ -499,8 +499,8 @@ class Marriage(commands.Cog):
             acurrent.append(member.id)
         async with self.config.member(member).current() as tcurrent:
             tcurrent.append(ctx.author.id)
-        await self.config.member(ctx.author).temper.set(100)
-        await self.config.member(member).temper.set(100)
+        await self.config.member(ctx.author).happiness.set(100)
+        await self.config.member(member).happiness.set(100)
 
         await ctx.send(
             f":church: {ctx.author.mention} and {member.mention} are now a happy married couple! "
@@ -770,11 +770,11 @@ class Marriage(commands.Cog):
             author_gift = await mc(ctx.author).gifts.get_raw(item)
             member_gift = await mc(member).gifts.get_raw(item)
             action = await gc(ctx.guild).stuff.get_raw(item)
-            temper = action[0]
+            happiness = action[0]
             price = action[1]
         else:
             action = await gc(ctx.guild).stuff.get_raw(action)
-            temper = action[0]
+            happiness = action[0]
             price = action[1]
             author_gift = 0
             member_gift = -1
@@ -820,43 +820,43 @@ class Marriage(commands.Cog):
                     "lol if you have to think that hard, it's a no."
                 )
             if pred.result:
-                t_temp = await mc(member).temper()
+                t_temp = await mc(member).happiness()
                 t_missing = 100 - t_temp
                 if t_missing != 0:
-                    if temper <= t_missing:
-                        await mc(member).temper.set(t_temp + temper)
+                    if happiness <= t_missing:
+                        await mc(member).happiness.set(t_temp + happiness)
                     else:
-                        await mc(member).temper.set(100)
-                a_temp = await mc(ctx.author).temper()
+                        await mc(member).happiness.set(100)
+                a_temp = await mc(ctx.author).happiness()
                 a_missing = 100 - a_temp
                 if a_missing != 0:
-                    if temper <= a_missing:
-                        await mc(ctx.author).temper.set(a_temp + temper)
+                    if happiness <= a_missing:
+                        await mc(ctx.author).happiness.set(a_temp + happiness)
                     else:
-                        await mc(ctx.author).temper.set(100)
+                        await mc(ctx.author).happiness.set(100)
                 endtext = f"<:okay_daddy:802980074268786706> {ctx.author.mention} banged {member.mention}. It was **amazing**. <a:13shake:729474123578998834>"
             else:
-                a_temp = await mc(ctx.author).temper()
-                if temper < a_temp:
-                    await mc(ctx.author).temper.set(a_temp - temper)
+                a_temp = await mc(ctx.author).happiness()
+                if happiness < a_temp:
+                    await mc(ctx.author).happiness.set(a_temp - happiness)
                 else:
-                    await mc(ctx.author).temper.set(0)
+                    await mc(ctx.author).happiness.set(0)
                 endtext = "<:simp_hand:802963169576222770> lol they refused to bang you and you were forced to use your hand. <:simp_pills:802995365838192692>"
         else:
-            t_temp = await mc(member).temper()
+            t_temp = await mc(member).happiness()
             t_missing = 100 - t_temp
             if t_missing != 0:
-                if temper <= t_missing:
-                    await mc(member).temper.set(t_temp + temper)
+                if happiness <= t_missing:
+                    await mc(member).happiness.set(t_temp + happiness)
                 else:
-                    await mc(member).temper.set(100)
-            a_temp = await mc(ctx.author).temper()
+                    await mc(member).happiness.set(100)
+            a_temp = await mc(ctx.author).happiness()
             a_missing = 100 - a_temp
             if a_missing != 0:
-                if temper <= a_missing:
-                    await mc(ctx.author).temper.set(a_temp + temper)
+                if happiness <= a_missing:
+                    await mc(ctx.author).happiness.set(a_temp + happiness)
                 else:
-                    await mc(ctx.author).temper.set(100)
+                    await mc(ctx.author).happiness.set(100)
         spouses = await mc(ctx.author).current()
         if member.id in spouses:
             pass
@@ -864,12 +864,12 @@ class Marriage(commands.Cog):
             if await mc(ctx.author).married():
                 for sid in spouses:
                     spouse = ctx.guild.get_member(sid)
-                    s_temp = await mc(spouse).temper()
-                    if s_temp < temper:
+                    s_temp = await mc(spouse).happiness()
+                    if s_temp < happiness:
                         new_s_temp = 0
                     else:
-                        new_s_temp = s_temp - temper
-                    await mc(spouse).temper.set(new_s_temp)
+                        new_s_temp = s_temp - happiness
+                    await mc(spouse).happiness.set(new_s_temp)
                     if new_s_temp <= 0:
                         async with self.config.member(ctx.author).current() as acurrent:
                             acurrent.remove(spouse.id)
@@ -910,3 +910,4 @@ class Marriage(commands.Cog):
                         endtext = f"{endtext}\nLOL! {ctx.author.mention} was a **horrible** partner to {spouse.mention}, "
                         "so {spouse.mention} left them and took all their money! What a loser <:lol_dicaprio:802981845645787186> "
         await ctx.send(endtext)
+temp
