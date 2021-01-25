@@ -117,7 +117,7 @@ class SettingsMixin(MixinMeta):
         if job not in ["rob", "crime", "slut"]:
             return await ctx.send("Invalid job.")
         if amount < 1 or amount > 100:
-            return await ctx.send("Amount must be between 0-100".)
+            return await ctx.send("Amount must be between 0-100.")
         conf = await self.configglobalcheck(ctx)
         async with conf.failrates() as failrates:
             failrates[job] = amount
