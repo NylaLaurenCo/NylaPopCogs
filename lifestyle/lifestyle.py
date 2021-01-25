@@ -49,7 +49,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "replies": {"crimereplies": [], "slutreplies": [], "workreplies": []},
             "rob": [],
             "payouts": {"crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}}, "slut": {"max": 250, "min": 10}},
-            "failrates": {"crime": 50, "rob": 70, "slut": 50},
+            ""failrates": {"crime": 50, "slut": 70, "rob": 70},
             "fines": {"max": 250, "min": 10},
             "interest": 5,
             "disable_wallet": False,
