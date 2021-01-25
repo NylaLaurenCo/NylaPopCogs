@@ -137,7 +137,7 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @lstyle_set.command(name="fine-percent", usage="<amount>", aliases=["finepercent","fines"])
+    @lstyle_set.command(name="fine-percent", usage="<amount>", aliases=["finepercent"])
     async def fine_set(self, ctx, amount: int):
         """Set the fine percentage if unable to pay bail in cash."""
         if amount < 1 or amount > 100:
