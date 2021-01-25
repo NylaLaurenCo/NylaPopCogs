@@ -306,7 +306,7 @@ class SettingsMixin(MixinMeta):
         )
         bailamounts = data["bailamounts"]
         embed.add_field(
-            name="BailAmounts",
+            name="Bail Amounts",
             value=f"**Max**: {humanize_number(bailamounts['max'])}\n**Min**: {humanize_number(bailamounts['min'])}",
             inline=True,
         )
