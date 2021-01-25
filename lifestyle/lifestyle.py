@@ -11,7 +11,7 @@ from redbot.core.errors import BalanceTooHigh
 from redbot.core.utils.chat_formatting import humanize_number, humanize_timedelta, pagify
 
 from .checks import check_global_setting_admin, wallet_disabled_check
-from .defaultreplies import crimes, work
+from .defaultreplies import crimes, work, slut
 from .functions import roll
 from .roulette import Roulette
 from .settings import SettingsMixin

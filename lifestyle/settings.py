@@ -32,7 +32,7 @@ class SettingsMixin(MixinMeta):
             default_unit="minutes",
         ),
     ):
-        """Set the cooldown for the work, crime or rob commands. Minimum cooldown is 30 seconds.
+        """Set the cooldown for the work, crime, slut, rob, and bank commands. Minimum cooldown is 30 seconds.
 
         The time can be formatted as so `1h30m` etc. Valid times are hours, minutes and seconds.
         """
@@ -59,7 +59,7 @@ class SettingsMixin(MixinMeta):
     @commands.guild_only()
     @lstyle_set.command(name="payout", usage="<work | crime | slut> <min | max> <amount>")
     async def payout_set(self, ctx, job: str, min_or_max: str, amount: int):
-        """Set the min or max payout for working or crimes."""
+        """Set the min or max payout for working, slutting or crimes."""
         if job not in ["work", "crime", "slut"]:
             return await ctx.send("Invalid job.")
         if min_or_max not in ["max", "min"]:
@@ -113,7 +113,7 @@ class SettingsMixin(MixinMeta):
     @commands.guild_only()
     @lstyle_set.command(name="failure-rate", usage="<rob | crime | slut> <amount>", aliases=["failurerate"])
     async def failure_set(self, ctx, job: str, amount: int):
-        """Set the failure rate for crimes and robbing."""
+        """Set the failure rate for crimes, sllutting and robbing."""
         if job not in ["rob", "crime", "slut"]:
             return await ctx.send("Invalid job.")
         if amount < 1 or amount > 100:
@@ -127,7 +127,7 @@ class SettingsMixin(MixinMeta):
     @commands.guild_only()
     @lstyle_set.command(name="fine-rate", usage="<min | max> <amount>", aliases=["finerate"])
     async def fine_set(self, ctx, min_or_max: str, amount: int):
-        """Set the min or max fine rate for crimes."""
+        """Set the min or max fine rate for crimes and slutting."""
         if min_or_max not in ["max", "min"]:
             return await ctx.send("You must choose between min or max.")
         conf = await self.configglobalcheck(ctx)
