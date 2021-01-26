@@ -51,7 +51,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "payouts": {"slut": {"max": 300, "min": 10}, "crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
             "failrates": {"slut": 50, "crime": 50, "rob": 70},
             "bailamounts": {"max": 250, "min": 10},
-            "fine": 5,
+            "fines": 5,
             "disable_wallet": False,
             "roulette_toggle": True,
             "roulette_time": 60,
@@ -155,7 +155,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                     description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
                 )
             else:
-                finepercent = await self.config.guild(ctx.guild).fine()
+                finepercent = await self.config.guild(ctx.guild).fines()
                 fee = int(
                     randint * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
                 )
