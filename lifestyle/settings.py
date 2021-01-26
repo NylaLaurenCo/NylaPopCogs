@@ -144,7 +144,7 @@ class SettingsMixin(MixinMeta):
             return await ctx.send("Amount must be between 0-100.")
         conf = await self.configglobalcheck(ctx)
         async with conf.interest() as interest:
-            interest[amount] = amount
+            interest = amount
         #await self.config.guild(ctx.guild).interest.set(amount)
         await ctx.tick()
 
