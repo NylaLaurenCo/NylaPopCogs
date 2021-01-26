@@ -302,10 +302,9 @@ class SettingsMixin(MixinMeta):
         embed.add_field(name="Crime Payouts", value=crimepayout, inline=True)
         embed.add_field(name="Slut Payouts", value=slutpayout, inline=True)
         failrates = data["failrates"]
-        interestrates = data["interest"]
         embed.add_field(
             name="Fail Rates",
-            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Interest Fee**: {interestrates['interest']}%",
+            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Interest Fee**: {data['interest']}%",
             inline=True,
         )
         bailamounts = data["bailamounts"]
