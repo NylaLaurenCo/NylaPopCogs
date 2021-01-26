@@ -137,9 +137,9 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @unb_set.command(name="interest-rate", usage="<amount>", aliases=["interestrate"])
+    @lstyle_set.command(name="interest-rate", usage="<amount>", aliases=["interestrate"])
     async def interest_set(self, ctx, amount: int):
-        """Set the interest rate if unable to pay a fine from wallet."""
+        """Set the fine if unable to pay bail in cash."""
         if amount < 0 or amount > 100:
             return await ctx.send("Amount must be between 0-100")
         await self.config.guild(ctx.guild).interest.set(amount)
