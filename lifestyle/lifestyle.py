@@ -51,7 +51,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "payouts": {"slut": {"max": 300, "min": 10}, "crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
             "failrates": {"slut": 50, "crime": 50, "rob": 70},
             "bailamounts": {"max": 250, "min": 10},
-            "finerates": 5,
+            "interest": 5,
             "disable_wallet": False,
             "roulette_toggle": True,
             "roulette_time": 60,
@@ -155,15 +155,15 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                     description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
                 )
             else:
-                finepercent = await self.config.guild(ctx.guild).finerates()
+                interestfee = await self.config.guild(ctx.guild).interest()
                 fee = int(
-                    randint * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
+                    randint * float(f"1.{interestfee if interestfee >= 10 else f'0{interestfee}'}")
                 )
                 if await bank.can_spend(ctx.author, fee):
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.red(),
-                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {interestfee}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)

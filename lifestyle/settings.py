@@ -137,12 +137,12 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @lstyle_set.command(name="fine-percent", usage="<amount>", aliases=["finepercent"])
-    async def fine_set(self, ctx, amount: int):
+    @lstyle_set.command(name="interest-rate", usage="<amount>", aliases=["interestrate"])
+    async def interest_set(self, ctx, amount: int):
         """Set the fine percentage if unable to pay bail in cash."""
         if amount < 1 or amount > 99:
             return await ctx.send("Amount must be between 0-99.")
-        await self.config.guild(ctx.guild).finerates.set(amount)
+        await self.config.guild(ctx.guild).interest.set(amount)
         await ctx.tick()
 
     @commands.guild_only()
@@ -301,7 +301,7 @@ class SettingsMixin(MixinMeta):
         failrates = data["failrates"]
         embed.add_field(
             name="Fail Rates",
-            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Fine**: {data['finerates']}%",
+            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Fine**: {data['interest']}%",
             inline=True,
         )
         bailamounts = data["bailamounts"]
