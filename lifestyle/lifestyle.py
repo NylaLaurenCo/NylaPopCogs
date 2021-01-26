@@ -51,7 +51,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "payouts": {"slut": {"max": 300, "min": 10}, "crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
             "failrates": {"slut": 50, "crime": 50, "rob": 70},
             "bailamounts": {"max": 250, "min": 10},
-            "interest": 5,
+            "interestrates": {"interest": 6},
             "disable_wallet": False,
             "roulette_toggle": True,
             "roulette_time": 60,
