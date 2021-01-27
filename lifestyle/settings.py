@@ -202,7 +202,7 @@ class SettingsMixin(MixinMeta):
                 items = []
                 for i, strings in enumerate(item):
                     items.append(f"Reply {i}: {strings}")
-                embed = discord.Embed(colour=discord.Color.red(), description="\n".join(items))
+                embed = discord.Embed(colour=discord.Color.from_rgb(233,60,56), description="\n".join(items))
                 embeds.append(embed)
             if len(embeds) == 1:
                 await ctx.send(embed=embeds[0])
