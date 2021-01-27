@@ -514,7 +514,7 @@ crimes = [
     "You pickpocket every single person in the parliament entrance and sneak away with {amount}",
     "You steal lamps for {amount}",
     "You kill someone and sell their organs for {amount}",
-    "Your hacker friend wires you {amount} Good payroll today gamers.",
+    "Your hacker friend wires you {amount}. Good payroll today, gamers!",
     "You held a bus hostage and got paid {amount}",
     "You jump the old lady walking down the street. She had {amount} on her.",
     "You pickpocket someone succesfully and steal the money out of their briefcase, there was {amount} in it",
