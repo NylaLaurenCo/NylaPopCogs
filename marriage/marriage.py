@@ -643,7 +643,7 @@ class Marriage(commands.Cog):
 
     @commands.guild_only()
     @commands.command()
-    async def perform(
+    async def rp(
         self,
         ctx: commands.Context,
         action: str,
