@@ -147,7 +147,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         randint = random.randint(bailamounts["min"], bailamounts["max"])
         userconf = await self.configglobalcheckuser(ctx.author)
         bailbond = float(randint / 100) * await userconf.briefcase()
-        amount = "$" + str(humanize_number(bailbond)) + " " + await bank.get_currency_name(ctx.guild)
+        amount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
         if not await self.briefcasedisabledcheck(ctx):
             if bailbond < await userconf.briefcase():
                 await self.briefcaseremove(ctx.author, bailbond)
