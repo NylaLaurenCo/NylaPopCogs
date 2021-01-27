@@ -452,7 +452,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
             colour=discord.Color.from_rgb(165,205,65),
-            description="You slip {}'s briefcase from their pocket and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
+            description="You slip {}'s briefcase from their room and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
                 user.name, humanize_number(stolen)
             ),
             timestamp=ctx.message.created_at,
