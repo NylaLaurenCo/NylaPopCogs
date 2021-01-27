@@ -323,9 +323,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
-        for key,val in conf.failrates():
-          failurechance = failrates / 100
-          print(failurechance,key)
+        failurechance = int(failrates) / 100
         fail = random.randint(0, 100) * float(failurechance)
         if fail < failrates["crime"]:
             return await self.bail(ctx, "crime")
