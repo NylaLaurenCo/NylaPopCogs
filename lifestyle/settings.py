@@ -127,7 +127,7 @@ class SettingsMixin(MixinMeta):
     @commands.guild_only()
     @lstyle_set.command(name="bail-amount", usage="<min | max> <amount>", aliases=["bail"])
     async def bail_set(self, ctx, min_or_max: str, amount: int):
-        """Set the min or max bail amount for crimes and slutting."""
+        """Set the min or max bail amount for crimes and slutting. **This is a percentage.** Do not include symbols."""
         if min_or_max not in ["max", "min"]:
             return await ctx.send("You must choose between min or max.")
         conf = await self.configglobalcheck(ctx)
@@ -308,7 +308,7 @@ class SettingsMixin(MixinMeta):
         bailamounts = data["bailamounts"]
         embed.add_field(
             name="Bail Amounts",
-            value=f"**Max**: {humanize_number(bailamounts['max'])}\n**Min**: {humanize_number(bailamounts['min'])}",
+            value=f"**Max**: {humanize_number(bailamounts['max'])}%\n**Min**: {humanize_number(bailamounts['min'])}%",
             inline=True,
         )
         embed.add_field(name="Cooldown Settings", value=cooldownmsg, inline=True)
