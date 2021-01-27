@@ -374,8 +374,9 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
-        fail = random.randint(0, 100)
-        if fail < failrates["slut"]:
+        failurechance = failrates["slut"] / 100
+        fail = random.randint(0, 100) * float(failurechance)
+        if fail > failrates["slut"]:
             return await self.bail(ctx, "slut")
         payouts = await conf.payouts()
         wage = random.randint(payouts["slut"]["min"], payouts["slut"]["max"])
@@ -427,8 +428,9 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
-        fail = random.randint(0, 100)
-        if fail < failrates["rob"]:
+        failurechance = failrates["rob"] / 100
+        fail = random.randint(0, 100) * float(failurechance)
+        if fail > failrates["rob"]:
             return await self.bail(ctx, "rob")
         userbalance = await self.walletbalance(user)
         if userbalance <= 50:
