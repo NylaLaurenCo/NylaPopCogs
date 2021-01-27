@@ -217,6 +217,7 @@ class Marriage(commands.Cog):
         action = await self.config.guild(ctx.guild).stuff.get_raw(action)
         action[0] = happiness
         await self.config.guild(ctx.guild).stuff.set_raw(action, value=[happiness])
+        await ctx.tick()
 
     @marriage.command(name="changeprice")
     async def marriage_changeprice(
