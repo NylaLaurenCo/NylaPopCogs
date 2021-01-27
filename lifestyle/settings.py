@@ -83,30 +83,30 @@ class SettingsMixin(MixinMeta):
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @lstyle_set.group(name="wallet")
-    async def wallet_set(self, ctx):
-        """Wallet Settings."""
+    @lstyle_set.group(name="briefcase")
+    async def briefcase_set(self, ctx):
+        """Briefcase Settings."""
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @wallet_set.command(name="toggle", usage="<on_or_off>")
-    async def wallet_toggle(self, ctx, on_or_off: bool):
-        """Toggle the wallet system."""
+    @briefcase_set.command(name="toggle", usage="<on_or_off>")
+    async def briefcase_toggle(self, ctx, on_or_off: bool):
+        """Toggle the briefcase system."""
         conf = await self.configglobalcheck(ctx)
         if on_or_off:
-            await ctx.send("The wallet and rob system has been enabled.")
+            await ctx.send("The briefcase and rob system has been enabled.")
         else:
-            await ctx.send("The wallet and rob system has been disabled.")
-        await conf.disable_wallet.set(on_or_off)
+            await ctx.send("The briefcase and rob system has been disabled.")
+        await conf.disable_briefcase.set(on_or_off)
         await ctx.tick()
 
     @check_global_setting_admin()
     @commands.guild_only()
-    @wallet_set.command(name="max")
-    async def wallet_max(self, ctx, amount: int):
-        """Set the max a wallet can have."""
+    @briefcase_set.command(name="max")
+    async def briefcase_max(self, ctx, amount: int):
+        """Set the max a briefcase can have."""
         conf = await self.configglobalcheck(ctx)
-        await conf.wallet_max.set(amount)
+        await conf.briefcase_max.set(amount)
         await ctx.tick()
 
     @check_global_setting_admin()
@@ -254,7 +254,7 @@ class SettingsMixin(MixinMeta):
                 slutcd = humanize_timedelta(seconds=jobcd["slutcd"] - time)
             else:
                 slutcd = "Ready to use."
-        if not await self.walletdisabledcheck(ctx):
+        if not await self.briefcasedisabledcheck(ctx):
             if cd["robcd"] is None:
                 robcd = "Ready to use."
             else:
@@ -312,12 +312,12 @@ class SettingsMixin(MixinMeta):
             inline=True,
         )
         embed.add_field(name="Cooldown Settings", value=cooldownmsg, inline=True)
-        walletsettings = data["disable_wallet"]
+        briefcasesettings = data["disable_briefcase"]
         embed.add_field(
-            name="Wallet Settings",
+            name="Briefcase Settings",
             value="Disabled."
-            if not walletsettings
-            else f"**Max Balance**: {humanize_number(data['wallet_max'])}\n**Withdraw Cooldown**: {humanize_timedelta(seconds=cooldowns['withdrawcd'])}\n**Deposit Cooldown**: {humanize_timedelta(seconds=cooldowns['depositcd'])}",
+            if not briefcasesettings
+            else f"**Max Balance**: {humanize_number(data['briefcase_max'])}\n**Withdraw Cooldown**: {humanize_timedelta(seconds=cooldowns['withdrawcd'])}\n**Deposit Cooldown**: {humanize_timedelta(seconds=cooldowns['depositcd'])}",
             inline=True,
         )
         minbet = humanize_number(data["betting"]["min"])

@@ -9,7 +9,7 @@ from redbot.core.errors import BalanceTooHigh
 from redbot.core.utils.chat_formatting import box, humanize_number, humanize_timedelta
 
 from .abc import MixinMeta
-from .checks import check_global_setting_admin, roulette_disabled_check, wallet_disabled_check
+from .checks import check_global_setting_admin, roulette_disabled_check, briefcase_disabled_check
 
 NUMBERS = {
     0: "green",
@@ -80,8 +80,8 @@ class Roulette(MixinMeta):
 
     async def betting(self, ctx, bet, _type):
         try:
-            if not await self.walletdisabledcheck(ctx):
-                await self.walletwithdraw(ctx.author, bet)
+            if not await self.briefcasedisabledcheck(ctx):
+                await self.briefcasewithdraw(ctx.author, bet)
             else:
                 await bank.withdraw_credits(ctx.author, bet)
         except ValueError:
@@ -165,14 +165,14 @@ class Roulette(MixinMeta):
                     betinfo = list(bet.values())[0]
                     user = ctx.guild.get_member(betinfo["user"])
                     payout = betinfo["amount"] + (betinfo["amount"] * payouts[bettype])
-                    if not await self.walletdisabledcheck(ctx):
+                    if not await self.briefcasedisabledcheck(ctx):
                         user_conf = await self.configglobalcheckuser(user)
-                        wallet = await user_conf.wallet()
+                        briefcase = await user_conf.briefcase()
                         try:
-                            await self.walletdeposit(ctx, user, payout)
+                            await self.briefcasedeposit(ctx, user, payout)
                         except ValueError:
-                            max_bal = await conf.wallet_max()
-                            payout = max_bal - wallet
+                            max_bal = await conf.briefcase_max()
+                            payout = max_bal - briefcase
                     else:
                         try:
                             await bank.deposit_credits(user, payout)

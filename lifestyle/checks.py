@@ -24,13 +24,13 @@ def check_global_setting_admin():
     return commands.check(predicate)
 
 
-def wallet_disabled_check():
+def briefcase_disabled_check():
     async def predicate(ctx):
         if await bank.is_global():
-            return await ctx.bot.get_cog("Lifestyle").config.disable_wallet()
+            return await ctx.bot.get_cog("Lifestyle").config.disable_briefcase()
         if ctx.guild is None:
             return False
-        return await ctx.bot.get_cog("Lifestyle").config.guild(ctx.guild).disable_wallet()
+        return await ctx.bot.get_cog("Lifestyle").config.guild(ctx.guild).disable_briefcase()
 
     return commands.check(predicate)
 

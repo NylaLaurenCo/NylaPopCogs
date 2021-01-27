@@ -7,54 +7,54 @@ from redbot.core.utils.chat_formatting import box, humanize_number
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .abc import MixinMeta
-from .checks import check_global_setting_admin, roulette_disabled_check, wallet_disabled_check
+from .checks import check_global_setting_admin, roulette_disabled_check, briefcase_disabled_check
 
 
-class Wallet(MixinMeta):
-    """Wallet Commands."""
+class Briefcase(MixinMeta):
+    """Briefcase Commands."""
 
-    async def walletdisabledcheck(self, ctx):
+    async def briefcasedisabledcheck(self, ctx):
         if await bank.is_global():
-            return not await self.config.disable_wallet()
-        return not await self.config.guild(ctx.guild).disable_wallet()
+            return not await self.config.disable_briefcase()
+        return not await self.config.guild(ctx.guild).disable_briefcase()
 
-    async def walletdeposit(self, ctx, user, amount):
+    async def briefcasedeposit(self, ctx, user, amount):
         conf = await self.configglobalcheckuser(user)
         main_conf = await self.configglobalcheck(ctx)
-        wallet = await conf.wallet()
-        max_bal = await main_conf.wallet_max()
-        amount = wallet + amount
+        briefcase = await conf.briefcase()
+        max_bal = await main_conf.briefcase_max()
+        amount = briefcase + amount
         if amount <= max_bal:
-            await conf.wallet.set(amount)
+            await conf.briefcase.set(amount)
         else:
-            await conf.wallet.set(max_bal)
+            await conf.briefcase.set(max_bal)
             raise ValueError
 
-    async def walletremove(self, user, amount):
+    async def briefcaseremove(self, user, amount):
         conf = await self.configglobalcheckuser(user)
-        wallet = await conf.wallet()
-        if amount < wallet:
-            await conf.wallet.set(wallet - amount)
+        briefcase = await conf.briefcase()
+        if amount < briefcase:
+            await conf.briefcase.set(briefcase - amount)
         else:
-            await conf.wallet.set(0)
+            await conf.briefcase.set(0)
 
-    async def walletwithdraw(self, user, amount):
+    async def briefcasewithdraw(self, user, amount):
         conf = await self.configglobalcheckuser(user)
-        wallet = await conf.wallet()
-        if amount < wallet:
-            await conf.wallet.set(wallet - amount)
+        briefcase = await conf.briefcase()
+        if amount < briefcase:
+            await conf.briefcase.set(briefcase - amount)
         else:
             raise ValueError
 
-    async def walletset(self, user, amount):
+    async def briefcaseset(self, user, amount):
         conf = await self.configglobalcheckuser(user)
-        await conf.wallet.set(amount)
+        await conf.briefcase.set(amount)
 
     async def bankdeposit(self, ctx, user, amount):
         conf = await self.configglobalcheckuser(user)
-        wallet = await conf.wallet()
+        briefcase = await conf.briefcase()
         deposit = abs(amount)
-        if deposit > wallet:
+        if deposit > briefcase:
             return await ctx.send("You have insufficent funds to complete this deposit.")
         try:
             await bank.deposit_credits(user, deposit)
@@ -63,25 +63,25 @@ class Wallet(MixinMeta):
             deposit = e.max_balance - await bank.get_balance(user)
             await bank.deposit_credits(user, deposit)
             msg = f"Your transaction was limited to {deposit} {e.currency_name} as your bank account has reached the max balance."
-        await self.walletset(user, wallet - deposit)
+        await self.briefcaseset(user, briefcase - deposit)
         return await ctx.send(msg)
 
-    async def walletbalance(self, user):
+    async def briefcasebalance(self, user):
         conf = await self.configglobalcheckuser(user)
-        return await conf.wallet()
+        return await conf.briefcase()
 
     async def bankwithdraw(self, ctx, user, amount):
         conf = await self.configglobalcheckuser(user)
         mainconf = await self.configglobalcheck(ctx)
-        max_bal = await mainconf.wallet_max()
-        wallet = await conf.wallet()
+        max_bal = await mainconf.briefcase_max()
+        briefcase = await conf.briefcase()
         try:
-            if wallet + amount > max_bal:
+            if briefcase + amount > max_bal:
                 return await ctx.send(
                     f"You have attempted to withdraw more cash the the maximum balance allows. The maximum balance is {humanize_number(max_bal)} {await bank.get_currency_name(ctx.guild)}."
                 )
             await bank.withdraw_credits(user, amount)
-            await self.walletset(user, wallet + amount)
+            await self.briefcaseset(user, briefcase + amount)
             return await ctx.send(
                 f"You have succesfully withdrawn {humanize_number(amount)} {await bank.get_currency_name(ctx.guild)} from your bank account."
             )
@@ -89,30 +89,30 @@ class Wallet(MixinMeta):
             return await ctx.send("You have insufficent funds to complete this withdrawal.")
 
     @commands.group()
-    @wallet_disabled_check()
+    @briefcase_disabled_check()
     @commands.guild_only()
-    async def wallet(self, ctx):
-        """Wallet commands."""
+    async def briefcase(self, ctx):
+        """Briefcase commands."""
 
-    @wallet.command()
+    @briefcase.command()
     @commands.guild_only()
     async def balance(self, ctx, user: discord.Member = None):
-        """Show the user's wallet balance.
+        """Show the user's briefcase balance.
 
         Defaults to yours.
         """
         if user is None:
             user = ctx.author
-        balance = await self.walletbalance(user)
+        balance = await self.briefcasebalance(user)
         currency = await bank.get_currency_name(ctx.guild)
         await ctx.send(
-            f"{user.display_name}'s wallet balance is {humanize_number(balance)} {currency}"
+            f"{user.display_name}'s briefcase balance is {humanize_number(balance)} {currency}"
         )
 
-    @wallet.command()
+    @briefcase.command()
     @commands.guild_only()
     async def leaderboard(self, ctx, top: int = 10):
-        """Print the wallet leaderboard."""
+        """Print the briefcase leaderboard."""
         if top < 1:
             top = 10
         guild = ctx.guild
@@ -125,20 +125,20 @@ class Wallet(MixinMeta):
                         del raw_accounts[acc]
         else:
             raw_accounts = await self.config.all_members(guild)
-        walletlist = sorted(raw_accounts.items(), key=lambda x: x[1]["wallet"], reverse=True)[:top]
+        briefcaselist = sorted(raw_accounts.items(), key=lambda x: x[1]["briefcase"], reverse=True)[:top]
         try:
-            bal_len = len(str(walletlist[0][1]["wallet"]))
+            bal_len = len(str(briefcaselist[0][1]["briefcase"]))
 
         except IndexError:
-            return await ctx.send("There are no users with a wallet balance.")
-        pound_len = len(str(len(walletlist)))
+            return await ctx.send("There are no users with a briefcase balance.")
+        pound_len = len(str(len(briefcaselist)))
         header = "{pound:{pound_len}}{score:{bal_len}}{name:2}\n".format(
             pound="#", name="Name", score="Score", bal_len=bal_len + 6, pound_len=pound_len + 3
         )
         highscores = []
         pos = 1
         temp_msg = header
-        for acc in walletlist:
+        for acc in briefcaselist:
             try:
                 name = guild.get_member(acc[0]).display_name
             except AttributeError:
@@ -146,7 +146,7 @@ class Wallet(MixinMeta):
                 if await ctx.bot.is_owner(ctx.author):
                     user_id = f"({str(acc[0])})"
                 name = f"{user_id}"
-            balance = acc[1]["wallet"]
+            balance = acc[1]["briefcase"]
 
             if acc[0] != ctx.author.id:
                 temp_msg += f"{f'{pos}.': <{pound_len+2}} {balance: <{bal_len + 5}} {name}\n"
@@ -168,28 +168,28 @@ class Wallet(MixinMeta):
         if highscores:
             await menu(ctx, highscores, DEFAULT_CONTROLS)
 
-    @wallet_disabled_check()
+    @briefcase_disabled_check()
     @check_global_setting_admin()
     @commands.guild_only()
-    @wallet.command(name="set")
-    async def _walletset(self, ctx, user: discord.Member, amount: int):
-        """Set a users wallet balance."""
+    @briefcase.command(name="set")
+    async def _briefcaseset(self, ctx, user: discord.Member, amount: int):
+        """Set a users briefcase balance."""
         conf = await self.configglobalcheck(ctx)
-        maxw = await conf.wallet_max()
+        maxw = await conf.briefcase_max()
         if amount > maxw:
             return await ctx.send(
-                f"{user.display_name}'s wallet balance cannot rise above {humanize_number(maxw)} {await bank.get_currency_name(ctx.guild)}."
+                f"{user.display_name}'s briefcase balance cannot rise above {humanize_number(maxw)} {await bank.get_currency_name(ctx.guild)}."
             )
-        await self.walletset(user, amount)
+        await self.briefcaseset(user, amount)
         await ctx.send(
-            f"{ctx.author.display_name} has set {user.display_name}'s wallet balance to {humanize_number(amount)} {await bank.get_currency_name(ctx.guild)}."
+            f"{ctx.author.display_name} has set {user.display_name}'s briefcase balance to {humanize_number(amount)} {await bank.get_currency_name(ctx.guild)}."
         )
 
     @commands.command()
-    @wallet_disabled_check()
+    @briefcase_disabled_check()
     @commands.guild_only()
     async def deposit(self, ctx, amount: Union[int, str]):
-        """Deposit cash from your wallet to your bank."""
+        """Deposit cash from your briefcase to your bank."""
         cdcheck = await self.cdcheck(ctx, "depositcd")
         if isinstance(cdcheck, tuple):
             embed = await self.cdnotice(ctx.author, cdcheck[1], "deposit")
@@ -197,14 +197,14 @@ class Wallet(MixinMeta):
         if isinstance(amount, str):
             if amount != "all":
                 return await ctx.send("You must provide a valid number or the string `all`.")
-            amount = await self.walletbalance(ctx.author)
+            amount = await self.briefcasebalance(ctx.author)
         await self.bankdeposit(ctx, ctx.author, amount)
 
     @commands.command()
-    @wallet_disabled_check()
+    @briefcase_disabled_check()
     @commands.guild_only()
     async def withdraw(self, ctx, amount: int):
-        """Withdraw cash from your bank to your wallet."""
+        """Withdraw cash from your bank to your briefcase."""
         cdcheck = await self.cdcheck(ctx, "withdrawcd")
         if isinstance(cdcheck, tuple):
             embed = await self.cdnotice(ctx.author, cdcheck[1], "withdraw")

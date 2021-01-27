@@ -10,12 +10,12 @@ from redbot.core import Config, bank, checks, commands
 from redbot.core.errors import BalanceTooHigh
 from redbot.core.utils.chat_formatting import humanize_number, humanize_timedelta, pagify
 
-from .checks import check_global_setting_admin, wallet_disabled_check
+from .checks import check_global_setting_admin, briefcase_disabled_check
 from .defaultreplies import crimes, work, slut
 from .functions import roll
 from .roulette import Roulette
 from .settings import SettingsMixin
-from .wallet import Wallet
+from .briefcase import Briefcase
 
 
 class CompositeMetaClass(type(commands.Cog), type(ABC)):
@@ -23,7 +23,7 @@ class CompositeMetaClass(type(commands.Cog), type(ABC)):
     metaclass."""
 
 
-class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=CompositeMetaClass):
+class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=CompositeMetaClass):
     """Lifestyle Commands."""
 
     __version__ = "0.5.4"
@@ -52,7 +52,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "failrates": {"slut": 2, "crime": 16, "rob": 14},
             "bailamounts": {"max": 250, "min": 10},
             "fine": 30,
-            "disable_wallet": False,
+            "disable_briefcase": False,
             "roulette_toggle": True,
             "roulette_time": 60,
             "roulette_payouts": {
@@ -65,7 +65,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 "column": 2,
             },
             "betting": {"max": 10000, "min": 100},
-            "wallet_max": 50000,
+            "briefcase_max": 50000,
         }
         defaults_member = {
             "cooldowns": {
@@ -76,7 +76,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 "depositcd": None,
                 "withdrawcd": None,
             },
-            "wallet": 0,
+            "briefcase": 0,
             "winnings": 0,
             "losses": 0,
         }
@@ -90,16 +90,16 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
     async def red_get_data_for_user(self, *, user_id: int):
         data = await self.config.user_from_id(user_id).all()
         all_members = await self.config.all_members()
-        wallets = []
+        briefcases = []
         for guild_id, member_dict in all_members.items():
             if user_id in member_dict:
                 usr = await self.config.member_from_ids(guild_id, user_id).all()
-                wallets.append(guild_id, usr["wallet"])
-        contents = f"Lifestyle Account for Discord user with ID {user_id}:\n**Global**\n- Wallet: {data['wallet']}\n"
-        if wallets:
+                briefcases.append(guild_id, usr["briefcase"])
+        contents = f"Lifestyle Account for Discord user with ID {user_id}:\n**Global**\n- Briefcase: {data['briefcase']}\n"
+        if briefcases:
             contents += "**Guilds**"
-            for bal in wallets:
-                contents += f"Guild: {bal[0]} | Wallet: {bal[1]}"
+            for bal in briefcases:
+                contents += f"Guild: {bal[0]} | Briefcase: {bal[1]}"
         return {"user_data.txt": BytesIO(contents.encode())}
 
     async def red_delete_data_for_user(
@@ -146,11 +146,11 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         bailamounts = await conf.bailamounts()
         randint = random.randint(bailamounts["min"], bailamounts["max"])
         userconf = await self.configglobalcheckuser(ctx.author)
-        bailbond = float(randint / 100) * await userconf.wallet()
+        bailbond = float(randint / 100) * await userconf.briefcase()
         amount = "$" + str(humanize_number(bailbond)) + " " + await bank.get_currency_name(ctx.guild)
-        if not await self.walletdisabledcheck(ctx):
-            if bailbond < await userconf.wallet():
-                await self.walletremove(ctx.author, bailbond)
+        if not await self.briefcasedisabledcheck(ctx):
+            if bailbond < await userconf.briefcase():
+                await self.briefcaseremove(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
                     description=f":x: You were caught by the police and posted bail for {amount}.",
@@ -206,15 +206,15 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
     @commands.guild_only()
     @commands.command(aliases=["addcashrole"])
     async def addmoneyrole(
-        self, ctx, amount: int, role: discord.Role, destination: Optional[str] = "wallet"
+        self, ctx, amount: int, role: discord.Role, destination: Optional[str] = "briefcase"
     ):
         """Add money to the balance of all users within a role.
 
-        Valid options are 'bank' or 'wallet'.
+        Valid options are 'bank' or 'briefcase'.
         """
-        if destination.lower() not in ["bank", "wallet"]:
+        if destination.lower() not in ["bank", "briefcase"]:
             return await ctx.send(
-                "Do you **want** people to get robbed?? Choose their bank or their wallet.\nOr choose nothing, and I'll give it in cash."
+                "Do you **want** people to get robbed?? Choose their bank or their briefcase.\nOr choose nothing, and I'll give it in cash."
             )
 
         failedmsg = ""
@@ -230,7 +230,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         else:
             for user in role.members:
                 try:
-                    await self.walletdeposit(ctx, user, amount)
+                    await self.briefcasedeposit(ctx, user, amount)
                 except ValueError:
                     failedmsg += f"{user} is holding the max amount of cash. I couldn't give them {amount}.\n"
         if failedmsg:
@@ -243,15 +243,15 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
     @commands.guild_only()
     @commands.command(aliases=["removecashrole"])
     async def removemoneyrole(
-        self, ctx, amount: int, role: discord.Role, destination: Optional[str] = "wallet"
+        self, ctx, amount: int, role: discord.Role, destination: Optional[str] = "briefcase"
     ):
         """Remove money from the bank balance of all users within a role.
 
-        Valid options are 'bank' or 'wallet'.
+        Valid options are 'bank' or 'briefcase'.
         """
-        if destination.lower() not in ["bank", "wallet"]:
+        if destination.lower() not in ["bank", "briefcase"]:
             return await ctx.send(
-                "Do you **want** people to get robbed?? Choose their bank or their wallet.\nOr choose nothing, and I'll give it in cash."
+                "Do you **want** people to get robbed?? Choose their bank or their briefcase.\nOr choose nothing, and I'll give it in cash."
             )
         if destination.lower() == "bank":
             for user in role.members:
@@ -261,7 +261,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                     await bank.set_balance(user, 0)
         else:
             for user in role.members:
-                await self.walletremove(user, amount)
+                await self.briefcaseremove(user, amount)
         await ctx.tick()
 
     @commands.command()
@@ -297,9 +297,9 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text="Reply #{}".format(linenum))
-        if not await self.walletdisabledcheck(ctx):
+        if not await self.briefcasedisabledcheck(ctx):
             try:
-                await self.walletdeposit(ctx, ctx.author, wage)
+                await self.briefcasedeposit(ctx, ctx.author, wage)
             except ValueError:
                 embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
@@ -349,9 +349,9 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text="Reply #{}".format(linenum))
-        if not await self.walletdisabledcheck(ctx):
+        if not await self.briefcasedisabledcheck(ctx):
             try:
-                await self.walletdeposit(ctx, ctx.author, wage)
+                await self.briefcasedeposit(ctx, ctx.author, wage)
             except ValueError:
                 embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
@@ -400,9 +400,9 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text="Reply #{}".format(linenum))
-        if not await self.walletdisabledcheck(ctx):
+        if not await self.briefcasedisabledcheck(ctx):
             try:
-                await self.walletdeposit(ctx, ctx.author, wage)
+                await self.briefcasedeposit(ctx, ctx.author, wage)
             except ValueError:
                 embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
@@ -415,7 +415,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
 
     @commands.command()
     @commands.guild_only()
-    @wallet_disabled_check()
+    @briefcase_disabled_check()
     @commands.bot_has_permissions(embed_links=True)
     async def rob(self, ctx, user: discord.Member):
         """Rob another user."""
@@ -433,13 +433,13 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         fail = random.randint(0, 100) * float(failurechance)
         if fail > failrates["rob"]:
             return await self.bail(ctx, "rob")
-        userbalance = await self.walletbalance(user)
+        userbalance = await self.briefcasebalance(user)
         if userbalance <= 50:
             bailchance = random.randint(1, 10)
             if bailchance > 5:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description="You steal {}'s wallet when they're not looking. Fortunately for them it's empty.".format(
+                    description="You steal {}'s briefcase when they're not looking. Fortunately for them it's empty.".format(
                         user.name
                     ),
                     timestamp=ctx.message.created_at,
@@ -452,15 +452,15 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
             colour=discord.Color.from_rgb(165,205,65),
-            description="You slip {}'s wallet from their pocket and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
+            description="You slip {}'s briefcase from their pocket and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
                 user.name, humanize_number(stolen)
             ),
             timestamp=ctx.message.created_at,
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         try:
-            await self.walletdeposit(ctx, ctx.author, stolen)
-            await self.walletremove(user, stolen)
+            await self.briefcasedeposit(ctx, ctx.author, stolen)
+            await self.briefcaseremove(user, stolen)
         except ValueError:
-            embed.description += f"\nOop. After stealing the cash, you notice your **own** wallet is full. You were forced to return the cash since you can't make off with it."
+            embed.description += f"\nOop. After stealing the cash, you notice your **own** briefcase is full. You were forced to return the cash since you can't make off with it."
         await ctx.send(embed=embed)
