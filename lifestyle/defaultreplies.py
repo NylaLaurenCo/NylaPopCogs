@@ -779,7 +779,7 @@ slut = [
     "You get your cheeks clapped. You get paid {amount}.",
     "You sell toe pics for {amount}.",
     "You get {amount} for your OnlyFans profit.",
-    "You submit a mixtape to get signed to a record label. The balding fat guy at the front desk says he won't pass it along as you make music in his pants. You agree to do it for {amount}.",
+    "You submit a mixtape to get signed to a record label. The balding fat guy at the front desk says he won't pass it along unless you make music in his pants. You agree to do it for {amount}.",
     "You provide lint with some panties. You get paid {amount}.",
     "You sell nudes you found online for {amount}.",
     "You strip naked on Twitch - risking a permaban for {amount}.",
