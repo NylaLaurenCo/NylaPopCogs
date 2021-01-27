@@ -151,7 +151,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             if randint < await userconf.wallet():
                 await self.walletremove(ctx.author, randint)
                 embed = discord.Embed(
-                    colour=discord.Color.from_rgb(246,146,30),
+                    colour=discord.Color.from_rgb(233,60,56),
                     description=f"\N{Ballot X} You were caught by the police and posted bail for {amount}.",
                 )
             else:
@@ -162,26 +162,26 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 if await bank.can_spend(ctx.author, fee):
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
-                        colour=discord.Color.from_rgb(246,146,30),
+                        colour=discord.Color.from_rgb(233,60,56),
                         description=f"\N{Ballot X} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
                     embed = discord.Embed(
-                        colour=discord.Color.from_rgb(246,146,30),
+                        colour=discord.Color.from_rgb(233,60,56),
                         description=f"\N{Ballot X} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
             if await bank.can_spend(ctx.author, randint):
                 await bank.withdraw_credits(ctx.author, randint)
                 embed = discord.Embed(
-                    colour=discord.Color.from_rgb(246,146,30),
+                    colour=discord.Color.from_rgb(233,60,56),
                     description=f"\N{Ballot X} You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 await bank.set_balance(ctx.author, 0)
                 embed = discord.Embed(
-                    colour=discord.Color.from_rgb(246,146,30),
+                    colour=discord.Color.from_rgb(233,60,56),
                     description=f"\N{Ballot X} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                 )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -196,7 +196,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "withdraw": f"\N{Ballot X} The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
             "deposit": f"\N{Ballot X} Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
-        embed = discord.Embed(colour=discord.Color.from_rgb(246,146,30), description=response[job])
+        embed = discord.Embed(colour=discord.Color.from_rgb(233,60,56), description=response[job])
         embed.set_author(name=user, icon_url=user.avatar_url)
         return embed
 
@@ -437,7 +437,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             bailchance = random.randint(1, 10)
             if bailchance > 5:
                 embed = discord.Embed(
-                    colour=discord.Color.from_rgb(246,146,30),
+                    colour=discord.Color.from_rgb(233,60,56),
                     description="You steal {}'s wallet when they're not looking. Fortunately for them it's empty.".format(
                         user.name
                     ),
