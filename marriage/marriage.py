@@ -64,12 +64,12 @@ class Marriage(commands.Cog):
                 "hold hands": [7, 0],
                 "hug": [15, 0],
                 "seks": [45, 0],
-                "yell": [20, 0],
-                "push": [60, 0],
-                "slap": [80, 0],
-                "punch": [95, 0],
-                "kick": [95, 0],
-                "stomp": [100, 0],
+                "yell": [-20, 0],
+                "push": [-60, 0],
+                "slap": [-80, 0],
+                "punch": [-95, 0],
+                "kick": [-95, 0],
+                "stomp": [-100, 0],
                 "breakfast": [20, 30],
                 "lunch": [20, 30],
                 "dinner": [20, 100],
@@ -217,7 +217,7 @@ class Marriage(commands.Cog):
         action = await self.config.guild(ctx.guild).stuff.get_raw(action)
         action[0] = happiness
         happiness = action[0]
-        await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action[0], happiness])
+        #await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action[0], happiness])
         await ctx.tick()
 
     @marriage.command(name="changeprice")
