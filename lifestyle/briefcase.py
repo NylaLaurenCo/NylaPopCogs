@@ -53,9 +53,9 @@ class Briefcase(MixinMeta):
     async def bankdeposit(self, ctx, user, amount):
         conf = await self.configglobalcheckuser(user)
         briefcase = await conf.briefcase()
-        deposit = abs(amount)
+        deposit = int(amount)
         if deposit > briefcase:
-            return await ctx.send("You have insufficent funds to complete this deposit.")
+            return await ctx.send("**INSUFFICIENT FUNDS!** LOL! I'm telling Hatsumi you're poor! <a:13lol_point:743118114019082241>")
         try:
             await bank.deposit_credits(user, deposit)
             msg = f"You succesfully deposited ${deposit} {await bank.get_currency_name(ctx.guild)} into your bank account."
