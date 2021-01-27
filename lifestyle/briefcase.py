@@ -3,7 +3,8 @@ from typing import Union
 import discord
 from redbot.core import bank, commands
 from redbot.core.errors import BalanceTooHigh
-from redbot.core.utils.chat_formatting import box, humanize_number
+#from redbot.core.utils.chat_formatting import box, humanize_number
+from redbot.core.utils.chat_formatting import box, humanize_number, humanize_timedelta, pagify
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .abc import MixinMeta
@@ -58,11 +59,11 @@ class Briefcase(MixinMeta):
             return await ctx.send("**INSUFFICIENT FUNDS!** LOL! I'm telling Hatsumi you're poor! <a:13lol_point:743118114019082241>")
         try:
             await bank.deposit_credits(user, deposit)
-            msg = f"You succesfully deposited ${deposit} {await bank.get_currency_name(ctx.guild)} into your bank account."
+            msg = f"You succesfully deposited ${humanize_number(deposit)} {await bank.get_currency_name(ctx.guild)} into your bank account."
         except BalanceTooHigh as e:
             deposit = e.max_balance - await bank.get_balance(user)
             await bank.deposit_credits(user, deposit)
-            msg = f"Damn. You could only deposit ${deposit} {e.currency_name} into your account, because you've exceeded your deposit limits. Be careful out there, man."
+            msg = f"Damn. You could only deposit ${humanize_number(deposit)} {e.currency_name} into your account, because you've exceeded your deposit limits. Be careful out there, man."
         await self.briefcaseset(user, briefcase - deposit)
         return await ctx.send(msg)
 
@@ -130,7 +131,7 @@ class Briefcase(MixinMeta):
             bal_len = len(str(briefcaselist[0][1]["briefcase"]))
 
         except IndexError:
-            return await ctx.send("There are no users with a briefcase balance.")
+            return await ctx.send("No one has any money in their briefcase.")
         pound_len = len(str(len(briefcaselist)))
         header = "{pound:{pound_len}}{score:{bal_len}}{name:2}\n".format(
             pound="#", name="Name", score="Score", bal_len=bal_len + 6, pound_len=pound_len + 3
@@ -196,7 +197,7 @@ class Briefcase(MixinMeta):
             return await ctx.send(embed=embed)
         if isinstance(amount, str):
             if amount != "all":
-                return await ctx.send("You must provide a valid number or the string `all`.")
+                return await ctx.send("You must provide a number or type `all`.")
             amount = await self.briefcasebalance(ctx.author)
         await self.bankdeposit(ctx, ctx.author, amount)
 
