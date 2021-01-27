@@ -134,7 +134,7 @@ class Briefcase(MixinMeta):
             return await ctx.send("No one has any money in their briefcase.")
         pound_len = len(str(len(briefcaselist)))
         header = "{pound:{pound_len}}{score:{bal_len}}{name:2}\n".format(
-            pound="#", name="Name", score="Score", bal_len=str(humanize_number(bal_len + 6)), pound_len=pound_len + 3
+            pound="#", name="Name", score="Score", bal_len=str(humanize_number(int(bal_len + 6))), pound_len=pound_len + 3
         )
         highscores = []
         pos = 1
@@ -150,12 +150,12 @@ class Briefcase(MixinMeta):
             balance = acc[1]["briefcase"]
 
             if acc[0] != ctx.author.id:
-                temp_msg += f"{f'{pos}.': <{pound_len+2}} {balance: <{bal_len + 5}} {name}\n"
+                temp_msg += f"{f'{pos}.': <{pound_len+2}} {balance: <{str(humanize_number(int(bal_len + 5)))}} {name}\n"
 
             else:
                 temp_msg += (
                     f"{f'{pos}.': <{pound_len+2}} "
-                    f"{balance: <{bal_len + 5}} "
+                    f"{balance: <{str(humanize_number(int(bal_len + 5)))}} "
                     f"<<{ctx.author.display_name}>>\n"
                 )
             if pos % 10 == 0:
