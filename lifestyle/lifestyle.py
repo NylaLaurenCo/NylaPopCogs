@@ -1,6 +1,5 @@
 import datetime
 import random
-import math
 from abc import ABC
 from io import BytesIO
 from typing import Literal, Optional
@@ -323,8 +322,9 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             embed = await self.cdnotice(ctx.author, cdcheck[1], "crime")
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
-        failrates = await conf.failrates() / 100
-        fail = random.randint(0, 100) * float(failrates)
+        failrates = await conf.failrates()
+        failurechance = failrates / 100
+        fail = random.randint(0, 100) * float(failurechance)
         if fail < failrates["crime"]:
             return await self.bail(ctx, "crime")
         payouts = await conf.payouts()
