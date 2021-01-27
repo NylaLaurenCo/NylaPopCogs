@@ -152,7 +152,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 await self.walletremove(ctx.author, randint)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(246,146,30),
-                    description=f"\N{so_x:754605452058165289} You were caught by the police and posted bail for {amount}.",
+                    description=f"\N{so_x} You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 finepercent = await self.config.guild(ctx.guild).fine()
@@ -163,38 +163,38 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(246,146,30),
-                        description=f"\N{so_x:754605452058165289} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f"\N{so_x} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(246,146,30),
-                        description=f"\N{so_x:754605452058165289} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                        description=f"\N{so_x} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
             if await bank.can_spend(ctx.author, randint):
                 await bank.withdraw_credits(ctx.author, randint)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(246,146,30),
-                    description=f"\N{so_x:754605452058165289} You were caught by the police and posted bail for {amount}.",
+                    description=f"\N{so_x} You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 await bank.set_balance(ctx.author, 0)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(246,146,30),
-                    description=f"\N{so_x:754605452058165289} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                    description=f"\N{so_x} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                 )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     async def cdnotice(self, user, cooldown, job):
         response = {
-            "work": f"\N{so_x:754605452058165289} You won't get promoted being a kiss ass. You're on break for {cooldown}.",
-            "crime": f"\N{so_x:754605452058165289} Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
-            "slut": f"\N{so_x:754605452058165289} Geez slow down. You can't slut for {cooldown}.",
-            "rob": f"\N{so_x:754605452058165289} The police are still on your trail. Wait {cooldown} for things to cool down.",
-            "withdraw": f"\N{so_x:754605452058165289} The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
-            "deposit": f"\N{so_x:754605452058165289} Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
+            "work": f"\N{so_x} You won't get promoted being a kiss ass. You're on break for {cooldown}.",
+            "crime": f"\N{so_x} Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
+            "slut": f"\N{so_x} Geez slow down. You can't slut for {cooldown}.",
+            "rob": f"\N{so_x} The police are still on your trail. Wait {cooldown} for things to cool down.",
+            "withdraw": f"\N{so_x} The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
+            "deposit": f"\N{so_x} Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
         embed = discord.Embed(colour=discord.Color.from_rgb(246,146,30), description=response[job])
         embed.set_author(name=user, icon_url=user.avatar_url)
