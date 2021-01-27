@@ -49,7 +49,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             "replies": {"slutreplies": [], "crimereplies": [], "workreplies": []},
             "rob": [],
             "payouts": {"slut": {"max": 300, "min": 10}, "crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
-            "failrates": {"slut": 50, "crime": 50, "rob": 70},
+            "failrates": {"slut": 2, "crime": 16, "rob": 14},
             "bailamounts": {"max": 250, "min": 10},
             "fine": 30,
             "disable_wallet": False,
@@ -209,7 +209,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
     ):
         """Add money to the balance of all users within a role.
 
-        Valid arguements are 'banks' or 'wallet'.
+        Valid options are 'bank' or 'wallet'.
         """
         if destination.lower() not in ["bank", "wallet"]:
             return await ctx.send(
@@ -246,7 +246,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
     ):
         """Remove money from the bank balance of all users within a role.
 
-        Valid arguements are 'banks' or 'wallet'.
+        Valid options are 'bank' or 'wallet'.
         """
         if destination.lower() not in ["bank", "wallet"]:
             return await ctx.send(
@@ -277,7 +277,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         conf = await self.configglobalcheck(ctx)
         payouts = await conf.payouts()
         wage = random.randint(payouts["work"]["min"], payouts["work"]["max"])
-        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        wagesentence = "<:xohats_rent_money:803732707423158312> $" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
         if await conf.defaultreplies():
             job = random.choice(work)
             line = job.format(amount=wagesentence)
@@ -300,13 +300,13 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             try:
                 await self.walletdeposit(ctx, ctx.author, wage)
             except ValueError:
-                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+                embed.description += f"\nYou can't carry anymore <:xohats_rent_money:803732707423158312> {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
             try:
                 await bank.deposit_credits(ctx.author, wage)
             except BalanceTooHigh as e:
                 await bank.set_balance(ctx.author, e.max_balance)
-                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+                embed.description += f"\nYou've got so much <:xohats_rent_money:803732707423158312> {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
 
         await ctx.send(embed=embed)
 
@@ -322,13 +322,13 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             embed = await self.cdnotice(ctx.author, cdcheck[1], "crime")
             return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
-        failrates = await conf.failrates()
-        fail = random.randint(0, 100)
+        failrates = await conf.failrates() / 100
+        fail = random.randint(0, 100) * float(failrates)
         if fail < failrates["crime"]:
             return await self.bail(ctx, "crime")
         payouts = await conf.payouts()
         wage = random.randint(payouts["crime"]["min"], payouts["crime"]["max"])
-        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        wagesentence = "<:xohats_rent_money:803732707423158312> $" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
         if await conf.defaultreplies():
             job = random.choice(crimes)
             line = job.format(amount=wagesentence)
@@ -351,13 +351,13 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             try:
                 await self.walletdeposit(ctx, ctx.author, wage)
             except ValueError:
-                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+                embed.description += f"\nYou can't carry anymore <:xohats_rent_money:803732707423158312> {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
             try:
                 await bank.deposit_credits(ctx.author, wage)
             except BalanceTooHigh as e:
                 await bank.set_balance(ctx.author, e.max_balance)
-                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+                embed.description += f"\nYou've got so much <:xohats_rent_money:803732707423158312> {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -378,7 +378,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             return await self.bail(ctx, "slut")
         payouts = await conf.payouts()
         wage = random.randint(payouts["slut"]["min"], payouts["slut"]["max"])
-        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        wagesentence = "<:xohats_rent_money:803732707423158312> $" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
         if await conf.defaultreplies():
             job = random.choice(slut)
             line = job.format(amount=wagesentence)
@@ -401,13 +401,13 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             try:
                 await self.walletdeposit(ctx, ctx.author, wage)
             except ValueError:
-                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+                embed.description += f"\nYou can't carry anymore <:xohats_rent_money:803732707423158312> {await bank.get_currency_name(ctx.guild)}. Baller!"
         else:
             try:
                 await bank.deposit_credits(ctx.author, wage)
             except BalanceTooHigh as e:
                 await bank.set_balance(ctx.author, e.max_balance)
-                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+                embed.description += f"\nYou've got so much <:xohats_rent_money:803732707423158312> {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -448,7 +448,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
             colour=discord.Color.green(),
-            description="You slip {}'s wallet from their pocket and find {} bucks inside. Nice!".format(
+            description="You slip {}'s wallet from their pocket and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
                 user.name, humanize_number(stolen)
             ),
             timestamp=ctx.message.created_at,
