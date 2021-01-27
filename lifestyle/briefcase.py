@@ -23,7 +23,7 @@ class Briefcase(MixinMeta):
         main_conf = await self.configglobalcheck(ctx)
         briefcase = await conf.briefcase()
         max_bal = await main_conf.briefcase_max()
-        amount = briefcase + amount
+        amount = abs(briefcase + amount)
         if amount <= max_bal:
             await conf.briefcase.set(amount)
         else:
@@ -58,11 +58,11 @@ class Briefcase(MixinMeta):
             return await ctx.send("You have insufficent funds to complete this deposit.")
         try:
             await bank.deposit_credits(user, deposit)
-            msg = f"You have succesfully deposited {deposit} {await bank.get_currency_name(ctx.guild)} into your bank account."
+            msg = f"You succesfully deposited ${deposit} {await bank.get_currency_name(ctx.guild)} into your bank account."
         except BalanceTooHigh as e:
             deposit = e.max_balance - await bank.get_balance(user)
             await bank.deposit_credits(user, deposit)
-            msg = f"Your transaction was limited to {deposit} {e.currency_name} as your bank account has reached the max balance."
+            msg = f"Damn. You could only deposit ${deposit} {e.currency_name} into your account, because you've exceeded your deposit limits. Be careful out there, man."
         await self.briefcaseset(user, briefcase - deposit)
         return await ctx.send(msg)
 
@@ -78,15 +78,15 @@ class Briefcase(MixinMeta):
         try:
             if briefcase + amount > max_bal:
                 return await ctx.send(
-                    f"You have attempted to withdraw more cash the the maximum balance allows. The maximum balance is {humanize_number(max_bal)} {await bank.get_currency_name(ctx.guild)}."
+                    f"You tried to withdraw more cash than you can hold. Tf are you doing, dude? lol keep it under ${humanize_number(max_bal)} {await bank.get_currency_name(ctx.guild)}."
                 )
             await bank.withdraw_credits(user, amount)
             await self.briefcaseset(user, briefcase + amount)
             return await ctx.send(
-                f"You have succesfully withdrawn {humanize_number(amount)} {await bank.get_currency_name(ctx.guild)} from your bank account."
+                f"You succesfully withdrew ${humanize_number(amount)} {await bank.get_currency_name(ctx.guild)} from your bank account."
             )
         except ValueError:
-            return await ctx.send("You have insufficent funds to complete this withdrawal.")
+            return await ctx.send("**INSUFFICIENT FUNDS!** LOL! I'm telling Hatsumi you're poor! <a:13lol_point:743118114019082241>")
 
     @commands.group()
     @briefcase_disabled_check()
@@ -97,7 +97,7 @@ class Briefcase(MixinMeta):
     @briefcase.command()
     @commands.guild_only()
     async def balance(self, ctx, user: discord.Member = None):
-        """Show the user's briefcase balance.
+        """Show someone's briefcase balance.
 
         Defaults to yours.
         """
@@ -106,7 +106,7 @@ class Briefcase(MixinMeta):
         balance = await self.briefcasebalance(user)
         currency = await bank.get_currency_name(ctx.guild)
         await ctx.send(
-            f"{user.display_name}'s briefcase balance is {humanize_number(balance)} {currency}"
+            f"{user.display_name} has ${humanize_number(balance)} {currency} in their briefcase."
         )
 
     @briefcase.command()
@@ -178,11 +178,11 @@ class Briefcase(MixinMeta):
         maxw = await conf.briefcase_max()
         if amount > maxw:
             return await ctx.send(
-                f"{user.display_name}'s briefcase balance cannot rise above {humanize_number(maxw)} {await bank.get_currency_name(ctx.guild)}."
+                f"{user.display_name}'s briefcase can't hold more than ${humanize_number(maxw)} {await bank.get_currency_name(ctx.guild)}."
             )
         await self.briefcaseset(user, amount)
         await ctx.send(
-            f"{ctx.author.display_name} has set {user.display_name}'s briefcase balance to {humanize_number(amount)} {await bank.get_currency_name(ctx.guild)}."
+            f"{ctx.author.display_name} stashed ${humanize_number(amount)} {await bank.get_currency_name(ctx.guild)} in {user.display_name}'s briefcase."
         )
 
     @commands.command()
