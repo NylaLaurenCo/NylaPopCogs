@@ -145,7 +145,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         conf = await self.configglobalcheck(ctx)
         bailamounts = await conf.bailamounts()
         randint = random.randint(bailamounts["min"], bailamounts["max"])
-        amount = str(humanize_number(randint)) + " " + await bank.get_currency_name(ctx.guild)
+        amount = "<:xohats_rent_money:803732707423158312> $" + str(humanize_number(randint)) + " " + await bank.get_currency_name(ctx.guild)
         userconf = await self.configglobalcheckuser(ctx.author)
         if not await self.walletdisabledcheck(ctx):
             if randint < await userconf.wallet():
@@ -189,7 +189,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
 
     async def cdnotice(self, user, cooldown, job):
         response = {
-            "work": f"\N{NEGATIVE SQUARED CROSS MARK} You won't get promoted being a kiss ass. You're on break for '{cooldown}.",
+            "work": f"\N{NEGATIVE SQUARED CROSS MARK} You won't get promoted being a kiss ass. You're on break for {cooldown}.",
             "crime": f"\N{NEGATIVE SQUARED CROSS MARK} Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
             "slut": f"\N{NEGATIVE SQUARED CROSS MARK} Geez slow down. You can't slut for {cooldown}.",
             "rob": f"\N{NEGATIVE SQUARED CROSS MARK} The police are still on your trail. Wait {cooldown} for things to cool down.",
