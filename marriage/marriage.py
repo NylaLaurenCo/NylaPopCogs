@@ -215,10 +215,10 @@ class Marriage(commands.Cog):
         if happiness > 100:
             return await ctx.send("Um happiness has to be 100 or less.")
         action = await self.config.guild(ctx.guild).stuff.get_raw(action)
-        action[0] = happiness
+        #action[0] = happiness
         #happiness = action[0]
         #action = await self.config.guild(ctx.guild).stuff.get_raw(action)
-        #await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action[0], happiness])
+        await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action[0], happiness])
         await ctx.tick()
 
     @marriage.command(name="changeprice")
@@ -267,7 +267,7 @@ class Marriage(commands.Cog):
         if price < 0:
             return await ctx.send("Um price has to be 0 or more.")
         action_data = await self.config.guild(ctx.guild).stuff.get_raw(action)
-        await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action_data[1], price])
+        await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action_data[0], price])
         await ctx.tick()
 
     @commands.guild_only()
