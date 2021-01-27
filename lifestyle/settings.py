@@ -311,10 +311,10 @@ class SettingsMixin(MixinMeta):
             value=f"**Max**: {humanize_number(bailamounts['max'])}%\n**Min**: {humanize_number(bailamounts['min'])}%",
             inline=True,
         )
-        embed.add_field(name="Cooldown Settings", value=cooldownmsg, inline=True)
+        embed.add_field(name="Cooldown Info", value=cooldownmsg, inline=True)
         briefcasesettings = data["disable_briefcase"]
         embed.add_field(
-            name="Briefcase",
+            name="Briefcase Info",
             value="Disabled."
             if not briefcasesettings
             else f"**Max Balance**: {humanize_number(data['briefcase_max'])}\n**Withdraw Cooldown**: {humanize_timedelta(seconds=cooldowns['withdrawcd'])}\n**Deposit Cooldown**: {humanize_timedelta(seconds=cooldowns['depositcd'])}",
