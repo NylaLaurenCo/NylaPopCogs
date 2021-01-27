@@ -133,7 +133,7 @@ class Briefcase(MixinMeta):
         except IndexError:
             return await ctx.send("No one has any money in their briefcase.")
         pound_len = len(str(len(briefcaselist)))
-        header = "{pound:{pound_len}}{score:{bal_len}}{name:2}\n".format(
+        header = "{pound:{pound_len}}{score:{str(humanize_number(int(bal_len)))}}{name:2}\n".format(
             pound="#", name="Name", score="Score", bal_len=bal_len + 6, pound_len=pound_len + 3
         )
         highscores = []
