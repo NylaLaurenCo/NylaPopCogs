@@ -151,8 +151,8 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             if randint < await userconf.wallet():
                 await self.walletremove(ctx.author, randint)
                 embed = discord.Embed(
-                    colour=discord.Color.red(),
-                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
+                    colour=discord.Color.from_rgb(246,146,30),
+                    description=f"\N<:so_x:754605452058165289> You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 finepercent = await self.config.guild(ctx.guild).fine()
@@ -162,41 +162,41 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                 if await bank.can_spend(ctx.author, fee):
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
-                        colour=discord.Color.red(),
-                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        colour=discord.Color.from_rgb(246,146,30),
+                        description=f"\N<:so_x:754605452058165289> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
                     embed = discord.Embed(
-                        colour=discord.Color.red(),
-                        description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                        colour=discord.Color.from_rgb(246,146,30),
+                        description=f"\N<:so_x:754605452058165289> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
             if await bank.can_spend(ctx.author, randint):
                 await bank.withdraw_credits(ctx.author, randint)
                 embed = discord.Embed(
-                    colour=discord.Color.red(),
-                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}.",
+                    colour=discord.Color.from_rgb(246,146,30),
+                    description=f"\N<:so_x:754605452058165289> You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 await bank.set_balance(ctx.author, 0)
                 embed = discord.Embed(
-                    colour=discord.Color.red(),
-                    description=f"\N{NEGATIVE SQUARED CROSS MARK} You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                    colour=discord.Color.from_rgb(246,146,30),
+                    description=f"\N<:so_x:754605452058165289> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                 )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     async def cdnotice(self, user, cooldown, job):
         response = {
-            "work": f"\N{NEGATIVE SQUARED CROSS MARK} You won't get promoted being a kiss ass. You're on break for {cooldown}.",
-            "crime": f"\N{NEGATIVE SQUARED CROSS MARK} Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
-            "slut": f"\N{NEGATIVE SQUARED CROSS MARK} Geez slow down. You can't slut for {cooldown}.",
-            "rob": f"\N{NEGATIVE SQUARED CROSS MARK} The police are still on your trail. Wait {cooldown} for things to cool down.",
-            "withdraw": f"\N{NEGATIVE SQUARED CROSS MARK} The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
-            "deposit": f"\N{NEGATIVE SQUARED CROSS MARK} Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
+            "work": f"\N<:so_x:754605452058165289> You won't get promoted being a kiss ass. You're on break for {cooldown}.",
+            "crime": f"\N<:so_x:754605452058165289> Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
+            "slut": f"\N<:so_x:754605452058165289> Geez slow down. You can't slut for {cooldown}.",
+            "rob": f"\N<:so_x:754605452058165289> The police are still on your trail. Wait {cooldown} for things to cool down.",
+            "withdraw": f"\N<:so_x:754605452058165289> The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
+            "deposit": f"\N<:so_x:754605452058165289> Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
-        embed = discord.Embed(colour=discord.Color.red(), description=response[job])
+        embed = discord.Embed(colour=discord.Color.from_rgb(246,146,30), description=response[job])
         embed.set_author(name=user, icon_url=user.avatar_url)
         return embed
 
@@ -292,7 +292,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             linenum = replies["workreplies"].index(job)
             line = job.format(amount=wagesentence)
         embed = discord.Embed(
-            colour=discord.Color.green(), description=line, timestamp=ctx.message.created_at
+            colour=discord.Color.from_rgb(165,205,65), description=line, timestamp=ctx.message.created_at
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text="Reply #{}".format(linenum))
@@ -344,7 +344,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             line = job.format(amount=wagesentence)
             linenum = replies["crimereplies"].index(job)
         embed = discord.Embed(
-            colour=discord.Color.green(), description=line, timestamp=ctx.message.created_at
+            colour=discord.Color.from_rgb(165,205,65), description=line, timestamp=ctx.message.created_at
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text="Reply #{}".format(linenum))
@@ -395,7 +395,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             line = job.format(amount=wagesentence)
             linenum = replies["slutreplies"].index(job)
         embed = discord.Embed(
-            colour=discord.Color.green(), description=line, timestamp=ctx.message.created_at
+            colour=discord.Color.from_rgb(165,205,65), description=line, timestamp=ctx.message.created_at
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.set_footer(text="Reply #{}".format(linenum))
@@ -437,7 +437,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             bailchance = random.randint(1, 10)
             if bailchance > 5:
                 embed = discord.Embed(
-                    colour=discord.Color.red(),
+                    colour=discord.Color.from_rgb(246,146,30),
                     description="You steal {}'s wallet when they're not looking. Fortunately for them it's empty.".format(
                         user.name
                     ),
@@ -450,7 +450,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         modifier = roll()
         stolen = random.randint(1, int(userbalance * modifier))
         embed = discord.Embed(
-            colour=discord.Color.green(),
+            colour=discord.Color.from_rgb(165,205,65),
             description="You slip {}'s wallet from their pocket and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
                 user.name, humanize_number(stolen)
             ),
