@@ -64,12 +64,12 @@ class Marriage(commands.Cog):
                 "hold hands": [7, 0],
                 "hug": [15, 0],
                 "seks": [45, 0],
-                "yell": [-20, 0],
-                "push": [-60, 0],
-                "slap": [-80, 0],
-                "punch": [-95, 0],
-                "kick": [-95, 0],
-                "stomp": [-100, 0],
+                "yell": [20, 0],
+                "push": [60, 0],
+                "slap": [80, 0],
+                "punch": [95, 0],
+                "kick": [95, 0],
+                "stomp": [100, 0],
                 "breakfast": [20, 30],
                 "lunch": [20, 30],
                 "dinner": [20, 100],
@@ -162,63 +162,6 @@ class Marriage(commands.Cog):
         if multiplier <= 1:
             return await ctx.send("Um that ain't a valia multiplier.")
         await self.config.guild(ctx.guild).divprice.set(multiplier)
-        await ctx.tick()
-
-    @marriage.command(name="changehappiness")
-    async def marriage_changehappiness(
-        self, ctx: commands.Context, action: str, happiness: int
-    ):
-        """Set the action's/gift's happiness
-
-        Happiness has to be in range 1 to 100. Negative actions (f.e. flirting with someone other than one's spouse) should have negative happiness.
-        !!! Remember that starting point for everyone is 100 == happy and satisfied, 0 == leave their spouse"""
-        available = [
-          "flirt",
-          "glance",
-          "stare",
-          "wink",
-          "kiss",
-          "hold hands",
-          "hug",
-          "seks",
-          "yell",
-          "push",
-          "slap",
-          "punch",
-          "kick",
-          "stomp",
-          "breakfast",
-          "lunch",
-          "dinner",
-          "snack",
-          "date",
-          "flowers",
-          "sweets",
-          "coffee",
-          "drinks",
-          "shopping",
-          "pamper",
-          "loveletter",
-          "sext",
-          "nudes",
-          "makeup",
-          "car",
-          "house",
-          "yacht",
-          "vacation",
-          "money",
-        ]
-        if action not in available:
-            return await ctx.send(f"Available actions/gifts are: {available}")
-        #if happiness < 0:
-        #    return await ctx.send("Um happiness has to be 0 or more.")
-        if happiness > 100:
-            return await ctx.send("Um happiness has to be 100 or less.")
-        action = await self.config.guild(ctx.guild).stuff.get_raw(action)
-        #action[0] = happiness
-        #happiness = action[0]
-        #action = await self.config.guild(ctx.guild).stuff.get_raw(action)
-        await self.config.guild(ctx.guild).stuff.set_raw(action, value=[action[0], happiness])
         await ctx.tick()
 
     @marriage.command(name="changeprice")
@@ -722,26 +665,32 @@ class Marriage(commands.Cog):
                 f"<a:hatsu_love:802963021127352320> {ctx.author.mention} gently grabs {member.mention} and hugs them close."
             )
         elif action == "yell":
+            happiness = action[0] * -1
             endtext = (
                 f"<:13eyes:754285875453624330> {ctx.author.mention} yelled so loudly at {member.mention} that all the neighbors could hear! <:13sb_look:736425355417485362>"
             )
         elif action == "push":
+            happiness = action[0] * -1
             endtext = (
                 f"<:13eyes2:754285875416006706> {ctx.author.mention} pushed {member.mention} and made them fall into a cabinet. Oh sh-!"
             )
         elif action == "slap":
+            happiness = action[0] * -1
             endtext = (
                 f"<a:k_k_slap:733372281639665688> {ctx.author.mention} reached back and slapped {member.mention} **HARD** across the face!"
             )
         elif action == "punch":
+            happiness = action[0] * -1
             endtext = (
                 f"<a:square_up:796218591866912799> WTF!! {ctx.author.mention} punched {member.mention} in the face and knocked out a tooth!"
             )
         elif action == "kick":
+            happiness = action[0] * -1
             endtext = (
                 f":scream: OMGSH! {ctx.author.mention} JUST KICKED {member.mention}! I hope they're okay!"
             )
         elif action == "stomp":
+            happiness = action[0] * -1
             endtext = (
                 f"**WTF!!!** {ctx.author.mention} **CURB STOMPED {member.mention}!** THEIR EARS ARE BLEEDING!!!"
             )
