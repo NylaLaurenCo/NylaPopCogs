@@ -314,7 +314,7 @@ class SettingsMixin(MixinMeta):
         embed.add_field(name="Cooldown Settings", value=cooldownmsg, inline=True)
         briefcasesettings = data["disable_briefcase"]
         embed.add_field(
-            name="Briefcase Settings",
+            name="Briefcase",
             value="Disabled."
             if not briefcasesettings
             else f"**Max Balance**: {humanize_number(data['briefcase_max'])}\n**Withdraw Cooldown**: {humanize_timedelta(seconds=cooldowns['withdrawcd'])}\n**Deposit Cooldown**: {humanize_timedelta(seconds=cooldowns['depositcd'])}",
@@ -323,7 +323,7 @@ class SettingsMixin(MixinMeta):
         minbet = humanize_number(data["betting"]["min"])
         maxbet = humanize_number(data["betting"]["max"])
         betstats = f"**Max**: {maxbet}\n**Min**: {minbet}"
-        embed.add_field(name="Betting Information", value=betstats)
+        embed.add_field(name="Betting Info", value=betstats)
         roulette = data["roulette_toggle"]
         game_stats = f"**Roulette**: {'Enabled' if roulette else 'Disabled'}"
         embed.add_field(name="Games", value=game_stats)
