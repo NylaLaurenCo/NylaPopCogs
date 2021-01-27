@@ -145,11 +145,12 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         conf = await self.configglobalcheck(ctx)
         bailamounts = await conf.bailamounts()
         randint = random.randint(bailamounts["min"], bailamounts["max"])
-        amount = "$" + str(humanize_number(randint)) + " " + await bank.get_currency_name(ctx.guild)
         userconf = await self.configglobalcheckuser(ctx.author)
+        bailbond = float(randint / 100) * await userconf.wallet()
+        amount = "$" + str(humanize_number(bailbond)) + " " + await bank.get_currency_name(ctx.guild)
         if not await self.walletdisabledcheck(ctx):
-            if randint < await userconf.wallet():
-                await self.walletremove(ctx.author, randint)
+            if bailbond < await userconf.wallet():
+                await self.walletremove(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
                     description=f":x: You were caught by the police and posted bail for {amount}.",
@@ -157,7 +158,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
             else:
                 finepercent = await self.config.guild(ctx.guild).fine()
                 fee = int(
-                    randint * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
+                    bailbond * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
                 )
                 if await bank.can_spend(ctx.author, fee):
                     await bank.withdraw_credits(ctx.author, fee)
@@ -172,8 +173,8 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
                         description=f":x: You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
-            if await bank.can_spend(ctx.author, randint):
-                await bank.withdraw_credits(ctx.author, randint)
+            if await bank.can_spend(ctx.author, bailbond):
+                await bank.withdraw_credits(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
                     description=f":x: You were caught by the police and posted bail for {amount}.",
