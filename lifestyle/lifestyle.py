@@ -325,7 +325,7 @@ class Lifestyle(Wallet, Roulette, SettingsMixin, commands.Cog, metaclass=Composi
         failrates = await conf.failrates()
         failurechance = failrates["crime"] / 100
         fail = random.randint(0, 100) * float(failurechance)
-        if fail < failrates["crime"]:
+        if fail > failrates["crime"]:
             return await self.bail(ctx, "crime")
         payouts = await conf.payouts()
         wage = random.randint(payouts["crime"]["min"], payouts["crime"]["max"])
