@@ -35,17 +35,17 @@ class Marriage(commands.Cog):
             marcount=0,
             happiness=100,
             gifts={
-                "loveletter": 0,
+                "a love letter": 0,
                 "flowers": 0,
                 "sweets": 0,
                 "coffee": 0,
-                "snack": 0,
+                "snacks": 0,
                 "shopping": 0,
                 "makeup": 0,
                 "nudes": 0,
-                "car": 0,
-                "house": 0,
-                "yacht": 0,
+                "a car": 0,
+                "a house": 0,
+                "a yacht": 0,
                 "money": 0,
             },
         )
@@ -73,7 +73,7 @@ class Marriage(commands.Cog):
                 "breakfast": [20, 30],
                 "lunch": [20, 30],
                 "dinner": [20, 100],
-                "snack": [15, 10],
+                "snacks": [15, 10],
                 "date": [10, 150],
                 "flowers": [15, 60],
                 "sweets": [20, 20],
@@ -81,13 +81,13 @@ class Marriage(commands.Cog):
                 "drinks": [10, 60],
                 "shopping": [40, 1000],
                 "pamper": [45, 500],
-                "loveletter": [10, 0],
+                "a love letter": [10, 0],
                 "sext": [25, 0],
                 "nudes": [30, 0],
                 "makeup": [8, 100],
-                "car": [50, 35000],
-                "house": [90, 500000],
-                "yacht": [100, 1000000],
+                "a car": [50, 35000],
+                "a house": [90, 500000],
+                "a yacht": [100, 1000000],
                 "vacation": [60, 5000],
                 "money": [45, 5000],
             },
@@ -187,7 +187,7 @@ class Marriage(commands.Cog):
           "breakfast",
           "lunch",
           "dinner",
-          "snack",
+          "snacks",
           "date",
           "flowers",
           "sweets",
@@ -195,13 +195,13 @@ class Marriage(commands.Cog):
           "drinks",
           "shopping",
           "pamper",
-          "loveletter",
+          "a love letter",
           "sext",
           "nudes",
           "makeup",
-          "car",
-          "house",
-          "yacht",
+          "a car",
+          "a house",
+          "a yacht",
           "vacation",
           "money",
         ]
@@ -298,9 +298,9 @@ class Marriage(commands.Cog):
             amount = gifts.get(gift)
             if amount > 0:
                 if amount == 1:
-                    textos = f"{gift} - {amount} pc"
+                    textos = f"{gift}: {amount}"
                 else:
-                    textos = f"{gift} - {amount} pcs"
+                    textos = f"{gift}: {amount}"
                 giftos.append(textos)
             else:
                 continue
@@ -321,7 +321,7 @@ class Marriage(commands.Cog):
         e.add_field(name="x Married:", value=been_married)
         if await conf.marcount() != 0:
             e.add_field(name="Exes:", value=ex_text)
-        e.add_field(name="Assets:", value=f"{bal} {currency}")
+        e.add_field(name="Assets:", value=f"${str(humanize_number(int(bal)))} {currency}")
         e.add_field(name="Owned Gifts:", value=gift_text)
 
         await ctx.send(embed=e)
@@ -696,23 +696,23 @@ class Marriage(commands.Cog):
             )
         elif action == "gift":
             gifts = [
-                "loveletter",
+                "a love letter",
                 "flowers",
                 "sweets",
                 "coffee",
-                "snack",
+                "snacks",
                 "shopping",
                 "makeup",
                 "nudes",
-                "car",
-                "house",
-                "yacht",
+                "a car",
+                "a house",
+                "a yacht",
                 "money",
             ]
             if item not in gifts:
                 return await ctx.send(f"Available gifts are: {gifts}")
             endtext = (
-                f":gift: {ctx.author.mention} has gifted one {item} to {member.mention}"
+                f"<a:diamond_crystal:716788632228462652> Awww {ctx.author.mention} surprised {member.mention} with {item}. <:k_mm_heart02:733370308614029322>"
             )
         else:
             return await ctx.send(
