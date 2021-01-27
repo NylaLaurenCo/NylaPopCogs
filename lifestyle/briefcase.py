@@ -147,7 +147,7 @@ class Briefcase(MixinMeta):
                 if await ctx.bot.is_owner(ctx.author):
                     user_id = f"({str(acc[0])})"
                 name = f"{user_id}"
-            balance = acc[1]["briefcase"]
+            balance = str(humanize_number(int(acc[1]["briefcase"])))
 
             if acc[0] != ctx.author.id:
                 temp_msg += f"{f'{pos}.': <{pound_len+2}} {balance: <{str(humanize_number(int(bal_len + 5)))}} {name}\n"
