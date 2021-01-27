@@ -94,7 +94,7 @@ class Marriage(commands.Cog):
         )
 
     "stuff": [happiness, price]
-    "gift": owned pcs
+    "gift": [owned pcs]
 
     @commands.group(autohelp=True)
     @commands.guild_only()
