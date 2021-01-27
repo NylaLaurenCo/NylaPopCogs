@@ -107,7 +107,7 @@ class Briefcase(MixinMeta):
         balance = await self.briefcasebalance(user)
         currency = await bank.get_currency_name(ctx.guild)
         await ctx.send(
-            f"{user.display_name} has ${humanize_number(balance)} {currency} in their briefcase."
+            f"{user.display_name} has ${humanize_number(int(balance))} {currency} in their briefcase."
         )
 
     @briefcase.command()
