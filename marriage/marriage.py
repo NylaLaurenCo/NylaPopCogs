@@ -64,7 +64,7 @@ class Marriage(commands.Cog):
                 "hold hands": [7, 0],
                 "hug": [15, 0],
                 "seks": [45, 0],
-                "yell": [-20, 0],
+                "yell": [0, -20],
                 "push": [-60, 0],
                 "slap": [-80, 0],
                 "punch": [-95, 0],
