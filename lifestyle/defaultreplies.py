@@ -824,7 +824,7 @@ slut = [
     "You sell scented postcards with nudes and a singular leg hair attached for {amount}.",
     "You get accepted to walk around a farm naked going from chicken coop to chicken coop, rubbing the backs of nursing chicks and whispering 'you're getting so big' for {amount}.",
     "Leihgo hires you as a beta tester for their new lego-inspired sex toys. You earn {amount} for destroying your genitals with blocks.",
-    "You get paid {amount} to fill-in as your neighbor's made-to-order sex doll while its at the cleaners.",
+    "You get paid {amount} to fill-in as your neighbor's made-to-order sex doll while it's at the cleaners.",
     "Your gay bff asks you to cover their shift at work. You spend the night in your undies being groped at a gay bar. You get paid {amount} extra for liking it.",
     "You resell gently used condoms on Instagram for {amount}.",
     "Your bitter ex's equally bitter ex asks you for their nudes to leak on OnlyFans. You accept and earn {amount} in profit.",
