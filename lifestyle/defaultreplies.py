@@ -863,5 +863,7 @@ slut = [
     "You get paid {amount} for an easy night of stripping.",
     "The PPD is having a retirement party for the former Chief of Police. They ask you to sniff coke from the evidence room and let the chief write a list of people he had arrested on your titties. You agree to do it so long as they give you heroin instead, and then go party like a boss. You earn {amount} for your cooperation.",
     "XOHatsumi pays you {amount} to confiscate her panties from lint.",
+    "{amount} falls out of your vagina.",
+    "You wake up to find {amount} wrapped around your pee pee.",
     "NargDevTTV hires you to recover his missing jockstrap. You find out lint has it and he's willing to fight for it. After beating the shit out of a fluffy green creature with the voice of an 8-year old kid, you recover the jockstrap and return it to Dev. Thankful, he pays you {amount}.",
 ]
