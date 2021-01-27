@@ -804,7 +804,7 @@ slut = [
     "Your straight frat bro invites you over for a sleepover. You wake up in the middle of the night to the sound of him fapping to your snores. He pays you {amount} to keep quiet.",
     "Your landlord demands your rent money, but you're short after trying to rob people in bot spam. They pay **YOU** {amount} instead for doing them 'favors'.",
     "A weeb asks you to do some cosplay BBC Naruto for {amount}, and you accept.",
-    "You lick your bosses toe webbing for a promotion. You don't get the promotion, but she tosses you a bonus towards your next check. You get paid {amount}.",
+    "You lick your boss's toe webbing for a promotion. You don't get the promotion, but she tosses you a bonus towards your next check. You get paid {amount}.",
     "Your girlfriend confesses she gets turned on by the sound of dying whales. You do your best vocal impression the next time you two bang. She cums so hard, she rewards you with {amount} towards the purchase of a PS5.",
     "Your client pays you {amount} for a 30-second quickie.",
     "After being roasted in the locker room for having a 1-inch schlong, you sign up for an experimental dick extension surgery. It fails and you're left with no dick at all. The doctors pay you {amount} for your time.",
