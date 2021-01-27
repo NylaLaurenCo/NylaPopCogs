@@ -195,7 +195,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
             "slut": f":x: Geez slow down. You can't slut for {cooldown}.",
             "rob": f":x: The police are still on your trail. Wait {cooldown} for things to cool down.",
             "withdraw": f":x: The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
-            "deposit": f":x: Geezus, the teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
+            "deposit": f":x: Geezus, the Teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
         embed = discord.Embed(colour=discord.Color.from_rgb(233,60,56), description=response[job])
         embed.set_author(name=user, icon_url=user.avatar_url)
