@@ -210,8 +210,8 @@ class Marriage(commands.Cog):
         ]
         if action not in available:
             return await ctx.send(f"Available actions/gifts are: {available}")
-        if happiness < 0:
-            return await ctx.send("Um happiness has to be 0 or more.")
+        #if happiness < 0:
+        #    return await ctx.send("Um happiness has to be 0 or more.")
         if happiness > 100:
             return await ctx.send("Um happiness has to be 100 or less.")
         action = await self.config.guild(ctx.guild).stuff.get_raw(action)
