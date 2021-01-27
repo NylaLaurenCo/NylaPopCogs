@@ -773,7 +773,7 @@ slut = [
     "You walk in on lint doing naughty things with your undies. You promise to keep it a secret and give him a weekly supply. He pays you {amount}.",
     "You get {amount} for selling your used bath water.",
     "You sell eGirl toenail clippings to desperate premium snapchat simps for {amount}.",
-    "Your dad's friend likes to play pretend cowboys with cute college students. You've always been a fan of the Wild Wild West and signed up for a heckin' good time. Unfortunately for you, 'cowboys' is the nickname your dad's friend has for his dick. You play with it anyway and get paid {amount}, and you accept.",
+    "Your dad's friend likes to play pretend cowboys with cute college students. You've always been a fan of the Wild Wild West and signed up for a heckin' good time. Unfortunately for you, 'cowboys' is the nickname your dad's friend has for his dick. You play with it anyway and get paid {amount}.",
     "You get your cheeks clapped. You get paid {amount}.",
     "You sell toe pics for {amount}.",
     "You get {amount} for your OnlyFans profit.",
