@@ -97,8 +97,8 @@ class Briefcase(MixinMeta):
 
     @briefcase.command()
     @commands.guild_only()
-    async def balance(self, ctx, user: discord.Member = None):
-        """Show someone's briefcase balance.
+    async def stash(self, ctx, user: discord.Member = None):
+        """See how much money is in someone's briefcase.
 
         Defaults to yours.
         """
@@ -112,8 +112,8 @@ class Briefcase(MixinMeta):
 
     @briefcase.command()
     @commands.guild_only()
-    async def leaderboard(self, ctx, top: int = 10):
-        """Print the briefcase leaderboard."""
+    async def fattest(self, ctx, top: int = 10):
+        """See who has the most stacked briefcase."""
         if top < 1:
             top = 10
         guild = ctx.guild
