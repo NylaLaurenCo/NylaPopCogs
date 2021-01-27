@@ -3,7 +3,7 @@ import asyncio
 import random
 
 from redbot.core import Config, checks, commands, bank
-from redbot.core.utils.chat_formatting import humanize_list
+from redbot.core.utils.chat_formatting import humanize_number, humanize_timedelta, pagify, humanize_list
 from redbot.core.utils.predicates import MessagePredicate
 
 from redbot.core.bot import Red
