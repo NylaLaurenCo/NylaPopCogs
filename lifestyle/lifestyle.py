@@ -325,7 +325,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
         failurechance = failrates["crime"] / 100
-        fail = random.randint(0, 100) * float(failurechance)
+        fail = random.randint(1, 100) * float(failurechance)
         if fail > failrates["crime"]:
             return await self.bail(ctx, "crime")
         payouts = await conf.payouts()
@@ -376,7 +376,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
         failurechance = failrates["slut"] / 100
-        fail = random.randint(0, 100) * float(failurechance)
+        fail = random.randint(1, 100) * float(failurechance)
         if fail > failrates["slut"]:
             return await self.bail(ctx, "slut")
         payouts = await conf.payouts()
@@ -430,7 +430,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         conf = await self.configglobalcheck(ctx)
         failrates = await conf.failrates()
         failurechance = failrates["rob"] / 100
-        fail = random.randint(0, 100) * float(failurechance)
+        fail = random.randint(1, 100) * float(failurechance)
         if fail > failrates["rob"]:
             return await self.bail(ctx, "rob")
         userbalance = await self.briefcasebalance(user)
