@@ -372,7 +372,6 @@ crimes = [
     "You stole a package from your neighbor and sold it on the deep web for  {amount}",
     "You sell your kidney on the black market for {amount}",
     "You steal a painting of a moustached man and sell it for {amount}",
-    "You post nudes on the internet for {amount}",
     "You manage to persuade a Lord into thinking that you're a banker. He gives you his {amount} for safe keeping .",
     "You tried to help someone with a bot, but they were greedy and stole {amount} from you!",
     "You sold drugs for {amount}",
@@ -863,5 +862,6 @@ slut = [
     "XOHatsumi pays you {amount} to confiscate her panties from lint.",
     "{amount} falls out of your vagina.",
     "You wake up to find {amount} wrapped around your pee pee.",
+    "You post nudes on the internet for {amount}",
     "NargDevTTV hires you to recover his missing jockstrap. You find out lint has it and he's willing to fight for it. After beating the shit out of a fluffy green creature with the voice of an 8-year old kid, you recover the jockstrap and return it to Dev. Thankful, he pays you {amount}.",
 ]
