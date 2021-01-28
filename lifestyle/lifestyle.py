@@ -146,16 +146,16 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         bailamounts = await conf.bailamounts()
         randint = random.randint(bailamounts["min"], bailamounts["max"])
         userconf = await self.configglobalcheckuser(ctx.author)
-        currentbank = await bank.can_spend(ctx.author, amount)
+        currentbank = await bank(ctx.author)
         bailbond = currentbank - int(float(random.randint(1, 100) / 100) * currentbank)
         #await userconf.briefcase()
-        bailamount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
+        amount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
         if not await self.briefcasedisabledcheck(ctx):
             if bailbond < await userconf.briefcase():
                 await self.briefcaseremove(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {bailamount}.",
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 finepercent = await self.config.guild(ctx.guild).fine()
@@ -166,26 +166,26 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(233,60,56),
-                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {bailamount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(233,60,56),
-                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {bailamount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
             if await bank.can_spend(ctx.author, bailbond):
                 await bank.withdraw_credits(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {bailamount}.",
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 await bank.set_balance(ctx.author, 0)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {bailamount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                 )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
