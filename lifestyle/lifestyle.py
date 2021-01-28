@@ -155,7 +155,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
                 await self.briefcaseremove(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description=f":x: You were caught by the police and posted bail for {amount}.",
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 finepercent = await self.config.guild(ctx.guild).fine()
@@ -166,26 +166,26 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(233,60,56),
-                        description=f":x: You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(233,60,56),
-                        description=f":x: You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                     )
         else:
             if await bank.can_spend(ctx.author, bailbond):
                 await bank.withdraw_credits(ctx.author, bailbond)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description=f":x: You were caught by the police and posted bail for {amount}.",
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
                 )
             else:
                 await bank.set_balance(ctx.author, 0)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description=f":x: You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
                 )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
@@ -195,7 +195,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
             "work": f":x: You won't get promoted being a kiss ass. You're on break for {cooldown}.",
             "crime": f":x: Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
             "slut": f":x: Geez slow down. You can't slut for {cooldown}.",
-            "rob": f":x: The police are still on your trail. Wait {cooldown} for things to cool down.",
+            "rob": f":x: <a:hatsu_police:804202668440420353> The police are still on your trail. Wait {cooldown} for things to cool down.",
             "withdraw": f":x: The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
             "deposit": f":x: Geezus, the Teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
