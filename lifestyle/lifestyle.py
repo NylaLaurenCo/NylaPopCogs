@@ -149,7 +149,8 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         async def balance(self, ctx, user: discord.Member = None):
           if user is None:
                user = ctx.author
-          currentbank = await bank.get_balance(user)
+          bal = await bank.get_balance(user)
+        currentbank = bal
         bailbond = currentbank - int(float(random.randint(1, 100) / 100) * currentbank)
         #await userconf.briefcase()
         amount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
