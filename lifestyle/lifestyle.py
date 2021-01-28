@@ -166,7 +166,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(233,60,56),
-                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine (${humanize_number(fee)} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {await bank.get_currency_name(ctx.guild)}).",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
