@@ -1,330 +1,468 @@
 import datetime
+import random
+from abc import ABC
+from io import BytesIO
+from typing import Literal, Optional
 
 import discord
-from redbot.core import commands
-from redbot.core.utils.chat_formatting import humanize_number, humanize_timedelta
-from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
+import tabulate
+from redbot.core import Config, bank, checks, commands
+from redbot.core.errors import BalanceTooHigh
+from redbot.core.utils.chat_formatting import humanize_number, humanize_timedelta, pagify
 
-from .abc import MixinMeta
-from .checks import check_global_setting_admin
-from .functions import chunks
+from .checks import check_global_setting_admin, briefcase_disabled_check
+from .defaultreplies import crimes, work, slut
+from .functions import roll
+from .roulette import Roulette
+from .settings import SettingsMixin
+from .briefcase import Briefcase
 
 
-class SettingsMixin(MixinMeta):
-    """Settings."""
+class CompositeMetaClass(type(commands.Cog), type(ABC)):
+    """This allows the metaclass used for proper type detection to coexist with discord.py's
+    metaclass."""
 
-    @commands.group(name="lstyleset", aliases=["lstyle-set"])
-    @check_global_setting_admin()
-    @commands.guild_only()
-    async def lstyle_set(self, ctx):
-        """Manage various settings for Lifestyle."""
 
-    @commands.guild_only()
-    @lstyle_set.command(name="cooldown")
-    async def cooldown_set(
-        self,
-        ctx,
-        job,
-        *,
-        time: commands.TimedeltaConverter(
-            minimum=datetime.timedelta(seconds=0),
-            maximum=datetime.timedelta(days=2),
-            default_unit="minutes",
-        ),
-    ):
-        """Set the cooldown for the work, crime, slut, rob, and bank commands. Minimum cooldown is 30 seconds.
+class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=CompositeMetaClass):
+    """Lifestyle Commands."""
 
-        The time can be formatted as so `1h30m` etc. Valid times are hours, minutes and seconds.
-        """
-        job = job.lower()
-        if job not in ["slut", "work", "crime", "rob", "deposit", "withdraw"]:
-            return await ctx.send("Invalid job.")
-        seconds = time.total_seconds()
-        if seconds < 30:
-            return await ctx.send("The miniumum interval is 30 seconds.")
-        jobcd = {
-            "work": "workcd",
-            "crime": "crimecd",
-            "rob": "robcd",
-            "slut": "slutcd",
-            "deposit": "depositcd",
-            "withdraw": "withdrawcd",
+    __version__ = "0.5.4"
+
+    def format_help_for_context(self, ctx):
+        """Thanks Sinbad."""
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\nCog Version: {self.__version__}"
+
+    def __init__(self, bot):
+        super().__init__()
+        self.bot = bot
+        defaults = {
+            "cooldowns": {
+                "workcd": 14400,
+                "crimecd": 14400,
+                "robcd": 86400,
+                "slutcd": 14400,
+                "withdrawcd": 1,
+                "depositcd": 1,
+            },
+            "defaultreplies": True,
+            "replies": {"slutreplies": [], "crimereplies": [], "workreplies": []},
+            "rob": [],
+            "payouts": {"slut": {"max": 300, "min": 10}, "crime": {"max": 300, "min": 10}, "work": {"max": 250, "min": 10}},
+            "failrates": {"slut": 2, "crime": 16, "rob": 14},
+            "bailamounts": {"max": 250, "min": 10},
+            "fine": 30,
+            "disable_briefcase": False,
+            "roulette_toggle": True,
+            "roulette_time": 60,
+            "roulette_payouts": {
+                "zero": 36,
+                "single": 17,
+                "color": 1,
+                "dozen": 2,
+                "odd_or_even": 1,
+                "halfs": 1,
+                "column": 2,
+            },
+            "betting": {"max": 10000, "min": 100},
+            "briefcase_max": 50000,
         }
-        conf = await self.configglobalcheck(ctx)
-        async with conf.cooldowns() as cooldowns:
-            cooldowns[jobcd[job]] = int(seconds)
-        await ctx.tick()
+        defaults_member = {
+            "cooldowns": {
+                "workcd": None,
+                "crimecd": None,
+                "robcd": None,
+                "slutcd": None,
+                "depositcd": None,
+                "withdrawcd": None,
+            },
+            "briefcase": 0,
+            "winnings": 0,
+            "losses": 0,
+        }
+        self.roulettegames = {}
+        self.config = Config.get_conf(self, identifier=95932766180343808, force_registration=True)
+        self.config.register_global(**defaults)
+        self.config.register_guild(**defaults)
+        self.config.register_member(**defaults_member)
+        self.config.register_user(**defaults_member)
 
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="payout", usage="<work | crime | slut> <min | max> <amount>")
-    async def payout_set(self, ctx, job: str, min_or_max: str, amount: int):
-        """Set the min or max payout for working, slutting or crimes."""
-        if job not in ["work", "crime", "slut"]:
-            return await ctx.send("Invalid job.")
-        if min_or_max not in ["max", "min"]:
-            return await ctx.send("You must choose between min or max.")
-        conf = await self.configglobalcheck(ctx)
-        async with conf.payouts() as payouts:
-            payouts[job][min_or_max] = amount
-        await ctx.tick()
+    async def red_get_data_for_user(self, *, user_id: int):
+        data = await self.config.user_from_id(user_id).all()
+        all_members = await self.config.all_members()
+        briefcases = []
+        for guild_id, member_dict in all_members.items():
+            if user_id in member_dict:
+                usr = await self.config.member_from_ids(guild_id, user_id).all()
+                briefcases.append(guild_id, usr["briefcase"])
+        contents = f"Lifestyle Account for Discord user with ID {user_id}:\n**Global**\n- Briefcase: {data['briefcase']}\n"
+        if briefcases:
+            contents += "**Guilds**"
+            for bal in briefcases:
+                contents += f"Guild: {bal[0]} | Briefcase: {bal[1]}"
+        return {"user_data.txt": BytesIO(contents.encode())}
 
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="betting", usage="<min | max> <amount>")
-    async def betting_set(self, ctx, min_or_max: str, amount: int):
-        """Set the min or max betting amounts."""
-        if min_or_max not in ["max", "min"]:
-            return await ctx.send("You must choose between min or max.")
-        conf = await self.configglobalcheck(ctx)
-        async with conf.betting() as betting:
-            betting[min_or_max] = amount
-        await ctx.tick()
+    async def red_delete_data_for_user(
+        self,
+        *,
+        requester: Literal["discord_deleted_user", "owner", "user", "user_strict"],
+        user_id: int,
+    ):
 
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.group(name="briefcase")
-    async def briefcase_set(self, ctx):
-        """Briefcase Settings."""
+        await self.config.user_from_id(user_id).clear()
+        all_members = await self.config.all_members()
+        for guild_id, member_dict in all_members.items():
+            if user_id in member_dict:
+                await self.config.member_from_ids(guild_id, user_id).clear()
 
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @briefcase_set.command(name="toggle", usage="<on_or_off>")
-    async def briefcase_toggle(self, ctx, on_or_off: bool):
-        """Toggle the briefcase system."""
-        conf = await self.configglobalcheck(ctx)
-        if on_or_off:
-            await ctx.send("The briefcase and rob system has been enabled.")
-        else:
-            await ctx.send("The briefcase and rob system has been disabled.")
-        await conf.disable_briefcase.set(on_or_off)
-        await ctx.tick()
+    async def configglobalcheck(self, ctx):
+        if await bank.is_global():
+            return self.config
+        return self.config.guild(ctx.guild)
 
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @briefcase_set.command(name="max")
-    async def briefcase_max(self, ctx, amount: int):
-        """Set the max a briefcase can have."""
-        conf = await self.configglobalcheck(ctx)
-        await conf.briefcase_max.set(amount)
-        await ctx.tick()
+    async def configglobalcheckuser(self, user):
+        if await bank.is_global():
+            return self.config.user(user)
+        return self.config.member(user)
 
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="failure-rate", usage="<rob | crime | slut> <amount>", aliases=["failurerate"])
-    async def failure_set(self, ctx, job: str, amount: int):
-        """Set the failure rate for crimes, slutting and robbing."""
-        if job not in ["rob", "crime", "slut"]:
-            return await ctx.send("Invalid job.")
-        if amount < 0 or amount > 100:
-            return await ctx.send("Amount must be between 0-100.")
-        conf = await self.configglobalcheck(ctx)
-        async with conf.failrates() as failrates:
-            failrates[job] = amount
-        await ctx.tick()
-
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="bail-amount", usage="<min | max> <amount>", aliases=["bail"])
-    async def bail_set(self, ctx, min_or_max: str, amount: int):
-        """Set the min or max bail amount for crimes and slutting. **This is a percentage.** Do not include symbols."""
-        if min_or_max not in ["max", "min"]:
-            return await ctx.send("You must choose between min or max.")
-        conf = await self.configglobalcheck(ctx)
-        async with conf.bailamounts() as bailamounts:
-            bailamounts[min_or_max] = amount
-        await ctx.tick()
-
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="fine-percent", usage="<amount>", aliases=["bailtax"])
-    async def fine_set(self, ctx, amount: int):
-        """Set the fine if unable to pay bail in cash."""
-        if amount < 0 or amount > 100:
-            return await ctx.send("Amount must be between 0-100.")
-        conf = await self.configglobalcheck(ctx)
-        await conf.fine.set(amount)
-        await ctx.tick()
-
-    @commands.guild_only()
-    @check_global_setting_admin()
-    @lstyle_set.command(name="add-reply")
-    async def add_reply(self, ctx, job, *, reply: str):
-        """Add a custom reply for working, slutting or crime.
-
-        Put {amount} in place of where you want the amount earned to be.
-        """
-        if job not in ["work", "crime", "slut"]:
-            return await ctx.send("Invalid job.")
-        if "{amount}" not in reply:
-            return await ctx.send("{amount} must be present in the reply.")
-        conf = await self.configglobalcheck(ctx)
-        jobreplies = {"work": "workreplies", "crime": "crimereplies", "slut": "slutreplies"}
-        async with conf.replies() as replies:
-            if reply in replies[jobreplies[job]]:
-                return await ctx.send("That is already a response.")
-            replies[jobreplies[job]].append(reply)
-            ind = replies[jobreplies[job]].index(reply)
-        await ctx.send("Your reply has been added and is reply ID #{}".format(ind))
-
-    @commands.guild_only()
-    @check_global_setting_admin()
-    @lstyle_set.command(name="del-reply")
-    async def del_reply(self, ctx, job, *, id: int):
-        """Delete a custom reply."""
-        if job not in ["work", "crime", "slut"]:
-            return await ctx.send("Invalid job.")
-        jobreplies = {"work": "workreplies", "crime": "crimereplies", "slut": "slutreplies"}
-        conf = await self.configglobalcheck(ctx)
-        async with conf.replies() as replies:
-            if not replies[jobreplies[job]]:
-                return await ctx.send("This job has no custom replies.")
-            if id > len(replies[jobreplies[job]]):
-                return await ctx.send("Invalid ID.")
-            replies[jobreplies[job]].pop(id)
-        await ctx.send("Your reply has been removed")
-
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="list-replies")
-    async def list_reply(self, ctx, job):
-        """List custom replies."""
-        if job not in ["work", "crime", "slut"]:
-            return await ctx.send("Invalid job.")
-        jobreplies = {"work": "workreplies", "crime": "crimereplies", "slut": "slutreplies"}
-        conf = await self.configglobalcheck(ctx)
-        async with conf.replies() as replies:
-            if not replies[jobreplies[job]]:
-                return await ctx.send("This job has no custom replies.")
-            a = chunks(replies[jobreplies[job]], 10)
-            embeds = []
-            for item in a:
-                items = []
-                for i, strings in enumerate(item):
-                    items.append(f"Reply {i}: {strings}")
-                embed = discord.Embed(colour=discord.Color.from_rgb(233,60,56), description="\n".join(items))
-                embeds.append(embed)
-            if len(embeds) == 1:
-                await ctx.send(embed=embeds[0])
-            else:
-                await menu(ctx, embeds, DEFAULT_CONTROLS)
-
-    @check_global_setting_admin()
-    @commands.guild_only()
-    @lstyle_set.command(name="default-replies", usage="<enable | disable>")
-    async def default_replies(self, ctx, enable: bool):
-        """Whether to use the default replies to work and crime."""
-        conf = await self.configglobalcheck(ctx)
-        if enable:
-            await ctx.send("Default replies are enabled.")
-            await conf.defaultreplies.set(enable)
-        else:
-            await ctx.send("Default replies are now disabled.")
-            await conf.defaultreplies.set(enable)
-
-    @commands.command()
-    @commands.guild_only()
-    async def cooldowns(self, ctx):
-        """List your remaining cooldowns.."""
+    async def cdcheck(self, ctx, job):
         conf = await self.configglobalcheck(ctx)
         userconf = await self.configglobalcheckuser(ctx.author)
         cd = await userconf.cooldowns()
         jobcd = await conf.cooldowns()
-        if cd["workcd"] is None:
-            workcd = "None"
-        else:
-            time = int(datetime.datetime.utcnow().timestamp()) - cd["workcd"]
-            if time < jobcd["workcd"]:
-                workcd = humanize_timedelta(seconds=jobcd["workcd"] - time)
-            else:
-                workcd = "Ready to use."
-        if cd["crimecd"] is None:
-            crimecd = "Ready to use."
-        else:
-            time = int(datetime.datetime.utcnow().timestamp()) - cd["crimecd"]
-            if time < jobcd["crimecd"]:
-                crimecd = humanize_timedelta(seconds=jobcd["crimecd"] - time)
-            else:
-                crimecd = "Ready to use."
-        if cd["slutcd"] is None:
-            slutcd = "Ready to use."
-        else:
-            time = int(datetime.datetime.utcnow().timestamp()) - cd["slutcd"]
-            if time < jobcd["slutcd"]:
-                slutcd = humanize_timedelta(seconds=jobcd["slutcd"] - time)
-            else:
-                slutcd = "Ready to use."
-        if not await self.briefcasedisabledcheck(ctx):
-            if cd["robcd"] is None:
-                robcd = "Ready to use."
-            else:
-                time = int(datetime.datetime.utcnow().timestamp()) - cd["robcd"]
-                if time < jobcd["robcd"]:
-                    robcd = humanize_timedelta(seconds=jobcd["robcd"] - time)
-                else:
-                    robcd = "Ready to use."
-        else:
-            robcd = "Disabled."
-        msg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nSlut Cooldown: `{}`\nRob Cooldown: `{}`".format(
-            workcd, crimecd, slutcd, robcd
-        )
-        await ctx.maybe_send_embed(msg)
+        if cd[job] is None:
+            async with userconf.cooldowns() as cd:
+                cd[job] = int(datetime.datetime.utcnow().timestamp())
+            return True
+        time = int(datetime.datetime.utcnow().timestamp()) - cd[job]
+        if time < jobcd[job]:
+            return (False, humanize_timedelta(seconds=jobcd[job] - time))
+        async with userconf.cooldowns() as cd:
+            cd[job] = int(datetime.datetime.utcnow().timestamp())
+        return True
 
-    @lstyle_set.command()
+    async def bail(self, ctx, job):
+        conf = await self.configglobalcheck(ctx)
+        bailamounts = await conf.bailamounts()
+        randint = random.randint(bailamounts["min"], bailamounts["max"])
+        userconf = await self.configglobalcheckuser(ctx.author)
+        currentbank = await bank.get_balance(ctx.author)
+        bailbond = currentbank - int(float(random.randint(1, 100) / 100) * currentbank)
+        #await userconf.briefcase()
+        amount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
+        if not await self.briefcasedisabledcheck(ctx):
+            if bailbond < await userconf.briefcase():
+                await self.briefcaseremove(ctx.author, bailbond)
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
+                )
+            else:
+                finepercent = await self.config.guild(ctx.guild).fine()
+                fee = int(
+                    bailbond * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
+                )
+                if await bank.can_spend(ctx.author, fee):
+                    await bank.withdraw_credits(ctx.author, fee)
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(233,60,56),
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine ({fee} {str(humanize_number(await bank.get_currency_name(ctx.guild)))}).",
+                    )
+                else:
+                    await bank.set_balance(ctx.author, 0)
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(233,60,56),
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                    )
+        else:
+            if await bank.can_spend(ctx.author, bailbond):
+                await bank.withdraw_credits(ctx.author, bailbond)
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
+                )
+            else:
+                await bank.set_balance(ctx.author, 0)
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash to pay bail and are now bankrupt.",
+                )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+
+    async def cdnotice(self, user, cooldown, job):
+        response = {
+            "work": f":x: You won't get promoted being a kiss ass. You're on break for {cooldown}.",
+            "crime": f":x: Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
+            "slut": f":x: Geez slow down. You can't slut for {cooldown}.",
+            "rob": f":x: <:pepe_police:804228781492666398> The police are still on your trail. Wait {cooldown} for things to cool down.",
+            "withdraw": f":x: The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
+            "deposit": f":x: Geezus, the Teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
+        }
+        embed = discord.Embed(colour=discord.Color.from_rgb(233,60,56), description=response[job])
+        embed.set_author(name=user, icon_url=user.avatar_url)
+        return embed
+
+    @checks.admin_or_permissions(manage_guild=True)
     @check_global_setting_admin()
     @commands.guild_only()
+    @commands.command(aliases=["addcashrole"])
+    async def addmoneyrole(
+        self, ctx, amount: int, role: discord.Role, destination: Optional[str] = "briefcase"
+    ):
+        """Add money to the balance of all users within a role.
+
+        Valid options are 'bank' or 'briefcase'.
+        """
+        if destination.lower() not in ["bank", "briefcase"]:
+            return await ctx.send(
+                "Do you **want** people to get robbed?? Choose their bank or their briefcase.\nOr choose nothing, and I'll give it in cash."
+            )
+
+        failedmsg = ""
+        if destination.lower() == "bank":
+            for user in role.members:
+                try:
+                    await bank.deposit_credits(user, amount)
+                except (ValueError, TypeError):
+                    pass
+                except BalanceTooHigh as e:
+                    await bank.set_balance(ctx.author, e.max_balance)
+                    failedmsg += f"{user}'s bank is full. I gave them {amount} in cash.\n"
+        else:
+            for user in role.members:
+                try:
+                    await self.briefcasedeposit(ctx, user, amount)
+                except ValueError:
+                    failedmsg += f"{user} is holding the max amount of cash. I couldn't give them {amount}.\n"
+        if failedmsg:
+            for page in pagify(failedmsg):
+                await ctx.send(page)
+        await ctx.tick()
+
+    @checks.admin_or_permissions(manage_guild=True)
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @commands.command(aliases=["removecashrole"])
+    async def removemoneyrole(
+        self, ctx, amount: int, role: discord.Role, destination: Optional[str] = "briefcase"
+    ):
+        """Remove money from the bank balance of all users within a role.
+
+        Valid options are 'bank' or 'briefcase'.
+        """
+        if destination.lower() not in ["bank", "briefcase"]:
+            return await ctx.send(
+                "Do you **want** people to get robbed?? Choose their bank or their briefcase.\nOr choose nothing, and I'll give it in cash."
+            )
+        if destination.lower() == "bank":
+            for user in role.members:
+                try:
+                    await bank.withdraw_credits(user, amount)
+                except ValueError:
+                    await bank.set_balance(user, 0)
+        else:
+            for user in role.members:
+                await self.briefcaseremove(user, amount)
+        await ctx.tick()
+
+    @commands.command()
+    @commands.guild_only()
     @commands.bot_has_permissions(embed_links=True)
-    async def settings(self, ctx):
-        """Current lifestyle settings."""
+    async def work(self, ctx):
+        """Work for some cash."""
+        if ctx.assume_yes:
+            return await ctx.send("This command can't be scheduled.")
+        cdcheck = await self.cdcheck(ctx, "workcd")
+        if isinstance(cdcheck, tuple):
+            embed = await self.cdnotice(ctx.author, cdcheck[1], "work")
+            return await ctx.send(embed=embed)
         conf = await self.configglobalcheck(ctx)
-        data = await conf.all()
-        cooldowns = data["cooldowns"]
-        workcd = humanize_timedelta(seconds=cooldowns["workcd"])
-        robcd = humanize_timedelta(seconds=cooldowns["robcd"])
-        crimecd = humanize_timedelta(seconds=cooldowns["crimecd"])
-        slutcd = humanize_timedelta(seconds=cooldowns["slutcd"])
-        cooldownmsg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nSlut Cooldown: `{}`\nRob Cooldown: `{}`".format(
-            workcd, crimecd, slutcd, robcd
+        payouts = await conf.payouts()
+        wage = random.randint(payouts["work"]["min"], payouts["work"]["max"])
+        wagesentence = "$" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        if await conf.defaultreplies():
+            job = random.choice(work)
+            line = job.format(amount=wagesentence)
+            linenum = work.index(job)
+        else:
+            replies = await conf.replies()
+            if not replies["workreplies"]:
+                return await ctx.send(
+                    "You have custom replies enabled yet haven't added any replies yet."
+                )
+            job = random.choice(replies["workreplies"])
+            linenum = replies["workreplies"].index(job)
+            line = job.format(amount=wagesentence)
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(165,205,65), description=line, timestamp=ctx.message.created_at
         )
-        embed = discord.Embed(colour=ctx.author.colour, title="Lifestyle Settings")
-        embed.add_field(
-            name="Using Default Replies?",
-            value="Yes" if data["defaultreplies"] else "No",
-            inline=True,
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Reply #{}".format(linenum))
+        if not await self.briefcasedisabledcheck(ctx):
+            try:
+                await self.briefcasedeposit(ctx, ctx.author, wage)
+            except ValueError:
+                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+        else:
+            try:
+                await bank.deposit_credits(ctx.author, wage)
+            except BalanceTooHigh as e:
+                await bank.set_balance(ctx.author, e.max_balance)
+                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.bot_has_permissions(embed_links=True)
+    async def crime(self, ctx):
+        """Commit a crime, more risk but higher payout."""
+        if ctx.assume_yes:
+            return await ctx.send("This command can't be scheduled.")
+        cdcheck = await self.cdcheck(ctx, "crimecd")
+        if isinstance(cdcheck, tuple):
+            embed = await self.cdnotice(ctx.author, cdcheck[1], "crime")
+            return await ctx.send(embed=embed)
+        conf = await self.configglobalcheck(ctx)
+        failrates = await conf.failrates()
+        failurechance = float(failrates["crime"] / 100)
+        fail = float(random.randint(1, 100) / 100)
+        if fail <= failurechance:
+            return await self.bail(ctx, "crime")
+        payouts = await conf.payouts()
+        wage = random.randint(payouts["crime"]["min"], payouts["crime"]["max"])
+        wagesentence = "$" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        if await conf.defaultreplies():
+            job = random.choice(crimes)
+            line = job.format(amount=wagesentence)
+            linenum = crimes.index(job)
+        else:
+            replies = await conf.replies()
+            if not replies["crimereplies"]:
+                return await ctx.send(
+                    "You have custom replies enabled yet haven't added any replies yet."
+                )
+            job = random.choice(replies["crimereplies"])
+            line = job.format(amount=wagesentence)
+            linenum = replies["crimereplies"].index(job)
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(165,205,65), description=line, timestamp=ctx.message.created_at
         )
-        payouts = data["payouts"]
-        slutpayout = f"**Max**: {humanize_number(payouts['slut']['max'])}\n**Min**: {humanize_number(payouts['slut']['min'])}"
-        crimepayout = f"**Max**: {humanize_number(payouts['crime']['max'])}\n**Min**: {humanize_number(payouts['crime']['min'])}"
-        workpayout = f"**Max**: {humanize_number(payouts['work']['max'])}\n**Min**: {humanize_number(payouts['work']['min'])}"
-        embed.add_field(name="Work Payouts", value=workpayout, inline=True)
-        embed.add_field(name="Crime Payouts", value=crimepayout, inline=True)
-        embed.add_field(name="Slut Payouts", value=slutpayout, inline=True)
-        failrates = data["failrates"]
-        embed.add_field(
-            name="Fail Rates",
-            value=f"**Crime**: {failrates['crime']}%\n**Slut**: {failrates['slut']}%\n**Rob**: {failrates['rob']}%\n**Fine**: {data['fine']}%",
-            inline=True,
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Reply #{}".format(linenum))
+        if not await self.briefcasedisabledcheck(ctx):
+            try:
+                await self.briefcasedeposit(ctx, ctx.author, wage)
+            except ValueError:
+                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+        else:
+            try:
+                await bank.deposit_credits(ctx.author, wage)
+            except BalanceTooHigh as e:
+                await bank.set_balance(ctx.author, e.max_balance)
+                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.bot_has_permissions(embed_links=True)
+    async def slut(self, ctx):
+        """Slut for money, it's easy and fast."""
+        if ctx.assume_yes:
+            return await ctx.send("This command can't be scheduled.")
+        cdcheck = await self.cdcheck(ctx, "slutcd")
+        if isinstance(cdcheck, tuple):
+            embed = await self.cdnotice(ctx.author, cdcheck[1], "slut")
+            return await ctx.send(embed=embed)
+        conf = await self.configglobalcheck(ctx)
+        failrates = await conf.failrates()
+        failurechance = float(failrates["slut"] / 100)
+        fail = float(random.randint(1, 100) / 100)
+        if fail <= failurechance:
+            return await self.bail(ctx, "slut")
+        payouts = await conf.payouts()
+        wage = random.randint(payouts["slut"]["min"], payouts["slut"]["max"])
+        wagesentence = "$" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        if await conf.defaultreplies():
+            job = random.choice(slut)
+            line = job.format(amount=wagesentence)
+            linenum = slut.index(job)
+        else:
+            replies = await conf.replies()
+            if not replies["slutreplies"]:
+                return await ctx.send(
+                    "You have custom replies enabled yet haven't added any replies yet."
+                )
+            job = random.choice(replies["slutreplies"])
+            line = job.format(amount=wagesentence)
+            linenum = replies["slutreplies"].index(job)
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(165,205,65), description=line, timestamp=ctx.message.created_at
         )
-        bailamounts = data["bailamounts"]
-        embed.add_field(
-            name="Bail Amounts",
-            value=f"**Max**: {humanize_number(bailamounts['max'])}%\n**Min**: {humanize_number(bailamounts['min'])}%",
-            inline=True,
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Reply #{}".format(linenum))
+        if not await self.briefcasedisabledcheck(ctx):
+            try:
+                await self.briefcasedeposit(ctx, ctx.author, wage)
+            except ValueError:
+                embed.description += f"\nYou can't carry anymore {await bank.get_currency_name(ctx.guild)}. Baller!"
+        else:
+            try:
+                await bank.deposit_credits(ctx.author, wage)
+            except BalanceTooHigh as e:
+                await bank.set_balance(ctx.author, e.max_balance)
+                embed.description += f"\nYou've got so much {await bank.get_currency_name(ctx.guild)} in your bank, they've refused to deposit more. Wow!"
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
+    @briefcase_disabled_check()
+    @commands.bot_has_permissions(embed_links=True)
+    async def rob(self, ctx, user: discord.Member):
+        """Rob another user."""
+        if ctx.assume_yes:
+            return await ctx.send("This command can't be scheduled.")
+        if user == ctx.author:
+            return await ctx.send("Robbing yourself doesn't make much sense.")
+        cdcheck = await self.cdcheck(ctx, "robcd")
+        if isinstance(cdcheck, tuple):
+            embed = await self.cdnotice(ctx.author, cdcheck[1], "rob")
+            return await ctx.send(embed=embed)
+        conf = await self.configglobalcheck(ctx)
+        failrates = await conf.failrates()
+        failurechance = float(failrates["rob"] / 100)
+        fail = float(random.randint(1, 100) / 100)
+        if fail <= failurechance:
+            return await self.bail(ctx, "rob")
+        userbalance = await self.briefcasebalance(user)
+        if userbalance <= 50:
+            bailchance = random.randint(1, 10)
+            if bailchance > 5:
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description="You steal {}'s briefcase when they're not looking. Fortunately for them it's empty.".format(
+                        user.name
+                    ),
+                    timestamp=ctx.message.created_at,
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed=embed)
+            else:
+                return await self.bail(ctx, "rob")
+        modifier = roll()
+        stolen = random.randint(1, int(userbalance * modifier))
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(165,205,65),
+            description="You slip {}'s briefcase from their room and find <:xohats_rent_money:803732707423158312> {} bucks inside. Nice!".format(
+                user.name, humanize_number(stolen)
+            ),
+            timestamp=ctx.message.created_at,
         )
-        embed.add_field(name="Cooldown Settings", value=cooldownmsg, inline=True)
-        briefcasesettings = data["disable_briefcase"]
-        embed.add_field(
-            name="Briefcase Settings",
-            value="Disabled."
-            if not briefcasesettings
-            else f"**Max Balance**: {humanize_number(data['briefcase_max'])}\n**Withdraw Cooldown**: {humanize_timedelta(seconds=cooldowns['withdrawcd'])}\n**Deposit Cooldown**: {humanize_timedelta(seconds=cooldowns['depositcd'])}",
-            inline=True,
-        )
-        minbet = humanize_number(data["betting"]["min"])
-        maxbet = humanize_number(data["betting"]["max"])
-        betstats = f"**Max**: {maxbet}\n**Min**: {minbet}"
-        embed.add_field(name="Betting Info", value=betstats)
-        roulette = data["roulette_toggle"]
-        game_stats = f"**Roulette**: {'Enabled' if roulette else 'Disabled'}"
-        embed.add_field(name="Games", value=game_stats)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        try:
+            await self.briefcasedeposit(ctx, ctx.author, stolen)
+            await self.briefcaseremove(user, stolen)
+        except ValueError:
+            embed.description += f"\nOop. After stealing the cash, you notice your **own** briefcase is full. You were forced to return the cash since you can't make off with it."
         await ctx.send(embed=embed)
