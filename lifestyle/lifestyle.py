@@ -195,7 +195,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
             "work": f":x: You won't get promoted being a kiss ass. You're on break for {cooldown}.",
             "crime": f":x: Dude you're going to get arrested at that rate. Wait {cooldown} to commit another crime.",
             "slut": f":x: Geez slow down. You can't slut for {cooldown}.",
-            "rob": f":x: <:pepe_police:804228781492666398> The police are still on your trail. Wait {cooldown} for things to cool down.",
+            "rob": f":x: <a:hatsu_police:804202668440420353> The police are still on your trail. Wait {cooldown} for things to cool down.",
             "withdraw": f":x: The bank is suspicious. You must wait {cooldown} to withdraw more cash.",
             "deposit": f":x: Geezus, the Teller is still counting your deposit from last time! Give them {cooldown} to finish up.",
         }
