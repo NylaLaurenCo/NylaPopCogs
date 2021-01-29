@@ -23,11 +23,11 @@ class BonusMoney(commands.Cog):
     settings = {"day": 1, "week": 7, "month": 30, "quarter": 90, "year": 365}
     friendly = {
         "hour": "__Hourly__\n",
-        "day": "<:sh_space:755971083210981426>\n__Daily__\n",
-        "week": "<:sh_space:755971083210981426>\n__Weekly__\n",
-        "month": "<:sh_space:755971083210981426>\n__Monthly__\n",
-        "quarter": "<:sh_space:755971083210981426>\n__Quarterly__\n",
-        "year": "<:sh_space:755971083210981426>\n__Yearly__\n",
+        "day": "\n__Daily__\n",
+        "week": "\n__Weekly__\n",
+        "month": "\n__Monthly__\n",
+        "quarter": "\n__Quarterly__\n",
+        "year": "\n__Yearly__\n",
     }
 
     def format_help_for_context(self, ctx):
@@ -97,7 +97,7 @@ class BonusMoney(commands.Cog):
                     td = now - (datetime.fromisoformat(times[k]))
                     strings += (
                         self.friendly[k]
-                        #+ ": "
+                        + "`"
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
@@ -119,7 +119,7 @@ class BonusMoney(commands.Cog):
                 td = now - (datetime.fromisoformat(times["hour"]))
                 strings += (
                     self.friendly["hour"]
-                    #+ ": "
+                    + "`"
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
@@ -133,7 +133,7 @@ class BonusMoney(commands.Cog):
                     td = now - (datetime.fromisoformat(times[k]))
                     strings += (
                         self.friendly[k]
-                        #+ ": "
+                        + "`"
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
