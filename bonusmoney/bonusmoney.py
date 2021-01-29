@@ -23,11 +23,11 @@ class BonusMoney(commands.Cog):
     settings = {"day": 1, "week": 7, "month": 30, "quarter": 90, "year": 365}
     friendly = {
         "hour": "**Hourly**\n",
-        "day": "**Daily**\n",
-        "week": "**Weekly**\n",
-        "month": "**Monthly**\n",
-        "quarter": "**Quarterly**\n",
-        "year": "**Yearly**\n",
+        "day": "<:sh_space:755971083210981426>\n**Daily**\n",
+        "week": "<:sh_space:755971083210981426>\n**Weekly**\n",
+        "month": "<:sh_space:755971083210981426>\n**Monthly**\n",
+        "quarter": "<:sh_space:755971083210981426>\n**Quarterly**\n",
+        "year": "<:sh_space:755971083210981426>\n**Yearly**\n",
     }
 
     def format_help_for_context(self, ctx):
@@ -83,11 +83,11 @@ class BonusMoney(commands.Cog):
                 td = now - datetime.fromisoformat(times["hour"])
                 strings += (
                     self.friendly["hour"]
-                    + ": "
+                    #+ ": "
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`available now!`\n<:sh_space:755971083210981426>\n"
+                        else "`available now!`"
                     )
                     + "\n"
                 )
@@ -97,11 +97,11 @@ class BonusMoney(commands.Cog):
                     td = now - (datetime.fromisoformat(times[k]))
                     strings += (
                         self.friendly[k]
-                        + ": "
+                        #+ ": "
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`available now!`\n<:sh_space:755971083210981426>\n"
+                            else "`available now!`"
                         )
                         + "\n"
                     )
@@ -119,11 +119,11 @@ class BonusMoney(commands.Cog):
                 td = now - (datetime.fromisoformat(times["hour"]))
                 strings += (
                     self.friendly["hour"]
-                    + ": "
+                    #+ ": "
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`available now!`\n<:sh_space:755971083210981426>\n"
+                        else "`available now!`"
                     )
                     + "\n"
                 )
@@ -133,11 +133,11 @@ class BonusMoney(commands.Cog):
                     td = now - (datetime.fromisoformat(times[k]))
                     strings += (
                         self.friendly[k]
-                        + ": "
+                        #+ ": "
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`available now!`\n<:sh_space:755971083210981426>\n"
+                            else "`available now!`"
                         )
                         + "\n"
                     )
@@ -173,7 +173,7 @@ class BonusMoney(commands.Cog):
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
                 await ctx.send(
-                    "Stop begging geez. You already got all your bonus money. +{} {}".format(
+                    "Stop begging geez. You already got all your bonus money. +${} {}".format(
                         amount, (await bank.get_currency_name())
                     )
                 )
@@ -201,7 +201,7 @@ class BonusMoney(commands.Cog):
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
                 await ctx.send(
-                    "Stop begging geez. You already got all your bonus money. +{} {}".format(
+                    "Stop begging geez. You already got all your bonus money. +${} {}".format(
                         amount, (await bank.get_currency_name(ctx.guild))
                     )
                 )
@@ -223,7 +223,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).hour.set(now.isoformat())
                     await ctx.send(
-                        "I deposited {} {} in your account. Nice!".format(
+                        "I deposited ${} {} in your account. Nice!".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -247,7 +247,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).hour.set(now.isoformat())
                     await ctx.send(
-                        "A fat deposit of {} {} just hit your account.".format(
+                        "A fat deposit of ${} {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -275,7 +275,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).day.set(now.isoformat())
                     await ctx.send(
-                        "A fat deposit of {} {} just hit your account.".format(
+                        "A fat deposit of ${} {} just hit your account.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -299,7 +299,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).day.set(now.isoformat())
                     await ctx.send(
-                        "A fat deposit of {} {} just hit your account.".format(
+                        "A fat deposit of ${} {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -327,7 +327,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).week.set(now.isoformat())
                     await ctx.send(
-                        "Just take this {} {} and go.".format(
+                        "Just take this ${} {} and go.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -351,7 +351,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).week.set(now.isoformat())
                     await ctx.send(
-                        "Just take this {} {} and go.".format(
+                        "Just take this ${} {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -381,7 +381,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).month.set(now.isoformat())
                     await ctx.send(
-                        "Just take this {} {} and go.".format(
+                        "Just take this ${} {} and go.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -405,7 +405,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).month.set(now.isoformat())
                     await ctx.send(
-                        "Just take this {} {} and go.".format(
+                        "Just take this ${} {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -435,7 +435,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).quarter.set(now.isoformat())
                     await ctx.send(
-                        "+{} {}... can you please pay me for cleaning your room, now?".format(
+                        "+${} {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -459,7 +459,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).quarter.set(now.isoformat())
                     await ctx.send(
-                        "+{} {}... can you please pay me for cleaning your room, now?".format(
+                        "+${} {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -487,7 +487,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).year.set(now.isoformat())
                     await ctx.send(
-                        "Tax time at Sumi's House! My favorite season. Here's {} {}. Enjoy it, sis.".format(
+                        "Tax time at Sumi's House! My favorite season. Here's ${} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -511,7 +511,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).year.set(now.isoformat())
                     await ctx.send(
-                        "Tax time at Sumi's House! My favorite season. Here's {} {}. Enjoy it, sis.".format(
+                        "Tax time at Sumi's House! My favorite season. Here's ${} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
