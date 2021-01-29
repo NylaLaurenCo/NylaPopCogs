@@ -22,12 +22,12 @@ class BonusMoney(commands.Cog):
 
     settings = {"day": 1, "week": 7, "month": 30, "quarter": 90, "year": 365}
     friendly = {
-        "hour": "**Hourly**\n",
-        "day": "<:sh_space:755971083210981426>\n**Daily**\n",
-        "week": "<:sh_space:755971083210981426>\n**Weekly**\n",
-        "month": "<:sh_space:755971083210981426>\n**Monthly**\n",
-        "quarter": "<:sh_space:755971083210981426>\n**Quarterly**\n",
-        "year": "<:sh_space:755971083210981426>\n**Yearly**\n",
+        "hour": "__Hourly__\n",
+        "day": "<:sh_space:755971083210981426>\n__Daily__\n",
+        "week": "<:sh_space:755971083210981426>\n__Weekly__\n",
+        "month": "<:sh_space:755971083210981426>\n__Monthly__\n",
+        "quarter": "<:sh_space:755971083210981426>\n__Quarterly__\n",
+        "year": "<:sh_space:755971083210981426>\n__Yearly__\n",
     }
 
     def format_help_for_context(self, ctx):
@@ -69,7 +69,7 @@ class BonusMoney(commands.Cog):
         """Get bonus server money! Type `k,claim` and a bonus to get it."""
 
     @lc.all()
-    @bonusmoney.command(name="cooldown")
+    @bonusmoney.command(name="cooldowns")
     async def bonusmoney_times(self, ctx):
         """Find out when you can get more bonus money"""
 
@@ -83,13 +83,13 @@ class BonusMoney(commands.Cog):
                 td = now - datetime.fromisoformat(times["hour"])
                 strings += (
                     self.friendly["hour"]
-                    #+ ": "
+                    + "`"
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`available now!`"
+                        else "available now!`"
                     )
-                    + "\n"
+                    + "`\n"
                 )
 
             for k, v in self.settings.items():
@@ -101,9 +101,9 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`available now!`"
+                            else "available now!"
                         )
-                        + "\n"
+                        + "`\n"
                     )
             if strings == "":
                 await ctx.send("Bonus money hasn't been set up, yet. Ask a mod to help.")
@@ -125,7 +125,7 @@ class BonusMoney(commands.Cog):
                         if td.seconds < 3600
                         else "`available now!`"
                     )
-                    + "\n"
+                    + "`\n"
                 )
 
             for k, v in self.settings.items():
@@ -139,7 +139,7 @@ class BonusMoney(commands.Cog):
                             if td.days < v
                             else "`available now!`"
                         )
-                        + "\n"
+                        + "`\n"
                     )
 
             if strings == "":
