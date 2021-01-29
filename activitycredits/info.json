@@ -1,0 +1,18 @@
+{
+    "author": [
+        "NylaPop"
+    ],
+    "name": "ActivityCredits",
+    "short": "Award currency credits to active members.",
+    "description": "Give currency to members per message.",
+    "tags": [
+        "economy",
+        "credits",
+        "activity"
+    ],
+    "min_bot_version": "3.4.0",
+    "end_user_data_statement": "This cog does not persistently store end user data.",
+    "hidden": false,
+    "disabled": false,
+    "install_msg": "Thanks for installing the cog. I'm in the Cog Support server if you need help with anything. Make sure you take a look under `[p]activitycredits` before getting started, the settings are all set to 0 by default"
+}
