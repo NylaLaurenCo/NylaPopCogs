@@ -22,12 +22,12 @@ class BonusMoney(commands.Cog):
 
     settings = {"day": 1, "week": 7, "month": 30, "quarter": 90, "year": 365}
     friendly = {
-        "hour": "Hourly",
-        "day": "Daily",
-        "week": "Weekly",
-        "month": "Monthly",
-        "quarter": "Quarterly",
-        "year": "Yearly",
+        "hour": "**Hourly**\n",
+        "day": "**Daily**\n",
+        "week": "**Weekly**\n",
+        "month": "**Monthly**\n",
+        "quarter": "**Quarterly**\n",
+        "year": "**Yearly**\n",
     }
 
     def format_help_for_context(self, ctx):
@@ -87,7 +87,7 @@ class BonusMoney(commands.Cog):
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`available now!`"
+                        else "`available now!`\n<:sh_space:755971083210981426>\n"
                     )
                     + "\n"
                 )
@@ -101,7 +101,7 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`available now!`"
+                            else "`available now!`\n<:sh_space:755971083210981426>\n"
                         )
                         + "\n"
                     )
@@ -123,7 +123,7 @@ class BonusMoney(commands.Cog):
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`available now!`"
+                        else "`available now!`\n<:sh_space:755971083210981426>\n"
                     )
                     + "\n"
                 )
@@ -137,7 +137,7 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`available now!`"
+                            else "`available now!`\n<:sh_space:755971083210981426>\n"
                         )
                         + "\n"
                     )
