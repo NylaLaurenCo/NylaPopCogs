@@ -87,7 +87,7 @@ class BonusMoney(commands.Cog):
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "Available Now!"
+                        else "`Available Now!`"
                     )
                     + "\n"
                 )
@@ -101,7 +101,7 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "Available Now!"
+                            else "`Available Now!`"
                         )
                         + "\n"
                     )
@@ -123,7 +123,7 @@ class BonusMoney(commands.Cog):
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "Available Now!"
+                        else "`Available Now!`"
                     )
                     + "\n"
                 )
@@ -137,7 +137,7 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "Available Now!"
+                            else "`Available Now!`"
                         )
                         + "\n"
                     )
