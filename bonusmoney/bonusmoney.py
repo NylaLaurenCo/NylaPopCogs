@@ -20,7 +20,7 @@ class BonusMoney(commands.Cog):
 
     __version__ = "1.5"
 
-    settings = {"day": 1, "week": 7, "month": 30, "quarter": 122, "year": 365}
+    settings = {"day": 1, "week": 7, "month": 30, "quarter": 90, "year": 365}
     friendly = {
         "hour": "Hourly",
         "day": "Daily",
@@ -66,7 +66,7 @@ class BonusMoney(commands.Cog):
     @lc.guild_only_check()
     @commands.group()
     async def bonusmoney(self, ctx):
-        """Get free server currency!"""
+        """Get bonus server money!"""
 
     @lc.all()
     @bonusmoney.command(name="cooldown")
@@ -211,7 +211,7 @@ class BonusMoney(commands.Cog):
     @lc.hourly()
     @bonusmoney.command(name="hourly")
     async def bonusmoney_hourly(self, ctx):
-        """Get some free currency every hour"""
+        """Get bonus money every hour"""
 
         if await bank.is_global():
             free = await self.config.hour()
@@ -263,7 +263,7 @@ class BonusMoney(commands.Cog):
     @lc.daily()
     @bonusmoney.command(name="daily")
     async def bonusmoney_daily(self, ctx):
-        """Get some free currency every day"""
+        """Get bonus money everyday"""
 
         if await bank.is_global():
             free = await self.config.day()
@@ -315,7 +315,7 @@ class BonusMoney(commands.Cog):
     @lc.weekly()
     @bonusmoney.command(name="weekly")
     async def bonusmoney_weekly(self, ctx):
-        """Get some free currency every week (7 days)"""
+        """Get bonus money every week"""
 
         if await bank.is_global():
             free = await self.config.week()
@@ -367,7 +367,7 @@ class BonusMoney(commands.Cog):
     @lc.monthly()
     @bonusmoney.command(name="monthly")
     async def bonusmoney_monthly(self, ctx):
-        """Get some free currency every month (30 days)"""
+        """Get bonus money every month"""
 
         if await bank.is_global():
             free = await self.config.month()
@@ -421,7 +421,7 @@ class BonusMoney(commands.Cog):
     @lc.quarterly()
     @bonusmoney.command(name="quarterly")
     async def bonusmoney_quarterly(self, ctx):
-        """Get some free currency every quarter (122 days)"""
+        """Get bonus money every 3 months"""
 
         if await bank.is_global():
             free = await self.config.quarter()
@@ -431,7 +431,7 @@ class BonusMoney(commands.Cog):
                 )
                 now = datetime.now().astimezone().replace(microsecond=0)
 
-                if (now - last).days >= 122:
+                if (now - last).days >= 90:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).quarter.set(now.isoformat())
                     await ctx.send(
@@ -443,7 +443,7 @@ class BonusMoney(commands.Cog):
                     await ctx.send(
                         "Dude. That's not even close to being on time. Wait {} wtf.".format(
                             humanize_timedelta(
-                                timedelta=(timedelta(days=122) - (now - last))
+                                timedelta=(timedelta(days=90) - (now - last))
                             )
                         )
                     )
@@ -455,7 +455,7 @@ class BonusMoney(commands.Cog):
                 )
                 now = datetime.now().astimezone().replace(microsecond=0)
 
-                if (now - last).days >= 122:
+                if (now - last).days >= 90:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).quarter.set(now.isoformat())
                     await ctx.send(
@@ -467,7 +467,7 @@ class BonusMoney(commands.Cog):
                     await ctx.send(
                         "Dude. That's not even close to being on time. Wait {} wtf.".format(
                             humanize_timedelta(
-                                timedelta=(timedelta(days=122) - (now - last))
+                                timedelta=(timedelta(days=90) - (now - last))
                             )
                         )
                     )
@@ -475,7 +475,7 @@ class BonusMoney(commands.Cog):
     @lc.yearly()
     @bonusmoney.command(name="yearly")
     async def bonusmoney_yearly(self, ctx):
-        """Get some free currency every year (365 days)"""
+        """Get bonus money every year"""
 
         if await bank.is_global():
             free = await self.config.year()
@@ -550,8 +550,9 @@ class BonusMoney(commands.Cog):
     @setbonus.command(name="hourly", aliases=["hour"])
     async def setbonus_hourly(self, ctx, value: int):
         """
-        Set up `hourly` options
-        Setting this to 0 will disable the bonus.
+        Replace `<value>` with the amount of money you want to give.
+        Entering `0` for the amount will disable this bonus.
+        Times are calculated automatically.
         """
 
         if value < 0:
@@ -570,8 +571,10 @@ class BonusMoney(commands.Cog):
     @setbonus.command(name="daily", aliases=["day"])
     async def setbonus_daily(self, ctx, value: int):
         """
-        Set up `daily` options
-        Setting this to 0 will disable the bonus."""
+        Replace `<value>` with the amount of money you want to give.
+        Entering `0` for the amount will disable this bonus.
+        Times are calculated automatically.
+        """
 
         if value < 0:
             return await ctx.send("Amount must be 0 or above.")
@@ -589,8 +592,9 @@ class BonusMoney(commands.Cog):
     @setbonus.command(name="weekly", aliases=["week"])
     async def setbonus_weekly(self, ctx, value: int):
         """
-        Set up `weekly` options
-        Setting this to 0 will disable the bonus.
+        Replace `<value>` with the amount of money you want to give.
+        Entering `0` for the amount will disable this bonus.
+        Times are calculated automatically.
         """
 
         if value < 0:
@@ -609,8 +613,9 @@ class BonusMoney(commands.Cog):
     @setbonus.command(name="monthly", aliases=["month"])
     async def setbonus_monthly(self, ctx, value: int):
         """
-        Set up `monthly` options
-        Setting this to 0 will disable the bonus.
+        Replace `<value>` with the amount of money you want to give.
+        Entering `0` for the amount will disable this bonus.
+        Times are calculated automatically.
         """
 
         if value < 0:
@@ -629,8 +634,9 @@ class BonusMoney(commands.Cog):
     @setbonus.command(name="quarterly", aliases=["quarter"])
     async def setbonus_quarterly(self, ctx, value: int):
         """
-        Set up `quarterly` options
-        Setting this to 0 will disable the bonus.
+        Replace `<value>` with the amount of money you want to give.
+        Entering `0` for the amount will disable this bonus.
+        Times are calculated automatically.
         """
 
         if value < 0:
@@ -649,8 +655,9 @@ class BonusMoney(commands.Cog):
     @setbonus.command(name="yearly", aliases=["year"])
     async def setbonus_yearly(self, ctx, value: int):
         """
-        Set up `yearly` options
-        Setting this to 0 will disable the bonus.
+        Replace `<value>` with the amount of money you want to give.
+        Entering `0` for the amount will disable this bonus.
+        Times are calculated automatically.
         """
 
         if value < 0:
