@@ -173,7 +173,7 @@ class BonusMoney(commands.Cog):
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
                 await ctx.send(
-                    "<:rent_money:803730921642524672> Done. I collected all your bonus and deposited them into your account. +${} {}".format(
+                    "<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +${} {}".format(
                         amount, (await bank.get_currency_name())
                     )
                 )
