@@ -5,7 +5,7 @@ from typing import Literal
 from redbot.core import Config, bank, checks, commands
 from redbot.core.bot import Red
 from redbot.core.utils import AsyncIter
-from redbot.core.utils.chat_formatting import box, humanize_timedelta
+from redbot.core.utils.chat_formatting import box, humanize_number, humanize_list, humanize_timedelta
 from tabulate import tabulate
 
 from . import checks as lc
@@ -173,7 +173,7 @@ class BonusMoney(commands.Cog):
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
                 await ctx.send(
-                    "Stop begging geez. You already got all your bonus money. +${} {}".format(
+                    "<:rent_money:803730921642524672> Done. I collected all your bonus and deposited them into your account. +$str(int(humanize_number({}))) {}".format(
                         amount, (await bank.get_currency_name())
                     )
                 )
@@ -201,7 +201,7 @@ class BonusMoney(commands.Cog):
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
                 await ctx.send(
-                    "Stop begging geez. You already got all your bonus money. +${} {}".format(
+                    "<:rent_money:803730921642524672> Done. I collected all your bonus and deposited them into your account. +$str(int(humanize_number({}))) {}".format(
                         amount, (await bank.get_currency_name(ctx.guild))
                     )
                 )
@@ -223,7 +223,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).hour.set(now.isoformat())
                     await ctx.send(
-                        "I deposited ${} {} in your account. Nice!".format(
+                        "<:cash:803730921785524234> I deposited +$str(int(humanize_number({}))) {} in your account. Nice!".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -247,7 +247,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).hour.set(now.isoformat())
                     await ctx.send(
-                        "A fat deposit of ${} {} just hit your account.".format(
+                        "A fat deposit of +$str(int(humanize_number({}))) {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -275,7 +275,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).day.set(now.isoformat())
                     await ctx.send(
-                        "A fat deposit of ${} {} just hit your account.".format(
+                        "<:cash:803730921785524234> A fat deposit of +$str(int(humanize_number({}))) {} just hit your account.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -299,7 +299,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).day.set(now.isoformat())
                     await ctx.send(
-                        "A fat deposit of ${} {} just hit your account.".format(
+                        "<:cash:803730921785524234> A fat deposit of +$str(int(humanize_number({}))) {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -327,7 +327,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).week.set(now.isoformat())
                     await ctx.send(
-                        "Just take this ${} {} and go.".format(
+                        "<:cash:803730921785524234> Just take this +$str(int(humanize_number({}))) {} and go.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -351,7 +351,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).week.set(now.isoformat())
                     await ctx.send(
-                        "Just take this ${} {} and go.".format(
+                        "<:cash:803730921785524234> Just take this +$str(int(humanize_number({}))) {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -381,7 +381,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).month.set(now.isoformat())
                     await ctx.send(
-                        "Just take this ${} {} and go.".format(
+                        "<:cash:803730921785524234> Just take this +$str(int(humanize_number({}))) {} and go.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -405,7 +405,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).month.set(now.isoformat())
                     await ctx.send(
-                        "Just take this ${} {} and go.".format(
+                        "<:cash:803730921785524234> Just take this +$str(int(humanize_number({}))) {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -435,7 +435,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).quarter.set(now.isoformat())
                     await ctx.send(
-                        "+${} {}... can you please pay me for cleaning your room, now?".format(
+                        "<:cash:803730921785524234> +$str(int(humanize_number({}))) {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -459,7 +459,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).quarter.set(now.isoformat())
                     await ctx.send(
-                        "+${} {}... can you please pay me for cleaning your room, now?".format(
+                        "<:cash:803730921785524234> +$str(int(humanize_number({}))) {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
@@ -487,7 +487,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).year.set(now.isoformat())
                     await ctx.send(
-                        "Tax time at Sumi's House! My favorite season. Here's ${} {}. Enjoy it, sis.".format(
+                        "<:cash:803730921785524234> Tax time at Sumi's House! My favorite season. Here's +$str(int(humanize_number({}))) {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -511,7 +511,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).year.set(now.isoformat())
                     await ctx.send(
-                        "Tax time at Sumi's House! My favorite season. Here's ${} {}. Enjoy it, sis.".format(
+                        "<:cash:803730921785524234> Tax time at Sumi's House! My favorite season. Here's +$str(int(humanize_number({}))) {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
