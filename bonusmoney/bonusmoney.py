@@ -66,12 +66,12 @@ class BonusMoney(commands.Cog):
     @lc.guild_only_check()
     @commands.group()
     async def bonusmoney(self, ctx):
-        """Get bonus server money!"""
+        """Get bonus server money! Type `k,claim` and a bonus to get it."""
 
     @lc.all()
     @bonusmoney.command(name="cooldown")
     async def bonusmoney_times(self, ctx):
-        """Find out when you can get more bonus money."""
+        """Find out when you can get more bonus money"""
 
         if await bank.is_global():
             amounts = await self.config.all()
@@ -87,7 +87,7 @@ class BonusMoney(commands.Cog):
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`Available Now!`"
+                        else "`available now!`"
                     )
                     + "\n"
                 )
@@ -101,7 +101,7 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`Available Now!`"
+                            else "`available now!`"
                         )
                         + "\n"
                     )
@@ -123,7 +123,7 @@ class BonusMoney(commands.Cog):
                     + (
                         humanize_timedelta(timedelta=(timedelta(hours=1) - td))
                         if td.seconds < 3600
-                        else "`Available Now!`"
+                        else "`available now!`"
                     )
                     + "\n"
                 )
@@ -137,7 +137,7 @@ class BonusMoney(commands.Cog):
                         + (
                             humanize_timedelta(timedelta=(timedelta(days=v) - td))
                             if td.days < v
-                            else "`Available Now!`"
+                            else "`available now!`"
                         )
                         + "\n"
                     )
