@@ -66,7 +66,7 @@ class BonusMoney(commands.Cog):
     @lc.guild_only_check()
     @commands.group()
     async def bonusmoney(self, ctx):
-        """Get bonus server money! Type `k,claim` and a bonus to get it."""
+        """Get bonus server money! Type `[p]claim` and a bonus to get it."""
 
     @lc.all()
     @bonusmoney.command(name="cooldowns")
