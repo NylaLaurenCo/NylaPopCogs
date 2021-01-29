@@ -487,7 +487,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).year.set(now.isoformat())
                     await ctx.send(
-                        "<:cash:803730921785524234> Tax time at {ctx.message.guild.name} My favorite season. Here's +${} {}. Enjoy it, sis.".format(
+                        "<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +${} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name())
                         )
                     )
@@ -511,7 +511,7 @@ class BonusMoney(commands.Cog):
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).year.set(now.isoformat())
                     await ctx.send(
-                        "<:cash:803730921785524234> Tax time at Sumi's House! My favorite season. Here's +${} {}. Enjoy it, sis.".format(
+                        "<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +${} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         )
                     )
