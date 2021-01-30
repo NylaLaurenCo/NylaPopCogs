@@ -33,10 +33,11 @@ class McDonalds(Cog):
 
     @commands.command(aliases=["fastfood"])
     async def mcdonalds(self, ctx: commands.Context):
-        currentbank = int(await bank.get_balance(ctx.author))
-        while currentbank = int(await bank.get_balance(ctx.author)):
-            print(currentbank)
-            startingbal = currentbank
+        currentbank = await bank.get_balance(ctx.author)
+        startingbal = int(currentbank)
+        while startingbal = int(currentbank):
+            print(startingbal)
+            beginshift = startingbal
         """Pick up a shift at McDonald's!"""
         if self.junk is None:
             self.load_junk()
@@ -94,10 +95,11 @@ class McDonalds(Cog):
                     "{}, your shift has ended.".format(ctx.author.display_name)
                 )
                 if reward > 0:
-                    finalbank = int(await bank.get_balance(ctx.author))
-                    while finalbank = int(await bank.get_balance(ctx.author)):
-                        print(finalbank)
-                        endingbal = finalbank
+                    finalbank = await bank.get_balance(ctx.author)
+                    endingbal = int(finalbank)
+                    while endingbal = int(finalbank):
+                        print(endingbal)
+                        endshift = endingbal
                     earnings = endingbal - startingbal
                     await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
@@ -112,10 +114,8 @@ class McDonalds(Cog):
                 )
         else:
             if reward > 0:
-                finalbank = int(await bank.get_balance(ctx.author))
-                while finalbank = int(await bank.get_balance(ctx.author)):
-                    print(finalbank)
-                    endingbal = finalbank
+                finalbank = await bank.get_balance(ctx.author)
+                endingbal = print(finalbank)
                 earnings = endingbal - startingbal
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
