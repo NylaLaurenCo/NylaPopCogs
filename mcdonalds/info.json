@@ -1,0 +1,19 @@
+{
+  "author": [
+    "NylaPop",
+  ],
+  "min_bot_version": "1.0",
+  "description": "Pick up a shift at McDonald's to earn some quick cash!",
+  "hidden": false,
+  "install_msg": "Thank you for installing McDonald's. Pick up a shift now with `[p]load mcdonalds`, then `[p]mcdonalds`.",
+  "short": "Pick up a shift at McDonald's!",
+  "end_user_data_statement": "This cog used the core",
+  "tags": [
+    "environment",
+    "games",
+    "economy",
+    "credits",
+    "work",
+    "fast food",
+  ]
+}
