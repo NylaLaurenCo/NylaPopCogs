@@ -265,8 +265,30 @@ class SettingsMixin(MixinMeta):
                     robcd = "Ready to use."
         else:
             robcd = "Disabled."
-        msg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nSlut Cooldown: `{}`\nRob Cooldown: `{}`".format(
-            workcd, crimecd, slutcd, robcd
+        if not await self.briefcasedisabledcheck(ctx):
+            if cd["depositcd"] is None:
+                depositcd = "Ready to use."
+            else:
+                time = int(datetime.datetime.utcnow().timestamp()) - cd["depositcd"]
+                if time < jobcd["depositcd"]:
+                    depositcd = humanize_timedelta(seconds=jobcd["depositcd"] - time)
+                else:
+                    depositcd = "Ready to use."
+        else:
+            depositcd = "Disabled."
+        if not await self.briefcasedisabledcheck(ctx):
+            if cd["withdrawcd"] is None:
+                withdrawcd = "Ready to use."
+            else:
+                time = int(datetime.datetime.utcnow().timestamp()) - cd["withdrawcd"]
+                if time < jobcd["withdrawcd"]:
+                    withdrawcd = humanize_timedelta(seconds=jobcd["withdrawcd"] - time)
+                else:
+                    withdrawcd = "Ready to use."
+        else:
+            withdrawcd = "Disabled."
+        msg = "Work Cooldown: `{}`\nCrime Cooldown: `{}`\nSlut Cooldown: `{}`\nRob Cooldown: `{}`\nDeposit Cooldown: `{}`\nWithdraw Cooldown: `{}`".format(
+            workcd, crimecd, slutcd, robcd, depositcd, withdrawcd
         )
         await ctx.maybe_send_embed(msg)
 
