@@ -33,8 +33,11 @@ class McDonalds(Cog):
 
     @commands.command(aliases=["fastfood"])
     async def mcdonalds(self, ctx: commands.Context):
-        currentbank = await bank.get_balance(ctx.author)
-        startingbal = print(currentbank)
+        currentbank = int(await bank.get_balance(ctx.author))
+        startingbal = currentbank
+        while startingbal = currentbank:
+            print(startingbal)
+            beginshift = startingbal
         """Pick up a shift at McDonald's!"""
         if self.junk is None:
             self.load_junk()
@@ -92,8 +95,11 @@ class McDonalds(Cog):
                     "{}, your shift has ended.".format(ctx.author.display_name)
                 )
                 if reward > 0:
-                    finalbank = await bank.get_balance(ctx.author)
-                    endingbal = print(finalbank)
+                    finalbank = int(await bank.get_balance(ctx.author))
+                    endingbal = finalbank
+                    while endingbal = finalbank:
+                        print(endingbal)
+                    endshift = endingbal
                     earnings = endingbal - startingbal
                     await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
