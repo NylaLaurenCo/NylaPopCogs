@@ -1,5 +1,5 @@
 {
-  "can": [
+  "bin": [
     {
       "object": "Apple Core",
       "action": "re-serve"
