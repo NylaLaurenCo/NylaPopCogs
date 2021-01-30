@@ -38,7 +38,7 @@ class McDonalds(Cog):
             )
         )
         while x in range(0, 10):
-            used = random.choice(self.junk["can"])
+            used = random.choice(self.junk["bin"])
             if used["action"] == "trash":
                 opp = "re-serve"
             else:
