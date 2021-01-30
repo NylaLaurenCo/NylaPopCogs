@@ -42,7 +42,7 @@ class McDonalds(Cog):
         x = 0
         reward = 0
         await ctx.send(
-            "<:pepe_jord:804810873570852884> {0} just signed up for a shift at McDonald's! You're job today is sorting the trash.\n:sh_space:\nWhen you've finished your shift, type `end` to clock out.\n:sh_space:\n".format(
+            "<:pepe_jord:804810873570852884> {0} just signed up for a shift at McDonald's! Your job today is sorting the trash.\n<:sh_space:755971083210981426>\nWhen you've finished your shift, type `end` to clock out.\n<:sh_space:755971083210981426>\n".format(
                 ctx.author.display_name
             )
         )
@@ -53,7 +53,7 @@ class McDonalds(Cog):
             else:
                 opp = "trash"
             await ctx.send(
-                "You dug in the trash and found `{}`. {}, will you leave it in the `trash` or `re-serve` it to customers?".format(
+                "<:look:717577461046444053> You dug in the trash and found `{}`. {}, will you leave it in the `trash` or `re-serve` it to customers?".format(
                     used["object"], ctx.author.display_name
                 )
             )
@@ -68,11 +68,11 @@ class McDonalds(Cog):
 
             if answer is None:
                 await ctx.send(
-                    "`{}` fell on the floor and needs sorting again!".format(used["object"])
+                    "<a:this_is_fine:804822485282324580> `{}` fell on the floor and needs sorting again!".format(used["object"])
                 )
             elif answer.content.lower().strip() == used["action"]:
                 await ctx.send(
-                    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month! **+$50 {}**".format(
+                    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month! **+$50 {}**\n<:sh_space:755971083210981426>\n".format(
                         await bank.get_currency_name(ctx.guild)
                     )
                 )
@@ -81,7 +81,7 @@ class McDonalds(Cog):
                 await bank.deposit_credits(ctx.author, reward)
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
-                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay **$50 {}**!".format(
+                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay **$50 {}**!\n<:sh_space:755971083210981426>\n".format(
                         ctx.author.display_name, await bank.get_currency_name(ctx.guild)
                     )
                 )
@@ -89,7 +89,7 @@ class McDonalds(Cog):
                 await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
                 await ctx.send(
-                    "{}, your shift has ended.".format(ctx.author.display_name)
+                    "Great job, today, {}! ...kind of.".format(ctx.author.display_name)
                 )
                 if reward > 0:
                     finalbank = await bank.get_balance(ctx.author)
@@ -101,10 +101,14 @@ class McDonalds(Cog):
                             earnings, await bank.get_currency_name(ctx.guild)
                         )
                     )
+                else:
+                    await ctx.send(
+                        "Dude... you may want to consider a different job."
+                    )
                 break
             else:
                 await ctx.send(
-                    "`{}` fell on the floor and needs sorting again!".format(used["object"])
+                    "<a:this_is_fine:804822485282324580> `{}` fell on the floor and needs sorting again!".format(used["object"])
                 )
         else:
             if reward > 0:
@@ -113,7 +117,7 @@ class McDonalds(Cog):
                 earnings = str(humanize_number(int(finalbank - currentbank)))
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
-                    "{}, your shift has ended. You earned **{} {}** for a hard day's work!".format(
+                    "Great job, today, {}! ...kind of.\n\nYou earned **${} {}** for a hard day's work!".format(
                         ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
                     )
                 )
