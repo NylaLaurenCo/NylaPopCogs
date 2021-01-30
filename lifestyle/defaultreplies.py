@@ -156,7 +156,7 @@ work = [
     "You pour coffee into a cup and successfully deliver it to a customer for {amount}",
     "You suggest something good and get rewarded {amount}",
     "You work as a taxi driver and earn {amount}",
-    "You got more than 1000 suscribers on YouTube, your last video make you really famous, and then come the YouTube money : {amount}",
+    "You got more than 1,000 suscribers on YouTube! Your last Mukbang video made you famous, leading you to earn a whopping {amount}!",
     "You work as a cookie cutter and earn {amount}",
     "You work at a lamp store and earn {amount}",
     "You work as a pumpkin painter and are surprised to find {amount} stashed inside one of them.",
