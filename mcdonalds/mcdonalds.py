@@ -92,7 +92,7 @@ class McDonalds(Cog):
                     ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name)
                 )
                 finalbank = await bank.get_balance(ctx.author)
-                earnings = str(humanize_number(int(finalbank - currentbank)))
+                earnings = humanize_number(int(finalbank - currentbank))
                 if earnings > 0:                    
                     #endingbal = finalbank                    
                     #await bank.deposit_credits(ctx.author, reward)
@@ -112,7 +112,7 @@ class McDonalds(Cog):
                 )
         else:
             finalbank = await bank.get_balance(ctx.author)
-            earnings = str(humanize_number(int(finalbank - currentbank)))
+            earnings = humanize_number(int(finalbank - currentbank))
             if earnings > 0:
                 #finalbank = await bank.get_balance(ctx.author)
                 #endingbal = finalbank
