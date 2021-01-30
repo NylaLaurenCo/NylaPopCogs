@@ -91,10 +91,10 @@ class McDonalds(Cog):
                 await ctx.send(
                     ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name)
                 )
-                if reward > 0:
-                    finalbank = await bank.get_balance(ctx.author)
-                    #endingbal = finalbank
-                    earnings = str(humanize_number(int(finalbank - currentbank)))
+                finalbank = await bank.get_balance(ctx.author)
+                earnings = str(humanize_number(int(finalbank - currentbank)))
+                if earnings > 0:                    
+                    #endingbal = finalbank                    
                     #await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
                         "You earned **${} {}** for a hard day's work!".format(
@@ -111,13 +111,19 @@ class McDonalds(Cog):
                     "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and needs sorting again!\n<:sh_space:755971083210981426>\n".format(used["object"])
                 )
         else:
-            if reward > 0:
-                finalbank = await bank.get_balance(ctx.author)
+            finalbank = await bank.get_balance(ctx.author)
+            earnings = str(humanize_number(int(finalbank - currentbank)))
+            if earnings > 0:
+                #finalbank = await bank.get_balance(ctx.author)
                 #endingbal = finalbank
-                earnings = str(humanize_number(int(finalbank - currentbank)))
+                #earnings = str(humanize_number(int(finalbank - currentbank)))
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
                     ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\nYou earned **${} {}** for a hard day's work!".format(
                         ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
                     )
                 )
+                else:
+                    await ctx.send(
+                        "Dude... you may want to consider a different job."
+                    )
