@@ -89,7 +89,7 @@ class McDonalds(Cog):
                 await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
                 await ctx.send(
-                    ":fries: Great job, today, {}! ...kinda\n\n".format(ctx.author.display_name)
+                    ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name)
                 )
                 if reward > 0:
                     finalbank = await bank.get_balance(ctx.author)
@@ -117,7 +117,7 @@ class McDonalds(Cog):
                 earnings = str(humanize_number(int(finalbank - currentbank)))
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
-                    ":fries: Great job, today, {}! ...kinda\n\nYou earned **${} {}** for a hard day's work!".format(
+                    ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\nYou earned **${} {}** for a hard day's work!".format(
                         ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
                     )
                 )
