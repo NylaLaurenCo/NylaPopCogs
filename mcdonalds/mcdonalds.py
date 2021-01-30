@@ -83,7 +83,7 @@ class McDonalds(Cog):
                          "{}, your shift has ended. You earned **$humanize_number({}) {}** for a hard day's work!".format(
                               ctx.author.display_name, reward, await bank.get_currency_name(ctx.guild)
                          )
-               if reward <= 0:
+               if reward = 0:
                     await ctx.send(
                          "{}, your shift has ended. You might want to look into finding another job, bro.".format(ctx.author.display_name)
                     )
