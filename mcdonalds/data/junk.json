@@ -1,199 +1,259 @@
 {
   "bin": [
     {
-      "object": "Apple Core",
+      "object": "an apple core",
       "action": "re-serve"
     },
     {
-      "object": "Paper Cup",
+      "object": "a paper cup",
       "action": "trash"
     },
     {
-      "object": "Rotten Eggs",
+      "object": "rotten eggs",
       "action": "re-serve"
     },
     {
-      "object": "Stale Fries",
+      "object": "stale fries",
       "action": "re-serve"
     },
     {
-      "object": "Raw Beef Patties",
+      "object": "raw beef patties",
       "action": "re-serve"
     },
     {
-      "object": "Open Ketchup Packet",
+      "object": "an open ketchup packet",
       "action": "re-serve"
     },
     {
-      "object": "Paper Bag",
+      "object": "a paper bag",
       "action": "trash"
     },
     {
-      "object": "Molded Bread",
+      "object": "molded bread",
       "action": "re-serve"
     },
     {
-      "object": "Sweet & Sour Sauce",
-      "action": "re-serve"
-    },
-    {
-      "object": "Old Taco Bell",
-      "action": "re-serve"
-    },
-    {
-      "object": "Newspaper",
+      "object": "an empty burger wrapper",
       "action": "trash"
     },
     {
-      "object": "Half-eaten Whopper",
+      "object": "Sweet & Sour sauce",
       "action": "re-serve"
     },
     {
-      "object": "Chewed Chicken Nuggets",
+      "object": "old Taco Bell",
       "action": "re-serve"
     },
     {
-      "object": "Chewed Gum",
-      "action": "re-serve"
-    },
-    {
-      "object": "Jizz Mayo",
-      "action": "re-serve"
-    },
-    {
-      "object": "Polythene Bag",
+      "object": "a rolled up newspaper",
       "action": "trash"
     },
     {
-      "object": "Wilted Lettuce",
+      "object": "a half-eaten wrapper",
       "action": "re-serve"
     },
     {
-      "object": "Smushed Frosted Donut",
+      "object": "chewed chicken nuggets",
       "action": "re-serve"
     },
     {
-      "object": "Outdated Phone Directory",
+      "object": "chewed gum",
+      "action": "re-serve"
+    },
+    {
+      "object": "a bottle of jizz",
+      "action": "re-serve"
+    },
+    {
+      "object": "polythene bags",
       "action": "trash"
     },
     {
-      "object": "Dehydrated Bacon",
+      "object": "wilted lettuce",
       "action": "re-serve"
     },
     {
-      "object": "Used Notebook",
+      "object": "runny mayo",
+      "action": "re-serve"
+    },
+    {
+      "object": "a smushed frosted donut",
+      "action": "re-serve"
+    },
+    {
+      "object": "an outdated phonebook",
       "action": "trash"
     },
     {
-      "object": "Discarded Burner Phone",
+      "object": "dehydrated bacon",
+      "action": "re-serve"
+    },
+    {
+      "object": "a torn notebook",
       "action": "trash"
     },
     {
-      "object": "Sour Milk",
-      "action": "re-serve"
-    },
-    {
-      "object": "Raw Chicken",
-      "action": "re-serve"
-    },
-    {
-      "object": "Old Textbook",
+      "object": "a discarded burner phone",
       "action": "trash"
     },
     {
-      "object": "Old Bloody Beef",
+      "object": "cocaine",
       "action": "re-serve"
     },
     {
-      "object": "Week-Old Sandwich",
+      "object": "sour milk",
       "action": "re-serve"
     },
     {
-      "object": "Paper Ball",
+      "object": "raw chicken",
+      "action": "re-serve"
+    },
+    {
+      "object": "a burnt crack pipe",
       "action": "trash"
     },
     {
-      "object": "Leftovers",
-      "action": "re-serve"
-    },
-    {
-      "object": "Sliced Finger",
-      "action": "re-serve"
-    },
-    {
-      "object": "Soiled Band-aid",
-      "action": "re-serve"
-    },
-    {
-      "object": "Toy Car",
+      "object": "an old Latvian textbook",
       "action": "trash"
     },
     {
-      "object": "Fish Bones",
+      "object": "old bloody beef",
       "action": "re-serve"
     },
     {
-      "object": "Superhero Costume",
+      "object": "a week-old sandwich",
+      "action": "re-serve"
+    },
+    {
+      "object": "paper ball",
       "action": "trash"
     },
     {
-      "object": "Dirty Diaper",
+      "object": "mom's spaghetti",
       "action": "re-serve"
     },
     {
-      "object": "Wormy Tomato",
+      "object": "leftover lunch",
       "action": "re-serve"
     },
     {
-      "object": "Silcone Mould",
+      "object": "a sliced finger",
+      "action": "re-serve"
+    },
+    {
+      "object": "a soiled band-aid",
+      "action": "re-serve"
+    },
+    {
+      "object": "a toy car",
       "action": "trash"
     },
     {
-      "object": "Moldy Broccoli",
-      "action": "re-serve"
-    },
-    {
-      "object": "Tattered Uniform",
+      "object": "a fried sim card",
       "action": "trash"
     },
     {
-      "object": "Crumpled Resignation Letter",
+      "object": "a fried rat",
+      "action": "re-serve"
+    },
+    {
+      "object": "a fried hair comb",
       "action": "trash"
     },
     {
-      "object": "TV Remote",
+      "object": "fish bones",
+      "action": "re-serve"
+    },
+    {
+      "object": "a kid's superhero costume",
       "action": "trash"
     },
     {
-      "object": "Withered Roses",
-      "action": "re-serve"
-    },
-    {
-      "object": "Pancake with footprints on it",
-      "action": "re-serve"
-    },
-    {
-      "object": "Licked Biscuit",
-      "action": "re-serve"
-    },
-    {
-      "object": "Paper Plate",
+      "object": "an Among Us plush doll",
       "action": "trash"
     },
     {
-      "object": "Stray Hair",
+      "object": "dirty diaper",
       "action": "re-serve"
     },
     {
-      "object": "Used Puppy Pads",
+      "object": "a furry tail",
+      "action": "trash"
+    },
+    {
+      "object": "a crushed cup",
+      "action": "trash"
+    },
+    {
+      "object": "a wormy tomato",
       "action": "re-serve"
     },
     {
-      "object": "Slimy Bacon",
+      "object": "a silcone boob mould",
+      "action": "trash"
+    },
+    {
+      "object": "moldy broccoli",
       "action": "re-serve"
     },
     {
-      "object": "Folders",
+      "object": "wet pickles",
+      "action": "re-serve"
+    },
+    {
+      "object": "a tattered uniform",
+      "action": "trash"
+    },
+    {
+      "object": "Jordan's crumpled resignation letter",
+      "action": "trash"
+    },
+    {
+      "object": "a TV remote",
+      "action": "trash"
+    },
+    {
+      "object": "withered roses",
+      "action": "re-serve"
+    },
+    {
+      "object": "a pancake with footprints on it",
+      "action": "re-serve"
+    },
+    {
+      "object": "a licked biscuit",
+      "action": "re-serve"
+    },
+    {
+      "object": "a hundred dollars",
+      "action": "trash"
+    },
+    {
+      "object": "dirty paper plates",
+      "action": "trash"
+    },
+    {
+      "object": "stray hair",
+      "action": "re-serve"
+    },
+    {
+      "object": "used puppy pads",
+      "action": "re-serve"
+    },
+    {
+      "object": "slimy bacon",
+      "action": "re-serve"
+    },
+    {
+      "object": "a worn MAGA hat",
+      "action": "trash"
+    },
+    {
+      "object": "manilla folders",
+      "action": "trash"
+    },
+    {
+      "object": "Jordan's request for a payraise",
       "action": "trash"
     },
     {
@@ -201,167 +261,203 @@
       "action": "re-serve"
     },
     {
-      "object": "Phone case",
+      "object": "an iPhone 2 case",
       "action": "trash"
     },
     {
-      "object": "Napkins",
+      "object": "a sealed pack of napkins",
       "action": "trash"
     },
     {
-      "object": "Oily Onions",
+      "object": "oily onions",
       "action": "re-serve"
     },
     {
-      "object": "Broken Dualshock 4 Controller",
+      "object": "a broken dualshock 4 controller",
       "action": "trash"
     },
     {
-      "object": "Wax Paper",
+      "object": "a PS5",
       "action": "trash"
     },
     {
-      "object": "iPad",
+      "object": "wax paper",
       "action": "trash"
     },
     {
-      "object": "Paint Can",
+      "object": "an iPad",
       "action": "trash"
     },
     {
-      "object": "Glass Bottle",
+      "object": "an empty paint can",
       "action": "trash"
     },
     {
-      "object": "Broken Glass",
+      "object": "fried cameltoe",
       "action": "re-serve"
     },
     {
-      "object": "Light Bulb",
-      "action": "re-serve"
-    },
-    {
-      "object": "Spilled BBQ Sauce",
-      "action": "re-serve"
-    },
-    {
-      "object": "Nintendo 3DS",
+      "object": "a glass bottle",
       "action": "trash"
     },
     {
-      "object": "Styrofoam Container",
+      "object": "broken glass",
       "action": "re-serve"
     },
     {
-      "object": "Flash Cards",
+      "object": "a golden ticket... it's probably important",
       "action": "trash"
     },
     {
-      "object": "Motor Oil Can",
+      "object": "a winning lottery ticket",
       "action": "trash"
     },
     {
-      "object": "Corona Mask",
+      "object": "spilled BBQ sauce",
       "action": "re-serve"
     },
     {
-      "object": "Candy Wrapper",
+      "object": "a Nintendo Switch",
       "action": "trash"
     },
     {
-      "object": "Waxed Cardboard",
+      "object": "a stained styrofoam container",
+      "action": "re-serve"
+    },
+    {
+      "object": "flash cards",
       "action": "trash"
     },
     {
-      "object": "Empty Bottle",
+      "object": "a can of Motor Oil",
       "action": "trash"
     },
     {
-      "object": "Used Toilet Paper",
+      "object": "a used Corona mask",
       "action": "re-serve"
     },
     {
-      "object": "Expired Passport",
+      "object": "crumpled candy wrappers",
       "action": "trash"
     },
     {
-      "object": "Rotting Fish Head",
-      "action": "re-serve"
-    },
-    {
-      "object": "Outdated Calendar",
+      "object": "waxed cardboard",
       "action": "trash"
     },
     {
-      "object": "Liquified Icecream",
+      "object": "loose pubes",
       "action": "re-serve"
     },
     {
-      "object": "Expired Frozen Mangos",
+      "object": "used toilet paper",
       "action": "re-serve"
     },
     {
-      "object": "Ceramic Mug",
-      "action": "re-serve"
-    },
-    {
-      "object": "Expired Orange Juice",
-      "action": "re-serve"
-    },
-    {
-      "object": "Plastic Cup",
+      "object": "your time off request form",
       "action": "trash"
     },
     {
-      "object": "Gift Wrapping",
+      "object": "rotting fish head",
+      "action": "re-serve"
+    },
+    {
+      "object": "an outdated calendar",
       "action": "trash"
     },
     {
-      "object": "Moldy Fruit",
+      "object": "liquified icecream",
       "action": "re-serve"
     },
     {
-      "object": "Fake Meat",
+      "object": "expired frozen mango",
       "action": "re-serve"
     },
     {
-      "object": "Clumped Cat Litter",
+      "object": "a One Piece: The Complete Collection boxed DVD set",
       "action": "re-serve"
     },
     {
-      "object": "Dog Kibble",
+      "object": "expired orange juice",
       "action": "re-serve"
     },
     {
-      "object": "Brown Water",
-      "action": "re-serve"
-    },
-    {
-      "object": "Ratty Hair Extensions",
-      "action": "re-serve"
-    },
-    {
-      "object": "Moldy Soup",
-      "action": "re-serve"
-    },
-    {
-      "object": "Chewed-up Cheese",
-      "action": "re-serve"
-    },
-    {
-      "object": "Half-eaten Lo-mein",
-      "action": "re-serve"
-    },
-    {
-      "object": "Used Tampons",
+      "object": "a plastic cup",
       "action": "trash"
     },
     {
-      "object": "Cold Coffee",
+      "object": "gift wrapping",
+      "action": "trash"
+    },
+    {
+      "object": "moldy fruit",
       "action": "re-serve"
     },
     {
-      "object": "Soda Bottle",
+      "object": "Digestives",
+      "action": "trash"
+    },
+    {
+      "object": "fake meat",
+      "action": "re-serve"
+    },
+    {
+      "object": "clumped cat litter",
+      "action": "re-serve"
+    },
+    {
+      "object": "dog kibble",
+      "action": "re-serve"
+    },
+    {
+      "object": "brown water",
+      "action": "re-serve"
+    },
+    {
+      "object": "matted hair extensions",
+      "action": "re-serve"
+    },
+    {
+      "object": "moldy soup",
+      "action": "re-serve"
+    },
+    {
+      "object": "Jordan's freshly-washed boxers",
+      "action": "trash"
+    },
+    {
+      "object": "photograph's of your manager's affair... you could probably use it for blackmail",
+      "action": "trash"
+    },
+    {
+      "object": "chewed-up cheese",
+      "action": "re-serve"
+    },
+    {
+      "object": "half-eaten lo-mein",
+      "action": "re-serve"
+    },
+    {
+      "object": "used tampons",
+      "action": "trash"
+    },
+    {
+      "object": "an investigation request from the Health Department",
+      "action": "trash"
+    },
+    {
+      "object": "cold Ccoffee",
+      "action": "re-serve"
+    },
+    {
+      "object": "vats of fresh grease! Finally! The team could really use those",
+      "action": "trash"
+    },
+    {
+      "object": "empty lotion bottles",
+      "action": "trash"
+    },
+    {
+      "object": "a half-full soda bottle",
       "action": "trash"
     }
   ]
