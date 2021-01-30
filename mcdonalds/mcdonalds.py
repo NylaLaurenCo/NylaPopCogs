@@ -123,7 +123,3 @@ class McDonalds(Cog):
                         ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
                     )
                 )
-                else:
-                    await ctx.send(
-                        "Dude... you may want to consider a different job."
-                    )
