@@ -64,7 +64,7 @@ class McDonalds(Cog):
             elif answer.content.lower().strip() == used["action"]:
                 await ctx.send(
                     "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month! **+$50 {}**".format(
-                        await bank.get_currency_name(ctx.guild)]
+                        await bank.get_currency_name(ctx.guild)
                     )
                 )
                 reward =+50
