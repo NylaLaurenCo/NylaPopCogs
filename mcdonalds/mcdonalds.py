@@ -62,7 +62,7 @@ class McDonalds(Cog):
                 return m.author == ctx.author and m.channel == ctx.channel
 
             try:
-                answer = await self.bot.wait_for("message", timeout=120, check=check)
+                answer = await self.bot.wait_for("message", timeout=90, check=check)
             except asyncio.TimeoutError:
                 answer = None
 
@@ -81,7 +81,7 @@ class McDonalds(Cog):
                 await bank.deposit_credits(ctx.author, reward)
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
-                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$50 {}**!\n<:sh_space:755971083210981426>\n".format(
+                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$50 {}**\n<:sh_space:755971083210981426>\n".format(
                         ctx.author.display_name, await bank.get_currency_name(ctx.guild)
                     )
                 )
@@ -108,7 +108,7 @@ class McDonalds(Cog):
                 break
             else:
                 await ctx.send(
-                    "<a:this_is_fine:804822485282324580> `{}` fell on the floor and needs sorting again!".format(used["object"])
+                    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and needs sorting again!\n<:sh_space:755971083210981426>\n".format(used["object"])
                 )
         else:
             if reward > 0:
