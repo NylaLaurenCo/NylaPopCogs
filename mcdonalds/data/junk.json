@@ -2,7 +2,7 @@
   "bin": [
     {
       "object": "an apple core",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a paper cup",
@@ -10,19 +10,19 @@
     },
     {
       "object": "rotten eggs",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "stale fries",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "raw beef patties",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "an open ketchup packet",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a paper bag",
@@ -30,7 +30,7 @@
     },
     {
       "object": "molded bread",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "an empty burger wrapper",
@@ -38,11 +38,11 @@
     },
     {
       "object": "Sweet & Sour sauce",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "old Taco Bell",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a rolled up newspaper",
@@ -50,19 +50,19 @@
     },
     {
       "object": "a half-eaten wrapper",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "chewed chicken nuggets",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "chewed gum",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a bottle of jizz",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "polythene bags",
@@ -70,15 +70,15 @@
     },
     {
       "object": "wilted lettuce",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "runny mayo",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a smushed frosted donut",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "an outdated phonebook",
@@ -86,7 +86,7 @@
     },
     {
       "object": "dehydrated bacon",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a torn notebook",
@@ -98,15 +98,15 @@
     },
     {
       "object": "cocaine",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "sour milk",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "raw chicken",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a burnt crack pipe",
@@ -118,11 +118,11 @@
     },
     {
       "object": "old bloody beef",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a week-old sandwich",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "paper ball",
@@ -130,19 +130,19 @@
     },
     {
       "object": "mom's spaghetti",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "leftover lunch",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a sliced finger",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a soiled band-aid",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a toy car",
@@ -154,7 +154,7 @@
     },
     {
       "object": "a fried rat",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a fried hair comb",
@@ -162,7 +162,7 @@
     },
     {
       "object": "fish bones",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a kid's superhero costume",
@@ -174,7 +174,7 @@
     },
     {
       "object": "dirty diaper",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a furry tail",
@@ -186,7 +186,7 @@
     },
     {
       "object": "a wormy tomato",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a silcone boob mould",
@@ -194,11 +194,11 @@
     },
     {
       "object": "moldy broccoli",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "wet pickles",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a tattered uniform",
@@ -214,15 +214,15 @@
     },
     {
       "object": "withered roses",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a pancake with footprints on it",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a licked biscuit",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a hundred dollars",
@@ -234,15 +234,15 @@
     },
     {
       "object": "stray hair",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "used puppy pads",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "slimy bacon",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a worn MAGA hat",
@@ -258,7 +258,7 @@
     },
     {
       "object": "Fly Agaric Mushrooms",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "an iPhone 2 case",
@@ -270,7 +270,7 @@
     },
     {
       "object": "oily onions",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a broken dualshock 4 controller",
@@ -294,7 +294,7 @@
     },
     {
       "object": "fried cameltoe",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a glass bottle",
@@ -302,7 +302,7 @@
     },
     {
       "object": "broken glass",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a golden ticket... it's probably important",
@@ -314,7 +314,7 @@
     },
     {
       "object": "spilled BBQ sauce",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a Nintendo Switch",
@@ -322,7 +322,7 @@
     },
     {
       "object": "a stained styrofoam container",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "flash cards",
@@ -334,7 +334,7 @@
     },
     {
       "object": "a used Corona mask",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "crumpled candy wrappers",
@@ -346,11 +346,11 @@
     },
     {
       "object": "loose pubes",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "used toilet paper",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "your time off request form",
@@ -358,7 +358,7 @@
     },
     {
       "object": "rotting fish head",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "an outdated calendar",
@@ -366,19 +366,19 @@
     },
     {
       "object": "liquified icecream",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "expired frozen mango",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a One Piece: The Complete Collection boxed DVD set",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "expired orange juice",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "a plastic cup",
@@ -390,7 +390,7 @@
     },
     {
       "object": "moldy fruit",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "Digestives",
@@ -398,27 +398,27 @@
     },
     {
       "object": "fake meat",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "clumped cat litter",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "dog kibble",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "brown water",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "matted hair extensions",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "moldy soup",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "Jordan's freshly-washed boxers",
@@ -430,11 +430,11 @@
     },
     {
       "object": "chewed-up cheese",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "half-eaten lo-mein",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "used tampons",
@@ -446,7 +446,7 @@
     },
     {
       "object": "cold Ccoffee",
-      "action": "re-serve"
+      "action": "serve"
     },
     {
       "object": "vats of fresh grease! Finally! The team could really use those",
