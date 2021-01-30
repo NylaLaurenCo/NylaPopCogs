@@ -17,6 +17,14 @@
       "action": "re-serve"
     },
     {
+      "object": "Raw Beef Patties",
+      "action": "re-serve"
+    },
+    {
+      "object": "Open Ketchup Packet",
+      "action": "re-serve"
+    },
+    {
       "object": "Paper Bag",
       "action": "trash"
     },
@@ -25,7 +33,11 @@
       "action": "re-serve"
     },
     {
-      "object": "Old Taco",
+      "object": "Sweet & Sour Sauce",
+      "action": "re-serve"
+    },
+    {
+      "object": "Old Taco Bell",
       "action": "re-serve"
     },
     {
@@ -34,6 +46,10 @@
     },
     {
       "object": "Half-eaten Whopper",
+      "action": "re-serve"
+    },
+    {
+      "object": "Chewed Chicken Nuggets",
       "action": "re-serve"
     },
     {
@@ -53,7 +69,11 @@
       "action": "re-serve"
     },
     {
-      "object": "Outdated Telephone Directory",
+      "object": "Smushed Frosted Donut",
+      "action": "re-serve"
+    },
+    {
+      "object": "Outdated Phone Directory",
       "action": "trash"
     },
     {
@@ -62,6 +82,10 @@
     },
     {
       "object": "Used Notebook",
+      "action": "trash"
+    },
+    {
+      "object": "Discarded Burner Phone",
       "action": "trash"
     },
     {
