@@ -53,7 +53,7 @@ class McDonalds(Cog):
             else:
                 opp = "trash"
             await ctx.send(
-                "<:look:717577461046444053> You dug in the trash and found `{}`. {}, will you leave it in the `trash` or `re-serve` it to customers?".format(
+                "<:simp_hand:802963169576222770> You dug in the trash and found `{}`. {}, will you leave it in the `trash` or `re-serve` it to customers?".format(
                     used["object"], ctx.author.display_name
                 )
             )
