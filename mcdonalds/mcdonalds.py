@@ -87,14 +87,20 @@ class McDonalds(Cog):
                     )
                     break
                 await ctx.send(
-                    "{}, your shift has ended. You might want to look into getting a new job, bro.".format(
-                        ctx.author.display_name
+                        "{}, your shift has ended. You might want to look into getting a new job, bro.".format(
+                            ctx.author.display_name
+                        )
                     )
-                )
                 break
             else:
-                await ctx.send("`{}` fell on the floor and needs sorting again!".format(used["object"]))
+                await ctx.send(
+                    "`{}` fell on the floor and needs sorting again!".format(used["object"])
+                )
         else:
             if reward > 0:
                 await bank.deposit_credits(ctx.author, reward)
-                await ctx.send("{}, your shift has ended. You earned **$humanize_number({}) {}** for a hard day's work!".format(ctx.author.display_name, reward, await bank.get_currency_name(ctx.guild)))
+                await ctx.send(
+                        "{}, your shift has ended. You earned **$humanize_number({}) {}** for a hard day's work!".format(
+                            ctx.author.display_name, reward, await bank.get_currency_name(ctx.guild)
+                        )
+                    )
