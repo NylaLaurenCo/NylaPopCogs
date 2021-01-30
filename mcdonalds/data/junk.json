@@ -173,7 +173,15 @@
       "action": "trash"
     },
     {
-      "object": "dirty diaper",
+      "object": "a dirty diaper",
+      "action": "serve"
+    },
+    {
+      "object": "synthetic pee... you could use this to pass your drug test for a promotion!",
+      "action": "trash"
+    },
+    {
+      "object": "lukewarm pee... you could use this to pass your drug test for a promotion!",
       "action": "serve"
     },
     {
