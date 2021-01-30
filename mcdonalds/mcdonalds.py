@@ -94,10 +94,10 @@ class McDonalds(Cog):
                 if reward > 0:
                     finalbank = await bank.get_balance(ctx.author)
                     #endingbal = finalbank
-                    earnings = finalbank - currentbank
+                    earnings = str(humanize_number(int(finalbank - currentbank)))
                     #await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
-                        "\n\nYou earned **${str(humanize_number())} {}** for a hard day's work!".format(
+                        "\n\nYou earned **${} {}** for a hard day's work!".format(
                             earnings, await bank.get_currency_name(ctx.guild)
                         )
                     )
@@ -110,10 +110,10 @@ class McDonalds(Cog):
             if reward > 0:
                 finalbank = await bank.get_balance(ctx.author)
                 #endingbal = finalbank
-                earnings = finalbank - currentbank
+                earnings = str(humanize_number(int(finalbank - currentbank)))
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
-                    "{}, your shift has ended. You earned **str(humanize_number({})) {}** for a hard day's work!".format(
+                    "{}, your shift has ended. You earned **{} {}** for a hard day's work!".format(
                         ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
                     )
                 )
