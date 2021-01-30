@@ -91,6 +91,14 @@ class Marriage(commands.Cog):
                 "vacation": [60, 5000],
                 "money": [45, 5000],
             },
+            abuse={
+                "yell": [20, 0],
+                "push": [60, 0],
+                "slap": [80, 0],
+                "punch": [95, 0],
+                "kick": [95, 0],
+                "stomp": [100, 0],
+            },
         )
 
     #"stuff": [happiness, price]
@@ -664,36 +672,6 @@ class Marriage(commands.Cog):
             endtext = (
                 f"<a:hatsu_love:802963021127352320> {ctx.author.mention} gently grabs {member.mention} and hugs them close."
             )
-        elif action == "yell":
-            happiness = action[0] * -1
-            endtext = (
-                f"<:13eyes:754285875453624330> {ctx.author.mention} yelled so loudly at {member.mention} that all the neighbors could hear! <:13sb_look:736425355417485362>"
-            )
-        elif action == "push":
-            happiness = action[0] * -1
-            endtext = (
-                f"<:13eyes2:754285875416006706> {ctx.author.mention} pushed {member.mention} and made them fall into a cabinet. Oh sh-!"
-            )
-        elif action == "slap":
-            happiness = action[0] * -1
-            endtext = (
-                f"<a:k_k_slap:733372281639665688> {ctx.author.mention} reached back and slapped {member.mention} **HARD** across the face!"
-            )
-        elif action == "punch":
-            happiness = action[0] * -1
-            endtext = (
-                f"<a:square_up:796218591866912799> WTF!! {ctx.author.mention} punched {member.mention} in the face and knocked out a tooth!"
-            )
-        elif action == "kick":
-            happiness = action[0] * -1
-            endtext = (
-                f":scream: OMGSH! {ctx.author.mention} JUST KICKED {member.mention}! I hope they're okay!"
-            )
-        elif action == "stomp":
-            happiness = action[0] * -1
-            endtext = (
-                f"**WTF!!!** {ctx.author.mention} **CURB STOMPED {member.mention}!** THEIR EARS ARE BLEEDING!!!"
-            )
         elif action == "gift":
             gifts = [
                 "a love letter",
@@ -714,9 +692,44 @@ class Marriage(commands.Cog):
             endtext = (
                 f"<a:diamond_crystal:716788632228462652> Awww {ctx.author.mention} surprised {member.mention} with {item}. <:k_mm_heart02:733370308614029322>"
             )
+        elif action == "abuse":
+            abuse = [
+                "yell",
+                "push",
+                "slap",
+                "punch",
+                "kick",
+                "stomp",
+            ]
+            if item not in abuse:
+                return await ctx.send(f"Abuse types are: {abuse}")
+            if item == "yell":
+                endtext = (
+                    f"<:13eyes:754285875453624330> {ctx.author.mention} yelled so loudly at {member.mention} that all the neighbors could hear! <:13sb_look:736425355417485362>"
+                )
+            elif item == "push":
+                endtext = (
+                    f"<:13eyes2:754285875416006706> {ctx.author.mention} pushed {member.mention} and made them fall into a cabinet. Oh sh-!"
+                )
+            elif item == "slap":
+                endtext = (
+                    f"<a:k_k_slap:733372281639665688> {ctx.author.mention} reached back and slapped {member.mention} **HARD** across the face!"
+                )
+            elif item == "punch":
+                endtext = (
+                    f"<a:square_up:796218591866912799> WTF!! {ctx.author.mention} punched {member.mention} in the face and knocked out a tooth!"
+                )
+            elif item == "kick":
+                endtext = (
+                    f":scream: OMGSH! {ctx.author.mention} JUST KICKED {member.mention}! I hope they're okay!"
+                )
+            elif item == "stomp":
+                endtext = (
+                    f"**WTF!!!** {ctx.author.mention} **CURB STOMPED {member.mention}!** THEIR EARS ARE BLEEDING!!!"
+                )
         else:
             return await ctx.send(
-                "Available actions are: `flirt`, `glance`, `stare`, `wink`, `kiss`, `hold hands`, `hug`, `seks`, `yell`, `push`, `slap`, `punch`, `kick`, `stomp`, `breakfast`, `lunch`, `dinner`, `date`, `drinks`, `pamper`, `sext`, `vacation`, `gift`"
+                "Available actions are: `flirt`, `glance`, `stare`, `wink`, `kiss`, `hold hands`, `hug`, `seks`, `breakfast`, `lunch`, `dinner`, `date`, `drinks`, `pamper`, `sext`, `vacation`, `gift`, `abuse`"
             )
         if action == "gift":
             author_gift = await mc(ctx.author).gifts.get_raw(item)
@@ -724,6 +737,12 @@ class Marriage(commands.Cog):
             action = await gc(ctx.guild).stuff.get_raw(item)
             happiness = action[0]
             price = action[1]
+        elif action == "abuse":
+            action = await gc(ctx.guild).abuse.get_raw(item)
+            happiness = action[0] * -1
+            price = action[1]
+            author_gift = 0
+            member_gift = -1
         else:
             action = await gc(ctx.guild).stuff.get_raw(action)
             happiness = action[0]
