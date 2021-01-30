@@ -4,6 +4,6 @@ from .mcdonalds import McDonalds
 
 
 def setup(bot):
-    plant = McDonalds(bot)
-    data_manager.bundled_data_path(plant)
-    bot.add_cog(plant)
+    mcdonalds = McDonalds(bot)
+    data_manager.bundled_data_path(mcdonalds)
+    bot.add_cog(mcdonalds)
