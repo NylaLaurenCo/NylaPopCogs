@@ -25,8 +25,16 @@ class McDonalds(Cog):
         with junk_path.open() as json_data:
             self.junk = json.load(json_data)
 
-    @commands.command(aliases=["re-serve"])
+    #def earnings(x):
+    #    reward = 0
+    #    for item in x:
+    #        reward += item
+    #        yield reward
+
+    @commands.command(aliases=["fastfood"])
     async def mcdonalds(self, ctx: commands.Context):
+        currentbank = await bank.get_balance(ctx.author)
+        startingbal = print(currentbank)
         """Pick up a shift at McDonald's!"""
         if self.junk is None:
             self.load_junk()
@@ -68,24 +76,29 @@ class McDonalds(Cog):
                         await bank.get_currency_name(ctx.guild)
                     )
                 )
-                reward =+ 50
+                reward = 50
                 x =+ 1
+                await bank.deposit_credits(ctx.author, reward)
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
                     "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay **$50 {}**!".format(
                         ctx.author.display_name, await bank.get_currency_name(ctx.guild)
                     )
                 )
-                reward =- 50
+                reward = 50
+                await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
                 await ctx.send(
                     "{}, your shift has ended.".format(ctx.author.display_name)
                 )
                 if reward > 0:
+                    finalbank = await bank.get_balance(ctx.author)
+                    endingbal = print(finalbank)
+                    earnings = endingbal - startingbal
                     await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
-                        "\n\nYou earned **$humanize_number({}) {}** for a hard day's work!".format(
-                            ctx.author.display_name, reward, await bank.get_currency_name(ctx.guild)
+                        "\n\nYou earned **$str(humanize_number({})) {}** for a hard day's work!".format(
+                            earnings, await bank.get_currency_name(ctx.guild)
                         )
                     )
                 break
@@ -95,9 +108,12 @@ class McDonalds(Cog):
                 )
         else:
             if reward > 0:
-                await bank.deposit_credits(ctx.author, reward)
+                finalbank = await bank.get_balance(ctx.author)
+                endingbal = print(finalbank)
+                earnings = endingbal - startingbal
+                #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
-                    "{}, your shift has ended. You earned **$humanize_number({}) {}** for a hard day's work!".format(
-                        ctx.author.display_name, reward, await bank.get_currency_name(ctx.guild)
+                    "{}, your shift has ended. You earned **str(humanize_number({})) {}** for a hard day's work!".format(
+                        ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
                     )
                 )
