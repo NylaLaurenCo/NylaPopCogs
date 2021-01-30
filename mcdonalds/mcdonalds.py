@@ -81,7 +81,7 @@ class McDonalds(Cog):
                 await bank.deposit_credits(ctx.author, reward)
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
-                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay\n**-$50 {}**!\n<:sh_space:755971083210981426>\n".format(
+                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$50 {}**!\n<:sh_space:755971083210981426>\n".format(
                         ctx.author.display_name, await bank.get_currency_name(ctx.guild)
                     )
                 )
