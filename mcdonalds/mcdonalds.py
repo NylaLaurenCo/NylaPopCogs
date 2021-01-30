@@ -49,12 +49,12 @@ class McDonalds(Cog):
         while x in range(0, 10):
             used = random.choice(self.junk["bin"])
             if used["action"] == "trash":
-                opp = "re-serve"
+                opp = "serve"
             else:
                 opp = "trash"
             await ctx.send(
-                "<:simp_hand:802963169576222770> You dug in the trash and found `{}`. {}, will you leave it in the `trash` or `re-serve` it to customers?".format(
-                    used["object"], ctx.author.display_name
+                "<:simp_hand:802963169576222770> You dug in the trash and found `{}`.\n{}, will you leave it in the `trash` or `serve` it to customers?".format(
+                    used["object"], ctx.author.mention
                 )
             )
 
@@ -72,7 +72,7 @@ class McDonalds(Cog):
                 )
             elif answer.content.lower().strip() == used["action"]:
                 await ctx.send(
-                    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month! **+$50 {}**\n<:sh_space:755971083210981426>\n".format(
+                    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month!\n**+$50 {}**\n<:sh_space:755971083210981426>\n".format(
                         await bank.get_currency_name(ctx.guild)
                     )
                 )
