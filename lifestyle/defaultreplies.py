@@ -852,7 +852,7 @@ slut = [
     "A delivery driver wants to show you their 'package'. They offer to pay you {amount} for which you happily accept. ",
     "You let lint top you for {amount}. For such a tiny little shit, you're surprised to find out you're unable to sit for days afterwards.",
     "You play nude Twister with the Dallas Cowboys for {amount}.",
-    "A trans girl propositions you during sex to roleplay as a straight trans guy pretending to be a gay cis-girl pretending to be a pans trans guy. You're confused as hell but go along with it. You get paid {amount}.",
+    "A trans girl propositions you during sex to roleplay as a straight trans guy pretending to be a gay cis-girl pretending to be a pansexual asexual trans cis-softboi. You're confused as hell but go along with it. You get paid {amount}.",
     "You wash windows with your boobs for {amount}.",
     "A stranger pays you {amount} to pole dance in their basement.",
     "You earn {amount} giving handjobs behind the tortilla chip counter at your local bodega.",
