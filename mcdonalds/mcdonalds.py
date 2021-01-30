@@ -88,12 +88,12 @@ class McDonalds(Cog):
                 reward = 50
                 await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
-                await ctx.send(
-                    ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name)
-                )
                 finalbank = await bank.get_balance(ctx.author)
                 earnings = int(humanize_number(finalbank - currentbank))
-                if earnings > 0:                    
+                if earnings > 0:
+                    await ctx.send(
+                        ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name)
+                    )                    
                     #endingbal = finalbank                    
                     #await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
