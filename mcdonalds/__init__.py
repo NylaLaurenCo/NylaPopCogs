@@ -1,9 +1,9 @@
 from redbot.core import data_manager
 
-from .recyclingplant import RecyclingPlant
+from .mcdonalds import McDonalds
 
 
 def setup(bot):
-    plant = RecyclingPlant(bot)
+    plant = McDonalds(bot)
     data_manager.bundled_data_path(plant)
     bot.add_cog(plant)
