@@ -2,239 +2,343 @@
   "can": [
     {
       "object": "Apple Core",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Paper Cup",
-      "action": "recycle"
-    },
-    {
-      "object": "Banana Peel",
       "action": "trash"
-    },
-    {
-      "object": "Paper Bag",
-      "action": "recycle"
-    },
-    {
-      "object": "Old Taco",
-      "action": "trash"
-    },
-    {
-      "object": "Newspaper",
-      "action": "recycle"
-    },
-    {
-      "object": "Chewed Gum",
-      "action": "trash"
-    },
-    {
-      "object": "Polythene Bag",
-      "action": "recycle"
     },
     {
       "object": "Rotten Eggs",
+      "action": "re-serve"
+    },
+    {
+      "object": "Stale Fries",
+      "action": "re-serve"
+    },
+    {
+      "object": "Paper Bag",
       "action": "trash"
+    },
+    {
+      "object": "Molded Bread",
+      "action": "re-serve"
+    },
+    {
+      "object": "Old Taco",
+      "action": "re-serve"
+    },
+    {
+      "object": "Newspaper",
+      "action": "trash"
+    },
+    {
+      "object": "Half-eaten Whopper",
+      "action": "re-serve"
+    },
+    {
+      "object": "Chewed Gum",
+      "action": "re-serve"
+    },
+    {
+      "object": "Jizz Mayo",
+      "action": "re-serve"
+    },
+    {
+      "object": "Polythene Bag",
+      "action": "trash"
+    },
+    {
+      "object": "Wilted Lettuce",
+      "action": "re-serve"
     },
     {
       "object": "Outdated Telephone Directory",
-      "action": "recycle"
+      "action": "trash"
     },
     {
-      "object": "Stale Bread",
-      "action": "trash"
+      "object": "Dehydrated Bacon",
+      "action": "re-serve"
     },
     {
       "object": "Used Notebook",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Sour Milk",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Raw Chicken",
+      "action": "re-serve"
     },
     {
       "object": "Old Textbook",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Old Bloody Beef",
+      "action": "re-serve"
     },
     {
       "object": "Week-Old Sandwich",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Paper Ball",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Leftovers",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Sliced Finger",
+      "action": "re-serve"
+    },
+    {
+      "object": "Soiled Band-aid",
+      "action": "re-serve"
     },
     {
       "object": "Toy Car",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Fish Bones",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Superhero Costume",
-      "action": "recycle"
-    },
-    {
-      "object": "Dirty Diaper",
       "action": "trash"
     },
     {
-      "object": "Silcone Mould",
-      "action": "recycle"
+      "object": "Dirty Diaper",
+      "action": "re-serve"
     },
     {
-      "object": "Mouldy Broccoli",
+      "object": "Wormy Tomato",
+      "action": "re-serve"
+    },
+    {
+      "object": "Silcone Mould",
+      "action": "trash"
+    },
+    {
+      "object": "Moldy Broccoli",
+      "action": "re-serve"
+    },
+    {
+      "object": "Tattered Uniform",
+      "action": "trash"
+    },
+    {
+      "object": "Crumpled Resignation Letter",
       "action": "trash"
     },
     {
       "object": "TV Remote",
-      "action": "recycle"
+      "action": "trash"
     },
     {
-      "object": "Withered Rose Bouquet",
-      "action": "trash"
+      "object": "Withered Roses",
+      "action": "re-serve"
+    },
+    {
+      "object": "Pancake with footprints on it",
+      "action": "re-serve"
+    },
+    {
+      "object": "Licked Biscuit",
+      "action": "re-serve"
     },
     {
       "object": "Paper Plate",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Stray Hair",
+      "action": "re-serve"
+    },
+    {
+      "object": "Used Puppy Pads",
+      "action": "re-serve"
     },
     {
       "object": "Slimy Bacon",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Folders",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Fly Agaric Mushrooms",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Phone case",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Napkins",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Oily Onions",
+      "action": "re-serve"
     },
     {
       "object": "Broken Dualshock 4 Controller",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Wax Paper",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "iPad",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Paint Can",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Glass Bottle",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Broken Glass",
+      "action": "re-serve"
     },
     {
       "object": "Light Bulb",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Spilled BBQ Sauce",
+      "action": "re-serve"
     },
     {
       "object": "Nintendo 3DS",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Styrofoam Container",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Flash Cards",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Motor Oil Can",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Corona Mask",
+      "action": "re-serve"
     },
     {
       "object": "Candy Wrapper",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Waxed Cardboard",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Empty Bottle",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Used Toilet Paper",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Expired Passport",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Rotting Fish Head",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Outdated Calendar",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Liquified Icecream",
+      "action": "re-serve"
+    },
+    {
+      "object": "Expired Frozen Mangos",
+      "action": "re-serve"
     },
     {
       "object": "Ceramic Mug",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Expired Orange Juice",
+      "action": "re-serve"
     },
     {
       "object": "Plastic Cup",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Gift Wrapping",
-      "action": "recycle"
+      "action": "trash"
     },
     {
       "object": "Moldy Fruit",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Fake Meat",
+      "action": "re-serve"
     },
     {
       "object": "Clumped Cat Litter",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Dog Kibble",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Brown Water",
+      "action": "re-serve"
     },
     {
       "object": "Ratty Hair Extensions",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Moldy Soup",
-      "action": "trash"
+      "action": "re-serve"
+    },
+    {
+      "object": "Chewed-up Cheese",
+      "action": "re-serve"
     },
     {
       "object": "Half-eaten Lo-mein",
-      "action": "trash"
+      "action": "re-serve"
     },
     {
       "object": "Used Tampons",
-      "action": "recycle"
+      "action": "trash"
+    },
+    {
+      "object": "Cold Coffee",
+      "action": "re-serve"
     },
     {
       "object": "Soda Bottle",
-      "action": "recycle"
+      "action": "trash"
     }
   ]
 }
