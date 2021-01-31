@@ -68,7 +68,7 @@ class McDonalds(Cog):
 
             if answer is None:
                 await ctx.send(
-                    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Are you alright?!\n<:sh_space:755971083210981426>\n".format(used["object"])
+                    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse!\n<:sh_space:755971083210981426>\n".format(used["object"])
                 )
             elif answer.content.lower().strip() == used["action"]:
                 await ctx.send(
@@ -108,7 +108,7 @@ class McDonalds(Cog):
                 break
             else:
                 await ctx.send(
-                    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Are you alright?!\n<:sh_space:755971083210981426>\n".format(used["object"])
+                    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse!\n<:sh_space:755971083210981426>\n".format(used["object"])
                 )
         else:
             finalbank = await bank.get_balance(ctx.author)
