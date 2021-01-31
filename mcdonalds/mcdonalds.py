@@ -89,7 +89,8 @@ class McDonalds(Cog):
                 await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
                 finalbank = await bank.get_balance(ctx.author)
-                earnings = int(humanize_number(finalbank - currentbank))
+                earnings = int(finalbank - currentbank)
+                paycheck = str(humanize_number(earnings))
                 if earnings > 0:
                     await ctx.send(
                         ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name)
@@ -98,7 +99,7 @@ class McDonalds(Cog):
                     #await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
                         "You earned **${} {}** for a hard day's work!".format(
-                            str(earnings), await bank.get_currency_name(ctx.guild)
+                            paycheck, await bank.get_currency_name(ctx.guild)
                         )
                     )
                 else:
@@ -112,7 +113,8 @@ class McDonalds(Cog):
                 )
         else:
             finalbank = await bank.get_balance(ctx.author)
-            earnings = int(humanize_number(finalbank - currentbank))
+            earnings = int(finalbank - currentbank)
+            paycheck = str(humanize_number(earnings))
             if earnings > 0:
                 #finalbank = await bank.get_balance(ctx.author)
                 #endingbal = finalbank
@@ -120,6 +122,6 @@ class McDonalds(Cog):
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
                     ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\nYou earned **${} {}** for a hard day's work!".format(
-                        ctx.author.display_name, str(earnings), await bank.get_currency_name(ctx.guild)
+                        ctx.author.display_name, paycheck, await bank.get_currency_name(ctx.guild)
                     )
                 )
