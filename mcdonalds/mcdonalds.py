@@ -98,7 +98,7 @@ class McDonalds(Cog):
                     #await bank.deposit_credits(ctx.author, reward)
                     await ctx.send(
                         "You earned **${} {}** for a hard day's work!".format(
-                            earnings, await bank.get_currency_name(ctx.guild)
+                            str(earnings), await bank.get_currency_name(ctx.guild)
                         )
                     )
                 else:
@@ -120,6 +120,6 @@ class McDonalds(Cog):
                 #await bank.deposit_credits(ctx.author, reward)
                 await ctx.send(
                     ":fries: Great job, today, {}! ...kinda <:pepe_jord:804810873570852884>\n<:sh_space:755971083210981426>\nYou earned **${} {}** for a hard day's work!".format(
-                        ctx.author.display_name, earnings, await bank.get_currency_name(ctx.guild)
+                        ctx.author.display_name, str(earnings), await bank.get_currency_name(ctx.guild)
                     )
                 )
