@@ -140,7 +140,8 @@ class Marshmallows(commands.Cog):
             marshmallows_penalty = int(author_marshmallows * mallows_stolen)
             if marshmallows_penalty == 0:
                 marshmallows_penalty = 1
-            penalty = humanize_number(random.randint(1, marshmallows_penalty))
+            penalty = random.randint(1, marshmallows_penalty)
+            punished = humanize_number(penalty)
             target_marshmallows += penalty
             if self._max_balance_check(target_marshmallows):
                 embed = discord.Embed(
@@ -157,7 +158,7 @@ class Marshmallows(commands.Cog):
             author_marshmallows -= penalty
             embed = discord.Embed(
                 colour=discord.Color.from_rgb(233,60,56),
-                description=f":x: You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> marshmallows in return. lol get rekt!",
+                description=f":x: You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {punished} of **YOUR** <:so_love:754613619836321892> marshmallows in return. lol get rekt!",
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
