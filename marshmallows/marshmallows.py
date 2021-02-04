@@ -37,7 +37,8 @@ class Marshmallows(commands.Cog):
             cooldown=86400,
             stealing=False,
             stealcd=43200,
-            rate=0.5,
+            cost=20,
+            sellvalue=10,
         )
         self.config.register_member(marshmallows=0, next_marshmallow=0, next_steal=0)
         self.config.register_role(marshmallows=0, multiplier=1)
@@ -215,12 +216,13 @@ class Marshmallows(commands.Cog):
     @commands.guild_only()
     async def buymallows(self, ctx: commands.Context, amount: int):
         currency = await bank.get_currency_name(ctx.guild)
-        """Buy marshmallows. A 39-piece bag of mallows is 1 {currency}."""
+        buycost = str(humanize_number_int(100 / await self.config.guild(ctx.guild).cost())))
+        """Buy marshmallows. A 100-piece bag of mallows costs {buycost} {currency}."""
         if amount <= 0:
             return await ctx.send("Are you okay?")
 
-        rate = await self.config.guild(ctx.guild).rate()
-        budget = int(amount / rate)
+        cost = await self.config.guild(ctx.guild).cost()
+        budget = int(amount / cost)
 
         if not await bank.can_spend(ctx.author, budget):
             return await ctx.send(f"lol check your balance and think about your life choices")
@@ -247,7 +249,9 @@ class Marshmallows(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def sellmallows(self, ctx: commands.Context, amount: int):
-        """Sell Kevin your marshmallows. Just tell him how many you want to sell."""
+        currency = await bank.get_currency_name(ctx.guild)
+        depvalue = str(humanize_number_int(100 / await self.config.guild(ctx.guild).sellvalue())))
+        """Sell Kevin your marshmallows. A 100-piece bag of mallows is worth {depvalue} {currency}."""
         if amount <= 0:
             return await ctx.send("bro, how many are you trying to sell?")
 
@@ -257,8 +261,8 @@ class Marshmallows(commands.Cog):
 
         marshmallows = await self.config.member(ctx.author).marshmallows()
         amount_sold = str(humanize_number(int(amount)))
-        rate = await self.config.guild(ctx.guild).rate()
-        exchanged = amount / rate
+        sellvalue = await self.config.guild(ctx.guild).sellvalue()
+        exchanged = amount / sellvalue
         new_money = int(exchanged)
         new_marshmallows = marshmallows - amount
 
@@ -466,15 +470,25 @@ class Marshmallows(commands.Cog):
                 await self.config.member(member).marshmallows.set(0)
         await ctx.send("All marshmallows have been deleted from all members.")
 
-    @setmarshmallows.command(name="rate")
-    async def setmarshmallows_rate(self, ctx: commands.Context, rate: Union[int, float]):
-        """Set the exchange rate for `[p]marshmallowexchange`."""
-        if rate <= 0:
-            return await ctx.send("Uh oh, rate has to be more than 0.")
-        await self.config.guild(ctx.guild).rate.set(rate)
+    @setmarshmallows.command(name="cost")
+    async def setmarshmallows_cost(self, ctx: commands.Context, cost: Union[int, float]):
+        """Set the cost for buying marshmallows."""
+        if cost <= 0:
+            return await ctx.send("The cost has to be more than 0.")
+        await self.config.guild(ctx.guild).cost.set(cost)
         currency = await bank.get_currency_name(ctx.guild)
-        test_amount = str(humanize_number(int(100*rate)))
-        await ctx.send(f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} <:so_love:754613619836321892>")
+        test_amount = str(humanize_number(int(100*cost)))
+        await ctx.send(f"Set the cost of marshmallows to {cost}. This means that 100 {currency} will give you {test_amount} <:so_love:754613619836321892>")
+
+    @setmarshmallows.command(name="sellvalue")
+    async def setmarshmallows_sellvalue(self, ctx: commands.Context, sellvalue: Union[int, float]):
+        """Set the sell value for selling marshmallows."""
+        if sellvalue <= 0:
+            return await ctx.send("The sell value has to be more than 0.")
+        await self.config.guild(ctx.guild).sellvalue.set(sellvalue)
+        currency = await bank.get_currency_name(ctx.guild)
+        test_amount = str(humanize_number(int(100/sellvalue)))
+        await ctx.send(f"Set the sell value of marshmallows to {sellvalue}. This means that 100 <:so_love:754613619836321892> will give you {test_amount} {currency}")
 
     @setmarshmallows.group(autohelp=True)
     async def role(self, ctx):
