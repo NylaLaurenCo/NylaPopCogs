@@ -111,7 +111,7 @@ class BonusMoney(commands.Cog):
             else:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(255,243,244),
-                    description=f"{strings}",
+                    description=f"Type `[p]claim all` to collect all available bonuses.\n<:sh_space:755971083210981426>\n{strings}",
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
@@ -154,7 +154,7 @@ class BonusMoney(commands.Cog):
             else:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(255,243,244),
-                    description=f"{strings}",
+                    description=f"Type `[p]claim all` to collect all available bonuses.\n<:sh_space:755971083210981426>\n{strings}",
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
