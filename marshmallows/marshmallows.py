@@ -216,7 +216,7 @@ class Marshmallows(commands.Cog):
     @commands.guild_only()
     async def buymallows(self, ctx: commands.Context, amount: int):
         currency = await bank.get_currency_name(ctx.guild)
-        buycost = str(humanize_number_int(100 / await self.config.guild(ctx.guild).cost())))
+        buycost = str(humanize_number(int(100 / await self.config.guild(ctx.guild).cost())))
         """Buy marshmallows. A 100-piece bag of mallows costs {buycost} {currency}."""
         if amount <= 0:
             return await ctx.send("Are you okay?")
