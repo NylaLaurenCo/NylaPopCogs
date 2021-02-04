@@ -95,7 +95,7 @@ class Marshmallows(commands.Cog):
             return await ctx.send("lol stealing isn't allowed... loser.")
         if cur_time < next_steal:
             dtime = self.display_time(next_steal - cur_time)
-            return await ctx.send(f"Uh oh, you have to wait {dtime}.")
+            return await ctx.send(f"Give it rest! At least take {dtime} to eat the marshmallows you already have, first.")
         if not target:
             ids = await self._get_ids(ctx)
             while not target:
@@ -379,7 +379,7 @@ class Marshmallows(commands.Cog):
 
         This is in seconds! Default is 86400 seconds (24 hours)."""
         if seconds <= 0:
-            return await ctx.send("Uh oh, cooldown has to be more than 0 seconds.")
+            return await ctx.send("cooldown has to be more than 0 seconds.")
         await self.config.guild(ctx.guild).cooldown.set(seconds)
         await ctx.send(f"Set the cooldown to {seconds} seconds.")
 
@@ -389,7 +389,7 @@ class Marshmallows(commands.Cog):
 
         This is in seconds! Default is 43200 seconds (12 hours)."""
         if seconds <= 0:
-            return await ctx.send("Uh oh, cooldown has to be more than 0 seconds.")
+            return await ctx.send("cooldown has to be more than 0 seconds.")
         await self.config.guild(ctx.guild).stealcd.set(seconds)
         await ctx.send(f"Set the cooldown to {seconds} seconds.")
 
@@ -415,10 +415,10 @@ class Marshmallows(commands.Cog):
     ):
         """Set someone's amount of marshmallows."""
         if amount <= 0:
-            return await ctx.send("Uh oh, amount has to be more than 0.")
+            return await ctx.send("amount has to be more than 0.")
         if self._max_balance_check(amount):
             return await ctx.send(
-                f"Uh oh, amount can't be greater than {_MAX_BALANCE:,}."
+                f"amount can't be greater than {_MAX_BALANCE:,}."
             )
         await self.config.member(target).marshmallows.set(amount)
         await ctx.send(f"Set {target.mention}'s balance to {amount} <:so_love:754613619836321892>")
@@ -429,12 +429,12 @@ class Marshmallows(commands.Cog):
     ):
         """Add marshmallows to someone."""
         if amount <= 0:
-            return await ctx.send("Uh oh, amount has to be more than 0.")
+            return await ctx.send("amount has to be more than 0.")
         target_marshmallows = int(await self.config.member(target).marshmallows())
         target_marshmallows += amount
         if self._max_balance_check(target_marshmallows):
             return await ctx.send(
-                f"Uh oh, {target.display_name} has reached the maximum amount of marshmallows."
+                f"{target.display_name} has reached the maximum amount of marshmallows."
             )
         await self.config.member(target).marshmallows.set(target_marshmallows)
         await ctx.send(f"Added {amount} <:so_love:754613619836321892> to {target.mention}'s balance.")
@@ -445,7 +445,7 @@ class Marshmallows(commands.Cog):
     ):
         """Take marshmallows away from someone."""
         if amount <= 0:
-            return await ctx.send("Uh oh, amount has to be more than 0.")
+            return await ctx.send("amount has to be more than 0.")
         target_marshmallows = int(await self.config.member(target).marshmallows())
         if amount <= target_marshmallows:
             target_marshmallows -= amount
@@ -501,7 +501,7 @@ class Marshmallows(commands.Cog):
     ):
         """Set marshmallows for role."""
         if amount <= 0:
-            return await ctx.send("Uh oh, amount has to be more than 0.")
+            return await ctx.send("amount has to be more than 0.")
         await self.config.role(role).marshmallows.set(amount)
         await ctx.send(f"Gaining {role.name} will now give {amount} <:so_love:754613619836321892>")
 
@@ -525,7 +525,7 @@ class Marshmallows(commands.Cog):
         
         Default is 1 (aka the same amount)."""
         if multiplier <= 0:
-            return await ctx.send("Uh oh, multiplier has to be more than 0.")
+            return await ctx.send("multiplier has to be more than 0.")
         await self.config.role(role).multiplier.set(multiplier)
         await ctx.send(f"Users with {role.name} will now get {multiplier} times more <:so_love:754613619836321892>")
 
