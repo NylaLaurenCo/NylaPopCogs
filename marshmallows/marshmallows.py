@@ -313,7 +313,7 @@ class Marshmallows(commands.Cog):
                 temp_msg += (
                     f"{f'{pos}.': <{pound_len+2}} "
                     f"{marshmallows: <{pound_len+8}} "
-                    f":so_love:754613619836321892: {name}\n"
+                    f"<< {name} >>\n"
                 )
             if pos % 10 == 0:
                 lst.append(box(temp_msg, lang="md"))
