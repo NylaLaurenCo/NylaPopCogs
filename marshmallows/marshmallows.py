@@ -214,7 +214,7 @@ class Marshmallows(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def buymallows(self, ctx: commands.Context, amount: int):
-        """Buy marshmallows."""
+        """Buy marshmallows. Just say how much money you want to spend on marshmallows."""
         if amount <= 0:
             return await ctx.send("Are you okay?")
 
@@ -223,7 +223,7 @@ class Marshmallows(commands.Cog):
         await bank.withdraw_credits(ctx.author, amount)
 
         rate = await self.config.guild(ctx.guild).rate()
-        new_marshmallows = amount * rate
+        new_marshmallows = str(humanize_number(int(amount * rate)))
 
         marshmallows = await self.config.member(ctx.author).marshmallows()
         marshmallows += new_marshmallows
@@ -242,7 +242,7 @@ class Marshmallows(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def sellmallows(self, ctx: commands.Context, amount: int):
-        """Sell Kevin your marshmallows."""
+        """Sell Kevin your marshmallows. Just tell him how many you want to sell."""
         if amount <= 0:
             return await ctx.send("bro, how many are you trying to sell?")
 
@@ -251,8 +251,9 @@ class Marshmallows(commands.Cog):
         #await bank.deposit_credits(ctx.author, amount)
 
         marshmallows = await self.config.member(ctx.author).marshmallows()
+        amount_sold = str(humanize_number(int(amount)))
         rate = await self.config.guild(ctx.guild).rate()
-        exchanged = rate / amount
+        exchanged = amount / rate
         new_money = int(exchanged)
         new_marshmallows = marshmallows - amount
 
@@ -264,7 +265,7 @@ class Marshmallows(commands.Cog):
         currency = await bank.get_currency_name(ctx.guild)
         embed = discord.Embed(
             colour=discord.Color.from_rgb(165,205,65),
-            description=f"<:rent_money:803730921642524672> You sold {amount} <:so_love:754613619836321892> for {new_money} {currency}.\n**Current Stash**: {mallows} <:so_love:754613619836321892>",
+            description=f"<:rent_money:803730921642524672> You sold {amount_sold} <:so_love:754613619836321892> for {new_money} {currency}.\n**Current Stash**: {mallows} <:so_love:754613619836321892>",
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
