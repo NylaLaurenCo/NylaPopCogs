@@ -7,7 +7,7 @@ from typing import Any, Union
 from discord.utils import get
 from datetime import datetime
 
-from redbot.core import Config, checks, commands, bank
+from redbot.core import humanize_number, Config, checks, commands, bank
 from redbot.core.utils.chat_formatting import pagify, box
 from redbot.core.utils.predicates import MessagePredicate
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
@@ -204,10 +204,12 @@ class Marshmallows(commands.Cog):
         """Check how many marshmallows you have."""
         if not target:
             marshmallows = int(await self.config.member(ctx.author).marshmallows())
-            await ctx.send(f"You have {marshmallows} <:so_love:754613619836321892> Yum!")
+            mallows = str(humanize_number(marshmallows))
+            await ctx.send(f"You have {mallows} <:so_love:754613619836321892> Yum!")
         else:
             marshmallows = int(await self.config.member(target).marshmallows())
-            await ctx.send(f"{target.display_name} has {marshmallows} <:so_love:754613619836321892>. Sweet!")
+            mallows = str(humanize_number(marshmallows))
+            await ctx.send(f"{target.display_name} has {mallows} <:so_love:754613619836321892>. Sweet!")
 
     @commands.command()
     @commands.guild_only()
@@ -227,7 +229,7 @@ class Marshmallows(commands.Cog):
         marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(marshmallows)
 
-        mallows = await self.config.member(ctx.author).marshmallows()
+        mallows = str(humanize_number(int(await self.config.member(ctx.author).marshmallows())))
         currency = await bank.get_currency_name(ctx.guild)
         embed = discord.Embed(
             colour=discord.Color.from_rgb(255,243,244),
@@ -250,14 +252,15 @@ class Marshmallows(commands.Cog):
 
         marshmallows = await self.config.member(ctx.author).marshmallows()
         rate = await self.config.guild(ctx.guild).rate()
-        new_money = int(rate / amount)
+        exchanged = rate / amount
+        new_money = int(exchanged)
         new_marshmallows = marshmallows - amount
 
         #marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(new_marshmallows)
         await bank.deposit_credits(ctx.author, new_money)
 
-        mallows = await self.config.member(ctx.author).marshmallows()
+        mallows = str(humanize_number(int(await self.config.member(ctx.author).marshmallows())))
         currency = await bank.get_currency_name(ctx.guild)
         embed = discord.Embed(
             colour=discord.Color.from_rgb(165,205,65),
