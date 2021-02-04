@@ -1,3 +1,4 @@
+import discord
 import logging
 from datetime import datetime, timedelta
 from typing import Literal
@@ -108,7 +109,13 @@ class BonusMoney(commands.Cog):
             if strings == "":
                 await ctx.send("Bonus money hasn't been set up, yet. Ask a mod to help.")
             else:
-                await ctx.send(strings)
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(255,243,244),
+                    description=f"{strings}",
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+                #await ctx.send(strings)
         else:
             amounts = await self.config.guild(ctx.guild).all()
             times = await self.config.member(ctx.author).all()
@@ -145,7 +152,13 @@ class BonusMoney(commands.Cog):
             if strings == "":
                 await ctx.send("Bonus money hasn't been set up, yet. Ask a mod to help.")
             else:
-                await ctx.send(strings)
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(255,243,244),
+                    description=f"{strings}",
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+                #await ctx.send(strings)
 
     @lc.all()
     @bonusmoney.command(name="all")
