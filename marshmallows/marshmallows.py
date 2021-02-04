@@ -7,8 +7,8 @@ from typing import Any, Union
 from discord.utils import get
 from datetime import datetime
 
-from redbot.core import humanize_number, Config, checks, commands, bank
-from redbot.core.utils.chat_formatting import pagify, box
+from redbot.core import Config, checks, commands, bank
+from redbot.core.utils.chat_formatting import humanize_number, pagify, box
 from redbot.core.utils.predicates import MessagePredicate
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
