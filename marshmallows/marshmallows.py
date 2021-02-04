@@ -248,7 +248,7 @@ class Marshmallows(commands.Cog):
 
         marshmallows = await self.config.member(ctx.author).marshmallows()
         rate = await self.config.guild(ctx.guild).rate()
-        new_money = rate / amount
+        new_money = int(rate / amount)
         new_marshmallows = marshmallows - amount
 
         marshmallows += new_marshmallows
