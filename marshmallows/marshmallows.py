@@ -473,7 +473,7 @@ class Marshmallows(commands.Cog):
             return await ctx.send("Uh oh, rate has to be more than 0.")
         await self.config.guild(ctx.guild).rate.set(rate)
         currency = await bank.get_currency_name(ctx.guild)
-        test_amount = int(100*rate)
+        test_amount = str(humanize_number(int(100*rate)))
         await ctx.send(f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} <:so_love:754613619836321892>")
 
     @setmarshmallows.group(autohelp=True)
