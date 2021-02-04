@@ -72,20 +72,20 @@ class McDonalds(Cog):
                 )
             elif answer.content.lower().strip() == used["action"]:
                 await ctx.send(
-                    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month!\n**+$50 {}**\n<:sh_space:755971083210981426>\n".format(
+                    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month!\n**+$100 {}**\n<:sh_space:755971083210981426>\n".format(
                         await bank.get_currency_name(ctx.guild)
                     )
                 )
-                reward = 50
+                reward = 100
                 x =+ 1
                 await bank.deposit_credits(ctx.author, reward)
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
-                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$50 {}**\n<:sh_space:755971083210981426>\n".format(
+                    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$100 {}**\n<:sh_space:755971083210981426>\n".format(
                         ctx.author.display_name, await bank.get_currency_name(ctx.guild)
                     )
                 )
-                reward = 50
+                reward = 100
                 await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
                 finalbank = await bank.get_balance(ctx.author)
