@@ -67,9 +67,16 @@ class McDonalds(Cog):
                 answer = None
 
             if answer is None:
-                await ctx.send(
-                    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!\n<:sh_space:755971083210981426>\n".format(used["object"])
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description="\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!\n<:sh_space:755971083210981426>\n".format(used["object"]),
+                    timestamp=ctx.message.created_at,
                 )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                #await ctx.send(
+                #    "\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!\n<:sh_space:755971083210981426>\n".format(used["object"])
+                #)
+                await ctx.send(embed=embed)
             elif answer.content.lower().strip() == used["action"]:
                 await ctx.send(
                     "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month!\n**+$100 {}**\n<:sh_space:755971083210981426>\n".format(
