@@ -2,6 +2,7 @@ import asyncio
 import json
 import random
 import math
+import discord
 
 from redbot.core import bank, commands
 from redbot.core.commands import Cog
