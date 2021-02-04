@@ -77,7 +77,7 @@ class McDonalds(Cog):
             if answer is None:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description="\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!\n<:sh_space:755971083210981426>\n".format(used["object"]),
+                    description=":x: <a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!".format(used["object"]),
                     timestamp=ctx.message.created_at,
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -88,7 +88,7 @@ class McDonalds(Cog):
             elif answer.content.lower().strip() == used["action"]:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(165,205,65),
-                    description="<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month!\n**+$100 {}**\n<:sh_space:755971083210981426>\n".format(await bank.get_currency_name(ctx.guild)),
+                    description="<:cash:803730921785524234> Good job, {}! Keep this up and you'll be employee of the month!\n**+$100 {}**".format(ctx.author.mention, await bank.get_currency_name(ctx.guild)),
                     timestamp=ctx.message.created_at,
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -104,7 +104,7 @@ class McDonalds(Cog):
             elif answer.content.lower().strip() == opp:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description="<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$100 {}**\n<:sh_space:755971083210981426>\n".format(ctx.author.display_name, await bank.get_currency_name(ctx.guild)),
+                    description=":x: <:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$100 {}**\n<:sh_space:755971083210981426>\n".format(ctx.author.mention, await bank.get_currency_name(ctx.guild)),
                     timestamp=ctx.message.created_at,
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -139,7 +139,7 @@ class McDonalds(Cog):
             else:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(233,60,56),
-                    description="\n<:sh_space:755971083210981426>\n<a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!\n<:sh_space:755971083210981426>\n".format(used["object"]),
+                    description=":x: <a:this_is_fine:804822485282324580> `{}` fell on the floor and got eaten by rats. You're making our infestation worse! Do your job!".format(used["object"]),
                     timestamp=ctx.message.created_at,
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
