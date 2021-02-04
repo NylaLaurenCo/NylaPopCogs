@@ -185,11 +185,19 @@ class BonusMoney(commands.Cog):
 
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
-                await ctx.send(
-                    "<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +${} {}".format(
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(165,205,65),
+                    description=f"<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
                         amount, (await bank.get_currency_name())
-                    )
+                    ),
                 )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+                #await ctx.send(
+                #    "<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
+                #        amount, (await bank.get_currency_name())
+                #    )
+                #)
             else:
                 await ctx.send("lol no.")
         else:
@@ -213,11 +221,19 @@ class BonusMoney(commands.Cog):
 
             if amount > 0:
                 await bank.deposit_credits(ctx.author, amount)
-                await ctx.send(
-                    "<:rent_money:803730921642524672> Done. I collected all your bonus and deposited them into your account. +${} {}".format(
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(165,205,65),
+                    description=f"<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
                         amount, (await bank.get_currency_name(ctx.guild))
-                    )
+                    ),
                 )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+                #await ctx.send(
+                #    "<:rent_money:803730921642524672> Done. I collected all your bonus and deposited them into your account. +{} {}".format(
+                #        amount, (await bank.get_currency_name(ctx.guild))
+                #    )
+                #)
             else:
                 await ctx.send("Dude, I'm busy. Go be poor somewhere else.")
 
@@ -235,11 +251,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).seconds >= 3600:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).hour.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> I deposited +${} {} in your account. Nice!".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> I deposited +{} {} in your account. Nice!".format(
                             free, (await bank.get_currency_name())
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> I deposited +{} {} in your account. Nice!".format(
+                    #        free, (await bank.get_currency_name())
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "You have {} left. Nice try.".format(
@@ -259,11 +283,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).seconds >= 3600:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).hour.set(now.isoformat())
-                    await ctx.send(
-                        "A fat deposit of +${} {} just hit your account.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "A fat deposit of +{} {} just hit your account.".format(
+                    #        free, (await bank.get_currency_name(ctx.guild))
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "You have {} left. Nice try.".format(
@@ -287,11 +319,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 1:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).day.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> A fat deposit of +${} {} just hit your account.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
                             free, (await bank.get_currency_name())
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
+                    #        free, (await bank.get_currency_name())
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "You have {} left. Nice try.".format(
@@ -311,11 +351,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 1:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).day.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> A fat deposit of +${} {} just hit your account.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
+                    #        free, (await bank.get_currency_name(ctx.guild))
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "You have {} left. Nice try.".format(
@@ -339,11 +387,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 7:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).week.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> Just take this +${} {} and go.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name())
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                    #        free, (await bank.get_currency_name())
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Fail. Try again in {}.".format(
@@ -363,11 +419,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 7:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).week.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> Just take this +${} {} and go.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                    #        free, (await bank.get_currency_name(ctx.guild))
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Fail. Try again in {}.".format(
@@ -393,11 +457,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 30:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).month.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> Just take this +${} {} and go.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name())
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                    #        free, (await bank.get_currency_name())
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Fail. Try again in {}.".format(
@@ -417,11 +489,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 30:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).month.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> Just take this +${} {} and go.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                    #        free, (await bank.get_currency_name(ctx.guild))
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Fail. Try again in {}.".format(
@@ -447,11 +527,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 90:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).quarter.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> +${} {}... can you please pay me for cleaning your room, now?".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name())
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
+                    #        free, (await bank.get_currency_name())
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Dude. That's not even close to being on time. Wait {} wtf.".format(
@@ -471,11 +559,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 90:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).quarter.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> +${} {}... can you please pay me for cleaning your room, now?".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name(ctx.guild))
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
+                    #        free, (await bank.get_currency_name(ctx.guild))
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Dude. That's not even close to being on time. Wait {} wtf.".format(
@@ -499,11 +595,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 365:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.user(ctx.author).year.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +${} {}. Enjoy it, sis.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name())
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
+                    #        free, (await bank.get_currency_name())
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Could've sworn this bonus was once a year. You've got {} left, bro.".format(
@@ -523,11 +627,19 @@ class BonusMoney(commands.Cog):
                 if (now - last).days >= 365:
                     await bank.deposit_credits(ctx.author, free)
                     await self.config.member(ctx.author).year.set(now.isoformat())
-                    await ctx.send(
-                        "<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +${} {}. Enjoy it, sis.".format(
+                    embed = discord.Embed(
+                        colour=discord.Color.from_rgb(165,205,65),
+                        description=f"<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name(ctx.guild))
-                        )
+                        ),
                     )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                    #await ctx.send(
+                    #    "<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
+                    #        free, (await bank.get_currency_name(ctx.guild))
+                    #    )
+                    #)
                 else:
                     await ctx.send(
                         "Could've sworn this bonus was once a year. You've got {} left, bro.".format(
