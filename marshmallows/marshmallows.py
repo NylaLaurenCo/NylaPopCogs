@@ -140,7 +140,7 @@ class Marshmallows(commands.Cog):
             marshmallows_penalty = int(author_marshmallows * mallows_stolen)
             if marshmallows_penalty == 0:
                 marshmallows_penalty = 1
-            penalty = random.randint(1, marshmallows_penalty)
+            penalty = str(humanize_number(random.randint(1, marshmallows_penalty)))
             target_marshmallows += penalty
             if self._max_balance_check(target_marshmallows):
                 embed = discord.Embed(
