@@ -226,10 +226,12 @@ class Marshmallows(commands.Cog):
         marshmallows = await self.config.member(ctx.author).marshmallows()
         marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(marshmallows)
+
+        mallows = await self.config.member(ctx.author).marshmallows()
         currency = await bank.get_currency_name(ctx.guild)
         embed = discord.Embed(
             colour=discord.Color.from_rgb(255,243,244),
-            description=f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>",
+            description=f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {mallows} <:so_love:754613619836321892>",
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
@@ -251,14 +253,15 @@ class Marshmallows(commands.Cog):
         new_money = int(rate / amount)
         new_marshmallows = marshmallows - amount
 
-        marshmallows += new_marshmallows
+        #marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(new_marshmallows)
         await bank.deposit_credits(ctx.author, new_money)
 
+        mallows = await self.config.member(ctx.author).marshmallows()
         currency = await bank.get_currency_name(ctx.guild)
         embed = discord.Embed(
             colour=discord.Color.from_rgb(165,205,65),
-            description=f"<:rent_money:803730921642524672> You sold {amount} <:so_love:754613619836321892> for {new_money} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>",
+            description=f"<:rent_money:803730921642524672> You sold {amount} <:so_love:754613619836321892> for {new_money} {currency}.\n**Current Stash**: {mallows} <:so_love:754613619836321892>",
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
