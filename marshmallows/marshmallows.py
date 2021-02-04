@@ -71,7 +71,13 @@ class Marshmallows(commands.Cog):
             next_marshmallow = cur_time + await self.config.guild(ctx.guild).cooldown()
             await self.config.member(ctx.author).next_marshmallow.set(next_marshmallow)
             await self.config.member(ctx.author).marshmallows.set(marshmallows)
-            await ctx.send(f"You opened a bag of marshmallows and found {amount} <:so_love:754613619836321892> inside! Yumm!")
+            embed = discord.Embed(
+                colour=discord.Color.from_rgb(255,243,244),
+                description=f"You opened a bag of marshmallows and found {amount} <:so_love:754613619836321892> inside! Yumm!",
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+            #await ctx.send(f"You opened a bag of marshmallows and found {amount} <:so_love:754613619836321892> inside! Yumm!")
         else:
             dtime = self.display_time(next_marshmallow - cur_time)
             await ctx.send(f"Stop being greedy. You can get another bag of marshmallows in {dtime}.")
@@ -111,12 +117,24 @@ class Marshmallows(commands.Cog):
             stolen = random.randint(1, marshmallows_stolen)
             author_marshmallows += stolen
             if self._max_balance_check(author_marshmallows):
-                return await ctx.send(
-                    "LOL you can't hoard anymore marshmallows fatty! <a:13lol_point:743118114019082241>\n"
-                    f"You stole ZERO <:so_love:754613619836321892> from {target.display_name}."
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description=f":x: LOL you can't hoard anymore marshmallows fatty! <a:13lol_point:743118114019082241>\nYou stole ZERO <:so_love:754613619836321892> from {target.display_name}.",
                 )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed=embed)
+                #return await ctx.send(
+                #    "LOL you can't hoard anymore marshmallows fatty! <a:13lol_point:743118114019082241>\n"
+                #    f"You stole ZERO <:so_love:754613619836321892> from {target.display_name}."
+                #)
             target_marshmallows -= stolen
-            await ctx.send(f"You stole {stolen} <:so_love:754613619836321892> from {target.display_name}!")
+            embed = discord.Embed(
+                colour=discord.Color.from_rgb(255,243,244),
+                description=f"You stole {stolen} <:so_love:754613619836321892> from {target.display_name}!",
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+            #await ctx.send(f"You stole {stolen} <:so_love:754613619836321892> from {target.display_name}!")
         else:
             marshmallows_penalty = int(author_marshmallows * mallows_stolen)
             if marshmallows_penalty == 0:
@@ -124,15 +142,27 @@ class Marshmallows(commands.Cog):
             penalty = random.randint(1, marshmallows_penalty)
             target_marshmallows += penalty
             if self._max_balance_check(target_marshmallows):
-                return await ctx.send(
-                    f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\n"
-                    f"Lucky for you {target.display_name} is a fatass. They don't have room to hoard anymore marshmallows, "
-                    "so you haven't lost any."
+                embed = discord.Embed(
+                    colour=discord.Color.from_rgb(233,60,56),
+                    description=f":x: You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nLucky for you {target.display_name} is a fatass.\nThey don't have room to hoard anymore marshmallows, so you haven't lost any.",
                 )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed=embed)
+                #return await ctx.send(
+                #    f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\n"
+                #    f"Lucky for you {target.display_name} is a fatass. They don't have room to hoard anymore marshmallows, "
+                #    "so you haven't lost any."
+                #)
             author_marshmallows -= penalty
-            await ctx.send(
-                f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> marshmallows in return. lol get rekt!"
+            embed = discord.Embed(
+                colour=discord.Color.from_rgb(233,60,56),
+                description=f":x: You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> marshmallows in return. lol get rekt!",
             )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+            #await ctx.send(
+            #    f"You got caught trying to steal {target.display_name}'s <:so_love:754613619836321892>!\nThey took {penalty} of **YOUR** <:so_love:754613619836321892> marshmallows in return. lol get rekt!"
+            #)
         next_steal = cur_time + await self.config.guild(ctx.guild).stealcd()
         await self.config.member(target).marshmallows.set(target_marshmallows)
         await self.config.member(ctx.author).marshmallows.set(author_marshmallows)
@@ -158,9 +188,15 @@ class Marshmallows(commands.Cog):
         author_marshmallows -= amount
         await self.config.member(ctx.author).marshmallows.set(author_marshmallows)
         await self.config.member(target).marshmallows.set(target_marshmallows)
-        await ctx.send(
-            f"Aww {ctx.author.mention} gave {amount} <:so_love:754613619836321892> to {target.mention}. So sweet."
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(255,243,244),
+            description=f"Aww {ctx.author.mention} gave {amount} <:so_love:754613619836321892> to {target.mention}. So sweet.",
         )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+        #await ctx.send(
+        #    f"Aww {ctx.author.mention} gave {amount} <:so_love:754613619836321892> to {target.mention}. So sweet."
+        #)
 
     @commands.command(aliases=["jar"])
     @commands.guild_only()
@@ -191,7 +227,42 @@ class Marshmallows(commands.Cog):
         marshmallows += new_marshmallows
         await self.config.member(ctx.author).marshmallows.set(marshmallows)
         currency = await bank.get_currency_name(ctx.guild)
-        await ctx.send(f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>")
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(255,243,244),
+            description=f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>",
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+        #await ctx.send(f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>")
+
+    @commands.command()
+    @commands.guild_only()
+    async def sellmallows(self, ctx: commands.Context, amount: int):
+        """Sell Kevin your marshmallows."""
+        if amount <= 0:
+            return await ctx.send("bro, how many are you trying to sell?")
+
+        if amount > await self.config.member(ctx.author).marshmallows():
+            return await ctx.send(f"imagine trying to sell marshmallows you already ate")
+        #await bank.deposit_credits(ctx.author, amount)
+
+        marshmallows = await self.config.member(ctx.author).marshmallows()
+        rate = await self.config.guild(ctx.guild).rate()
+        new_money = rate / amount
+        new_marshmallows = marshmallows - amount
+
+        marshmallows += new_marshmallows
+        await self.config.member(ctx.author).marshmallows.set(new_marshmallows)
+        await bank.deposit_credits(ctx.author, new_money)
+
+        currency = await bank.get_currency_name(ctx.guild)
+        embed = discord.Embed(
+            colour=discord.Color.from_rgb(165,205,65),
+            description=f"<:rent_money:803730921642524672> You sold {amount} <:so_love:754613619836321892> for {new_money} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>",
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+        #await ctx.send(f"You sold {amount} <:so_love:754613619836321892> for {new_money} {currency}.\n**Current Stash**: {marshmallows} <:so_love:754613619836321892>")
 
     @commands.command(aliases=["marshmallowleaderboard"])
     @commands.guild_only()
@@ -226,7 +297,7 @@ class Marshmallows(commands.Cog):
                 temp_msg += (
                     f"{f'{pos}.': <{pound_len+2}} "
                     f"{marshmallows: <{pound_len+8}} "
-                    f"<<{name}>>\n"
+                    f"<:so_love:754613619836321892> {name}\n"
                 )
             if pos % 10 == 0:
                 lst.append(box(temp_msg, lang="md"))
