@@ -64,7 +64,7 @@ class McDonalds(Cog):
             #    "<:simp_hand:802963169576222770> You dug in the trash and found `{}`.\n{}, will you leave it in the `trash` or `serve` it to customers?".format(
             #        used["object"], ctx.author.mention
             #    )
-            )
+            #)
 
             def check(m):
                 return m.author == ctx.author and m.channel == ctx.channel
@@ -97,7 +97,7 @@ class McDonalds(Cog):
                 #    "<:cash:803730921785524234> Good job! Keep this up and you'll be employee of the month!\n**+$100 {}**\n<:sh_space:755971083210981426>\n".format(
                 #        await bank.get_currency_name(ctx.guild)
                 #    )
-                )
+                #)
                 reward = 100
                 x =+ 1
                 await bank.deposit_credits(ctx.author, reward)
@@ -113,7 +113,7 @@ class McDonalds(Cog):
                 #    "<:wrong:728806094113210369> {}, you moron! That's not how things work here! I'm docking your pay!\n**-$100 {}**\n<:sh_space:755971083210981426>\n".format(
                 #        ctx.author.display_name, await bank.get_currency_name(ctx.guild)
                 #    )
-                )
+                #)
                 reward = 100
                 await bank.withdraw_credits(ctx.author, reward)
             elif answer.content.lower().strip() == "end":
