@@ -353,6 +353,10 @@
       "action": "trash"
     },
     {
+      "object": "fried isopods",
+      "action": "serve"
+    },
+    {
       "object": "loose pubes",
       "action": "serve"
     },
@@ -362,6 +366,10 @@
     },
     {
       "object": "your time off request form",
+      "action": "trash"
+    },
+    {
+      "object": "fried cat whiskers",
       "action": "trash"
     },
     {
@@ -405,6 +413,10 @@
       "action": "trash"
     },
     {
+      "object": "xxCactusJ TTV's missing boxers",
+      "action": "serve"
+    },
+    {
       "object": "fake meat",
       "action": "serve"
     },
@@ -441,19 +453,27 @@
       "action": "serve"
     },
     {
+      "object": "twitch.tv/XOHatsumi's missing panties",
+      "action": "trash"
+    },
+    {
       "object": "half-eaten lo-mein",
       "action": "serve"
     },
     {
       "object": "used tampons",
       "action": "trash"
+    },,
+    {
+      "object": "NargDevTTV's missing jockstrap",
+      "action": "serve"
     },
     {
       "object": "an investigation request from the Health Department",
       "action": "trash"
     },
     {
-      "object": "cold Ccoffee",
+      "object": "cold coffee",
       "action": "serve"
     },
     {
@@ -467,6 +487,10 @@
     {
       "object": "a half-full soda bottle",
       "action": "trash"
+    },
+    {
+      "object": "torn paper",
+      "action": "serve"
     }
   ]
 }
