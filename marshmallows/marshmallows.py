@@ -214,26 +214,31 @@ class Marshmallows(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def buymallows(self, ctx: commands.Context, amount: int):
-        """Buy marshmallows. Just say how much money you want to spend on marshmallows."""
+        currency = await bank.get_currency_name(ctx.guild)
+        """Buy marshmallows. A 39-piece bag of mallows is 1 {currency}."""
         if amount <= 0:
             return await ctx.send("Are you okay?")
 
-        if not await bank.can_spend(ctx.author, amount):
-            return await ctx.send(f"lol check your balance and think about your life choices")
-        await bank.withdraw_credits(ctx.author, amount)
-
         rate = await self.config.guild(ctx.guild).rate()
-        new_marshmallows = str(humanize_number(int(amount * rate)))
+        budget = int(amount / rate)
+
+        if not await bank.can_spend(ctx.author, budget):
+            return await ctx.send(f"lol check your balance and think about your life choices")
 
         marshmallows = await self.config.member(ctx.author).marshmallows()
-        marshmallows += new_marshmallows
-        await self.config.member(ctx.author).marshmallows.set(marshmallows)
+        amount_spent = str(humanize_number(budget))
+        purchased = amount
+        new_marshmallows = int(purchased + marshmallows)
+        amount_purchased = str(humanize_number(int(purchased)))
+
+        #marshmallows += new_marshmallows
+        await bank.withdraw_credits(ctx.author, budget)
+        await self.config.member(ctx.author).marshmallows.set(new_marshmallows)
 
         mallows = str(humanize_number(int(await self.config.member(ctx.author).marshmallows())))
-        currency = await bank.get_currency_name(ctx.guild)
         embed = discord.Embed(
             colour=discord.Color.from_rgb(255,243,244),
-            description=f"You bought {new_marshmallows} <:so_love:754613619836321892> for {amount} {currency}.\n**Current Stash**: {mallows} <:so_love:754613619836321892>",
+            description=f"You bought {amount_purchased} <:so_love:754613619836321892> for {amount_spent} {currency}.\n**Current Stash**: {mallows} <:so_love:754613619836321892>",
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
