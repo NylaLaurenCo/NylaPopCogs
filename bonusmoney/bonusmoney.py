@@ -111,7 +111,7 @@ class BonusMoney(commands.Cog):
             else:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(255,243,244),
-                    description=f"Type `[p]claim all` to collect all available bonuses.\n<:sh_space:755971083210981426>\n{strings}",
+                    description="Type `[p]claim all` to collect all available bonuses.\n<:sh_space:755971083210981426>\n{strings}",
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
@@ -154,7 +154,7 @@ class BonusMoney(commands.Cog):
             else:
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(255,243,244),
-                    description=f"Type `[p]claim all` to collect all available bonuses.\n<:sh_space:755971083210981426>\n{strings}",
+                    description="Type `[p]claim all` to collect all available bonuses.\n<:sh_space:755971083210981426>\n{strings}",
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
@@ -187,7 +187,7 @@ class BonusMoney(commands.Cog):
                 await bank.deposit_credits(ctx.author, amount)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(165,205,65),
-                    description=f"<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
+                    description="<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
                         amount, (await bank.get_currency_name())
                     ),
                 )
@@ -223,7 +223,7 @@ class BonusMoney(commands.Cog):
                 await bank.deposit_credits(ctx.author, amount)
                 embed = discord.Embed(
                     colour=discord.Color.from_rgb(165,205,65),
-                    description=f"<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
+                    description="<:rent_money:803730921642524672> Done. I collected all your bonuses and deposited them into your account. +{} {}".format(
                         amount, (await bank.get_currency_name(ctx.guild))
                     ),
                 )
@@ -253,7 +253,7 @@ class BonusMoney(commands.Cog):
                     await self.config.user(ctx.author).hour.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> I deposited +{} {} in your account. Nice!".format(
+                        description="<:cash:803730921785524234> I deposited +{} {} in your account. Nice!".format(
                             free, (await bank.get_currency_name())
                         ),
                     )
@@ -285,7 +285,7 @@ class BonusMoney(commands.Cog):
                     await self.config.member(ctx.author).hour.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
+                        description="<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         ),
                     )
@@ -321,7 +321,7 @@ class BonusMoney(commands.Cog):
                     await self.config.user(ctx.author).day.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
+                        description="<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
                             free, (await bank.get_currency_name())
                         ),
                     )
@@ -353,7 +353,7 @@ class BonusMoney(commands.Cog):
                     await self.config.member(ctx.author).day.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
+                        description="<:cash:803730921785524234> A fat deposit of +{} {} just hit your account.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         ),
                     )
@@ -389,7 +389,7 @@ class BonusMoney(commands.Cog):
                     await self.config.user(ctx.author).week.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                        description="<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name())
                         ),
                     )
@@ -421,7 +421,7 @@ class BonusMoney(commands.Cog):
                     await self.config.member(ctx.author).week.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                        description="<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         ),
                     )
@@ -459,7 +459,7 @@ class BonusMoney(commands.Cog):
                     await self.config.user(ctx.author).month.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                        description="<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name())
                         ),
                     )
@@ -491,7 +491,7 @@ class BonusMoney(commands.Cog):
                     await self.config.member(ctx.author).month.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> Just take this +{} {} and go.".format(
+                        description="<:cash:803730921785524234> Just take this +{} {} and go.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         ),
                     )
@@ -529,7 +529,7 @@ class BonusMoney(commands.Cog):
                     await self.config.user(ctx.author).quarter.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
+                        description="<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name())
                         ),
                     )
@@ -561,7 +561,7 @@ class BonusMoney(commands.Cog):
                     await self.config.member(ctx.author).quarter.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
+                        description="<:cash:803730921785524234> +{} {}... can you please pay me for cleaning your room, now?".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         ),
                     )
@@ -597,7 +597,7 @@ class BonusMoney(commands.Cog):
                     await self.config.user(ctx.author).year.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
+                        description="<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name())
                         ),
                     )
@@ -629,7 +629,7 @@ class BonusMoney(commands.Cog):
                     await self.config.member(ctx.author).year.set(now.isoformat())
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(165,205,65),
-                        description=f"<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
+                        description="<:cash:803730921785524234> Tax time at {ctx.message.guild.name}! My favorite season. Here's +{} {}. Enjoy it, sis.".format(
                             free, (await bank.get_currency_name(ctx.guild))
                         ),
                     )
