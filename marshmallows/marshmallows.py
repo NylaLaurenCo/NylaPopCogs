@@ -291,7 +291,7 @@ class Marshmallows(commands.Cog):
         if amount <= 0:
             return await ctx.send("bro, how many are you trying to sell?")
         if amount < finesse:
-            return await ctx.send("Stop trying to finesse me. These sell in packs of {}.".format(finesse))
+            return await ctx.send("Stop trying to finesse me. These sell in packs of {}. Offer me that or more, and I'll consider it.".format(finesse))
         if amount > await self.config.member(ctx.author).marshmallows():
             return await ctx.send(f"imagine trying to sell marshmallows you already ate")
         #await bank.deposit_credits(ctx.author, amount)
