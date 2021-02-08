@@ -122,9 +122,10 @@ class Marshmallows(commands.Cog):
         steal_chance = float(success_calc / avail_steal * 100)
 
         steal_int = random.randint(1, 100)
-        role_buff = int(await self.config.role(role).multiplier())
-        if not role_buff:
-            role_buff = 0
+        for role in ctx.author.roles:
+            role_buff = int(await self.config.role(role).multiplier())
+            if not role_buff:
+                role_buff = 0
         if role_buff > 1:
             steal_multiplier = float(steal_int / 100) + float(role_buff / 100)
             fail_multiplier = float(steal_int / 100) - float(role_buff / 100)
@@ -248,9 +249,10 @@ class Marshmallows(commands.Cog):
         if amount < 100:
             return await ctx.send("Marshmallows come in bags of 100 at a time. Please buy 100 marshmallows or more.")
         cost = await self.config.guild(ctx.guild).cost()
-        role_discount = int(await self.config.role(role).multiplier())
-        if not role_discount:
-            role_discount = 0
+        for role in ctx.author.roles:
+            role_discount = int(await self.config.role(role).multiplier())
+            if not role_discount:
+                role_discount = 0
         if role_discount > 1:
             discount = int(amount / cost) * float(100 / role_discount / 100)
             budget = int(amount / cost) - discount
@@ -297,9 +299,10 @@ class Marshmallows(commands.Cog):
         marshmallows = await self.config.member(ctx.author).marshmallows()
         amount_sold = str(humanize_number(int(amount)))
         resale = await self.config.guild(ctx.guild).resale()
-        sell_multiplier = int(await self.config.role(role).multiplier())
-        if not sell_multiplier:
-            sell_multiplier = 0
+        for role in ctx.author.roles:
+            sell_multiplier = int(await self.config.role(role).multiplier())
+            if not sell_multiplier:
+                sell_multiplier = 0
         if sell_multiplier > 1:
             exchanged = (amount / resale) * sell_multiplier
         else: 
