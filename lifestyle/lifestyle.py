@@ -148,9 +148,9 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         userconf = await self.configglobalcheckuser(ctx.author)
         currentbank = await bank.get_balance(ctx.author)
         bailbond = currentbank - int(float(random.randint(1, 100) / 100) * currentbank)
-        #await userconf.briefcase()
         amount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
         if not await self.briefcasedisabledcheck(ctx):
+            #await userconf.briefcase()
             if bailbond < await userconf.briefcase():
                 await self.briefcaseremove(ctx.author, bailbond)
                 embed = discord.Embed(
@@ -158,7 +158,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
                     description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}.",
                 )
             else:
-                finepercent = await self.config.guild(ctx.guild).fine()
+                finepercent = await conf.fine()
                 fee = int(
                     bailbond * float(f"1.{finepercent if finepercent >= 10 else f'0{finepercent}'}")
                 )
