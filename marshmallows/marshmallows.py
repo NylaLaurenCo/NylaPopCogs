@@ -108,14 +108,37 @@ class Marshmallows(commands.Cog):
             return await ctx.send(
                 f"OMG GUYS {target.display_name} DOESN'T HAVE ANY MARSHMALLOWS LOL! WHAT A POOR!!! <:13lol_bitch_please:728864625352900638> <a:13lol_point:743118114019082241>"
             )
-        success_chance = random.randint(30, 100)
-        mallows_int = random.randint(1, 100)
-        mallows_stolen = float(mallows_int / 100)
-        if success_chance > 69:
-            marshmallows_stolen = int(target_marshmallows * mallows_stolen)
-            if marshmallows_stolen == 0:
-                marshmallows_stolen = 1
-            stolen = random.randint(1, marshmallows_stolen)
+        if target_marshmallows < 10000:
+            avail_steal = target_marshmallows + 10000
+        else:
+            avail_steal = target_marshmallows
+        if author_marshmallows < 10000:
+            hoard = author_marshmallows + 10000
+        else:
+            hoard = author_marshmallows
+
+        success_calc = random.randint(0, 100)
+        hoard_chance = float(success_calc / hoard * 100)
+        steal_chance = float(success_calc / avail_steal * 100)
+
+        steal_int = random.randint(1, 100)
+        if await self.config.role(role).multiplier() > 1
+            steal_multiplier = float(steal_int / 100) + float(await self.config.role(role).multiplier() / 100)
+        else:
+            steal_multiplier = float(steal_int / 100)
+        if await self.config.role(role).multiplier() > 1
+            fail_multiplier = float(steal_int / 100) - float(await self.config.role(role).multiplier() / 100)
+        else:
+            fail_multiplier = float(steal_int / 100)
+
+        if hoard_chance > steal_chance:
+            #marshmallows_stolen = int(target_marshmallows * steal_multiplier)
+            #if marshmallows_stolen == 0:
+            #    marshmallows_stolen = 1
+            #stolen = random.randint(1, marshmallows_stolen)
+            stolen = int(target_marshmallows * steal_multiplier)
+            if stolen == 0:
+                stolen = 1
             author_marshmallows += stolen
             if self._max_balance_check(author_marshmallows):
                 embed = discord.Embed(
@@ -137,7 +160,7 @@ class Marshmallows(commands.Cog):
             await ctx.send(embed=embed)
             #await ctx.send(f"You stole {stolen} <:so_love:754613619836321892> from {target.display_name}!")
         else:
-            marshmallows_penalty = int(author_marshmallows * mallows_stolen)
+            marshmallows_penalty = int(author_marshmallows * fail_multiplier)
             if marshmallows_penalty == 0:
                 marshmallows_penalty = 1
             penalty = random.randint(1, marshmallows_penalty)
@@ -221,9 +244,14 @@ class Marshmallows(commands.Cog):
         """Buy marshmallows. A 100-piece bag of mallows costs {buycost} {currency}."""
         if amount <= 0:
             return await ctx.send("Are you okay?")
-
+        if amount < 100:
+            return await ctx.send("Marshmallows come in bags of 100 at a time. Please buy 100 marshmallows or more.")
         cost = await self.config.guild(ctx.guild).cost()
-        budget = int(amount / cost)
+        if await self.config.role(role).multiplier() > 1:
+            discount = int(amount / cost) * float(100 / await self.config.role(role).multiplier() / 100)
+            budget = int(amount / cost) - discount
+        else:
+            budget = int(amount / cost)
 
         if not await bank.can_spend(ctx.author, budget):
             return await ctx.send(f"lol check your balance and think about your life choices")
@@ -253,9 +281,11 @@ class Marshmallows(commands.Cog):
         currency = await bank.get_currency_name(ctx.guild)
         depvalue = str(humanize_number(int(100 / await self.config.guild(ctx.guild).resale())))
         """Sell Kevin your marshmallows. A 100-piece bag of mallows is worth {depvalue} {currency}."""
+        finesse = await self.config.guild(ctx.guild).resale()
         if amount <= 0:
             return await ctx.send("bro, how many are you trying to sell?")
-
+        if amount < finesse:
+            return await ctx.send("Stop trying to finesse me. These sell in packs of {}.".format(finesse))
         if amount > await self.config.member(ctx.author).marshmallows():
             return await ctx.send(f"imagine trying to sell marshmallows you already ate")
         #await bank.deposit_credits(ctx.author, amount)
@@ -263,7 +293,11 @@ class Marshmallows(commands.Cog):
         marshmallows = await self.config.member(ctx.author).marshmallows()
         amount_sold = str(humanize_number(int(amount)))
         resale = await self.config.guild(ctx.guild).resale()
-        exchanged = amount / resale
+        if await self.config.role(role).multiplier() > 1:
+            resale_multiplier = await self.config.role(role).multiplier()
+            exchanged = (amount / resale) * resale_multiplier
+        else: 
+            exchanged = (amount / resale)
         new_money = int(exchanged)
         new_marshmallows = marshmallows - amount
 
@@ -314,7 +348,7 @@ class Marshmallows(commands.Cog):
                 temp_msg += (
                     f"{f'{pos}.': <{pound_len+2}} "
                     f"{marshmallows: <{pound_len+8}} "
-                    f"<< {name} >>\n"
+                    f"[ {name} ]\n"
                 )
             if pos % 10 == 0:
                 lst.append(box(temp_msg, lang="md"))
@@ -378,7 +412,7 @@ class Marshmallows(commands.Cog):
     async def setmarshmallows_cd(self, ctx: commands.Context, seconds: int):
         """Set the cooldown for `[p]openmallows`.
 
-        This is in seconds! Default is 86400 seconds (24 hours)."""
+        This is in seconds. Default is 86400 seconds (24 hours)."""
         if seconds <= 0:
             return await ctx.send("cooldown has to be more than 0 seconds.")
         await self.config.guild(ctx.guild).cooldown.set(seconds)
@@ -388,7 +422,7 @@ class Marshmallows(commands.Cog):
     async def setmarshmallows_stealcd(self, ctx: commands.Context, seconds: int):
         """Set the cooldown for `[p]stealmallows`.
 
-        This is in seconds! Default is 43200 seconds (12 hours)."""
+        This is in seconds. Default is 43200 seconds (12 hours)."""
         if seconds <= 0:
             return await ctx.send("cooldown has to be more than 0 seconds.")
         await self.config.guild(ctx.guild).stealcd.set(seconds)
@@ -428,7 +462,7 @@ class Marshmallows(commands.Cog):
     async def setmarshmallows_add(
         self, ctx: commands.Context, target: discord.Member, amount: int
     ):
-        """Add marshmallows to someone."""
+        """Give marshmallows to someone from the global stash."""
         if amount <= 0:
             return await ctx.send("amount has to be more than 0.")
         target_marshmallows = int(await self.config.member(target).marshmallows())
@@ -444,7 +478,7 @@ class Marshmallows(commands.Cog):
     async def setmarshmallows_take(
         self, ctx: commands.Context, target: discord.Member, amount: int
     ):
-        """Take marshmallows away from someone."""
+        """Take marshmallows from someone."""
         if amount <= 0:
             return await ctx.send("amount has to be more than 0.")
         target_marshmallows = int(await self.config.member(target).marshmallows())
@@ -459,7 +493,7 @@ class Marshmallows(commands.Cog):
 
     @setmarshmallows.command(name="reset")
     async def setmarshmallows_reset(self, ctx: commands.Context, confirmation: bool = False):
-        """Delete all marshmallows from all members."""
+        """Reset everyone's marshmallows to 0."""
         if not confirmation:
             return await ctx.send(
                 "This will delete **all** marshmallows from all members. This action **cannot** be undone.\n"
