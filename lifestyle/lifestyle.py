@@ -148,7 +148,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         userconf = await self.configglobalcheckuser(ctx.author)
         currentbank = await bank.get_balance(ctx.author)
         bailbond = currentbank - int(float(random.randint(1, 100) / 100) * currentbank)
-        amount = "$" + str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
+        amount = str(humanize_number(int(bailbond))) + " " + await bank.get_currency_name(ctx.guild)
         if not await self.briefcasedisabledcheck(ctx):
             #await userconf.briefcase()
             if bailbond < await userconf.briefcase():
@@ -166,7 +166,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
                     await bank.withdraw_credits(ctx.author, fee)
                     embed = discord.Embed(
                         colour=discord.Color.from_rgb(233,60,56),
-                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine (${str(humanize_number(fee))} {await bank.get_currency_name(ctx.guild)}).",
+                        description=f":x: <a:hatsu_police:804202668440420353> You were caught by the police and posted bail for {amount}. You didn't have enough cash so it was taken from your bank + a {finepercent}% fine.\n\n-{str(humanize_number(fee))} {await bank.get_currency_name(ctx.guild)}",
                     )
                 else:
                     await bank.set_balance(ctx.author, 0)
@@ -280,7 +280,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
         conf = await self.configglobalcheck(ctx)
         payouts = await conf.payouts()
         wage = random.randint(payouts["work"]["min"], payouts["work"]["max"])
-        wagesentence = "$" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
         if await conf.defaultreplies():
             job = random.choice(work)
             line = job.format(amount=wagesentence)
@@ -332,7 +332,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
             return await self.bail(ctx, "crime")
         payouts = await conf.payouts()
         wage = random.randint(payouts["crime"]["min"], payouts["crime"]["max"])
-        wagesentence = "$" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
         if await conf.defaultreplies():
             job = random.choice(crimes)
             line = job.format(amount=wagesentence)
@@ -383,7 +383,7 @@ class Lifestyle(Briefcase, Roulette, SettingsMixin, commands.Cog, metaclass=Comp
             return await self.bail(ctx, "slut")
         payouts = await conf.payouts()
         wage = random.randint(payouts["slut"]["min"], payouts["slut"]["max"])
-        wagesentence = "$" + str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
+        wagesentence = str(humanize_number(wage)) + " " + await bank.get_currency_name(ctx.guild)
         if await conf.defaultreplies():
             job = random.choice(slut)
             line = job.format(amount=wagesentence)
