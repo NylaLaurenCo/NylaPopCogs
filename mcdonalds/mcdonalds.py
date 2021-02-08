@@ -55,7 +55,7 @@ class McDonalds(Cog):
                 opp = "trash"
             embed = discord.Embed(
                 colour=discord.Color.from_rgb(255,227,1),
-                description="<:simp_hand:802963169576222770> You dug in the trash and found `{}`.\n{}, will you leave it in the `trash` or `serve` it to customers?".format(used["object"], ctx.author.mention),
+                description="<:simp_hand:802963169576222770> You dug in the trash and found `{}`.\n{}, will you leave it in the `trash` or `serve` it to customers?\n\n`Type end to quit.`".format(used["object"], ctx.author.mention),
                 timestamp=ctx.message.created_at,
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
