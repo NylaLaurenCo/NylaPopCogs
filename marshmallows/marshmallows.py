@@ -255,7 +255,7 @@ class Marshmallows(commands.Cog):
                 role_discount = 0
         if role_discount > 1:
             discount = int(amount / cost) * float(100 / role_discount / 100)
-            budget = int(amount / cost) - discount
+            budget = int(int(amount / cost) - discount)
         else:
             budget = int(amount / cost)
 
