@@ -26,7 +26,7 @@ class MarshmallowShop(commands.Cog):
     def __init__(self, bot: Red):
         self.bot = bot
         self.config = Config.get_conf(
-            self, identifier=56198540690061319, force_registration=True
+            self, identifier=56198540690061319, force_registration=True, invoke_without_command=True
         )
         self.config.register_guild(
             enabled=False, items={}, roles={}, certificates={}, ping=None
