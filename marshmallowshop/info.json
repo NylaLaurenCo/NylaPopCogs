@@ -1,0 +1,9 @@
+{
+    "author" : ["NylaPop"],
+    "install_msg" : "Thank you for installing my cog. This needs my Marshmallow cog to work.",
+    "name" : "MarshmallowShop",
+    "short" : "Purchase items to protect your marshmallows!",
+    "description" : "Purchase items to protect your marshmallows or better steal them from others.",
+    "tags" : ["marshmallows", "currency", "points", "credits", "shop", "store"],
+    "required_cogs": {"Marshmallows": "https://github.com/NylaLaurenCo/NylaPopCogs"}
+}
