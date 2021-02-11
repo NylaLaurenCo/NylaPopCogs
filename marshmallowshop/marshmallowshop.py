@@ -43,23 +43,26 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         )
         self.config.register_member(lunchbox={})
 
-    @commands.group(autohelp=True)
+    @commands.group(name="shopset", autohelp=True)
     @checks.admin_or_permissions(manage_guild=True)
+    @check_global_setting_admin()
     @commands.guild_only()
-    async def shop(self, ctx):
-        """Marshmallow shop"""
+    async def shop_set(self, ctx):
+        """Manage the Marshmallow shop"""
         pass
 
-    @shop.command(name="open")
-    async def shop_toggle(self, ctx: commands.Context, on_off: bool = None):
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="open")
+    async def open_toggle(self, ctx: commands.Context, on_off: bool = None):
         """Open or close the server's Marshmallow shop.
 
         Type `[p]open yes` to open the shop. Leave `yes` off to close it."""
         target_state = (
-            #on_off
-            yes
-            #if on_off
-            if yes
+            on_off
+            #yes
+            if on_off
+            #if yes
             else not (await self.config.guild(ctx.guild).enabled())
         )
         await self.config.guild(ctx.guild).enabled.set(target_state)
@@ -68,7 +71,9 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("The Marshmallow shop is now closed.")
 
-    @shop.command(name="add")
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="add")
     async def shop_add(self, ctx: commands.Context):
         """Add an item to the Marshmallow shop"""
 
@@ -289,7 +294,9 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("Huh?")
 
-    @shop.command(name="delete")
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="delete")
     async def shop_delete(self, ctx: commands.Context, *, item: str):
         """Delete an item from the Marshmallow shop"""
         item = item.strip("@")
@@ -315,8 +322,198 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
                 except KeyError:
                     await ctx.send("That item doesn't exist.")
 
-    @shop.command(name="view")
-    async def shop_view(self, ctx: commands.Context, *, item: str):
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="price")
+    async def shop_price(self, ctx: commands.Context, price: int, *, item: str):
+        """Change an item's price"""
+        if price <= 0:
+            return await ctx.send("price has to be at least 1.")
+        item = item.strip("@")
+        items = await self.config.guild(ctx.guild).items.get_raw()
+        roles = await self.config.guild(ctx.guild).roles.get_raw()
+        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
+
+        if item in items:
+            await self.config.guild(ctx.guild).items.set_raw(item, "price", value=price)
+            await ctx.send(f"**{item}'s** price changed to {price}.")
+        elif item in roles:
+            await self.config.guild(ctx.guild).roles.set_raw(item, "price", value=price)
+            await ctx.send(f"**{item}'s** price changed to {price}.")
+        elif item in certificates:
+            await self.config.guild(ctx.guild).certificates.set_raw(item, "price", value=price)
+            await ctx.send(f"**{item}'s** price changed to {price}.")
+        else:
+            await ctx.send("This item isn't in the shop. Add it first.")
+
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="stock")
+    async def shop_stock(self, ctx: commands.Context, stock: int, *, item: str):
+        """Change amount of an item the shop has in stock"""
+        if stock <= 0:
+            return await ctx.send("Amount in stock has to be at least 1.")
+        item = item.strip("@")
+        items = await self.config.guild(ctx.guild).items.get_raw()
+        roles = await self.config.guild(ctx.guild).roles.get_raw()
+        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
+
+        if item in items:
+            await self.config.guild(ctx.guild).items.set_raw(
+                item, "stock", value=stock
+            )
+            await ctx.send(f"**{item}'s** stock changed to {stock}.")
+        elif item in roles:
+            await self.config.guild(ctx.guild).roles.set_raw(
+                item, "stock", value=stock
+            )
+            await ctx.send(f"**{item}'s** stock changed to {stock}.")
+        elif item in certificates:
+            await self.config.guild(ctx.guild).certificates.set_raw(
+                item, "stock", value=stock
+            )
+            await ctx.send(f"**{item}'s** stock changed to {stock}.")
+        else:
+            await ctx.send("This item isn't in the shop. Add it first.")
+
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="redeemable")
+    async def shop_redeemable(
+        self, ctx: commands.Context, redeemable: bool, *, item: str
+    ):
+        """Change whether an item can be redeemed"""
+        items = await self.config.guild(ctx.guild).items.get_raw()
+        roles = await self.config.guild(ctx.guild).roles.get_raw()
+        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
+
+        item = item.strip("@")
+        if item in items:
+            await self.config.guild(ctx.guild).items.set_raw(
+                item, "redeemable", value=redeemable
+            )
+            await ctx.send(f"**{item}'s** redeemability changed to {redeemable}.")
+        elif item in roles:
+            await self.config.guild(ctx.guild).roles.set_raw(
+                item, "redeemable", value=redeemable
+            )
+            await ctx.send(f"**{item}'s** redeemability changed to {redeemable}.")
+        elif item in certificates:
+            await self.config.guild(ctx.guild).certificates.set_raw(
+                item, "redeemable", value=redeemable
+            )
+            await ctx.send(f"**{item}'s** redeemability changed to {redeemable}.")
+        else:
+            await ctx.send("This item isn't in the shop. Add it first.")
+
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="returnable")
+    async def shop_returnable(
+        self, ctx: commands.Context, returnable: bool, *, item: str
+    ):
+        """Change whether an item can be returned"""
+        items = await self.config.guild(ctx.guild).items.get_raw()
+        roles = await self.config.guild(ctx.guild).roles.get_raw()
+        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
+
+        item = item.strip("@")
+        if item in items:
+            await self.config.guild(ctx.guild).items.set_raw(
+                item, "returnable", value=returnable
+            )
+            await ctx.send(f"**{item}'s** returnability changed to {returnable}.")
+        elif item in roles:
+            await self.config.guild(ctx.guild).roles.set_raw(
+                item, "returnable", value=returnable
+            )
+            await ctx.send(f"**{item}'s** returnability changed to {returnable}.")
+        elif item in certificates:
+            await self.config.guild(ctx.guild).certificates.set_raw(
+                item, "returnable", value=returnable
+            )
+            await ctx.send(f"**{item}'s** returnability changed to {returnable}.")
+        else:
+            await ctx.send("This item isn't in the shop. Add it first.")
+
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="reset")
+    async def shop_reset(self, ctx: commands.Context, confirmation: bool = False):
+        """Delete all items from the shop"""
+        if not confirmation:
+            return await ctx.send(
+                "This will delete **all** items. This action **cannot** be undone.\n"
+                f"If you're sure, type `{ctx.clean_prefix}shop reset yes`."
+            )
+        for i in await self.config.guild(ctx.guild).items.get_raw():
+            await self.config.guild(ctx.guild).items.clear_raw(i)
+        for r in await self.config.guild(ctx.guild).roles.get_raw():
+            await self.config.guild(ctx.guild).roles.clear_raw(r)
+        for g in await self.config.guild(ctx.guild).certificates.get_raw():
+            await self.config.guild(ctx.guild).certificates.clear_raw(i)
+        await ctx.send("All items have been deleted from the shop.")
+
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="ping")
+    async def shop_ping(
+        self, ctx: commands.Context, who: Union[discord.Member, discord.Role] = None
+    ):
+        """Set a role/member to be pinged when a member wants to redeem something.
+
+        Leave blank to see current pings"""
+        if not who:
+            ping_id = await self.config.guild(ctx.guild).ping()
+            if not ping_id:
+                return await ctx.send("No pings set.")
+            ping = get(ctx.guild.members, id=ping_id)
+            if not ping:
+                ping = get(ctx.guild.roles, id=ping_id)
+                if not ping:
+                    return await ctx.send(
+                        "The role must have been deleted or user must have left."
+                    )
+            return await ctx.send(f"{ping.name} is set to be pinged.")
+        await self.config.guild(ctx.guild).ping.set(who.id)
+        await ctx.send(
+            f"{who.name} will be pinged when a member wants to redeem something."
+        )
+
+    @check_global_setting_admin()
+    @commands.guild_only()
+    @shop_set.command(name="resetinventories")
+    async def shop_resetinventories(
+        self, ctx: commands.Context, confirmation: bool = False
+    ):
+        """Delete all items from all members' inventories"""
+        if not confirmation:
+            return await ctx.send(
+                "This will delete **all** items from all members' inventories. This action **cannot** be undone.\n"
+                f"If you're sure, type `{ctx.clean_prefix}shop resetinventories yes`."
+            )
+        for member in ctx.guild.members:
+            lunchbox = await self.config.member(member).lunchbox.get_raw()
+            for item in lunchbox:
+                await self.config.member(member).lunchbox.clear_raw(item)
+        await ctx.send("All items have been deleted from all members' inventories.")
+
+    @commands.command()
+    @commands.guild_only()
+    async def shop(self, ctx: commands.Context):
+        """See the marshmallow shop"""
+        enabled = await self.config.guild(ctx.guild).enabled()
+        if not enabled:
+            return await ctx.send("The Marshmallow shop is closed.")
+        page_list = await self._show_shop(ctx)
+        if len(page_list) > 1:
+            await menu(ctx, page_list, DEFAULT_CONTROLS)
+        else:
+            await ctx.send(embed=page_list[0])
+
+    @commands.command()
+    @commands.guild_only()
+    async def view(self, ctx: commands.Context, *, item: str):
         """View item info"""
         item = item.strip("@")
         items = await self.config.guild(ctx.guild).items.get_raw()
@@ -348,181 +545,6 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         await ctx.send(
             f"**__{item}__**\n{desc}\n<:sh_space:755971083210981426>\n*Dept.:* {item_type}\n*Price:* {cost}\n*In Stock:* {stock}\n*Redeemable:* {redeemable}\n*Returnable:* {returnable}"
         )
-
-    @shop.command(name="price")
-    async def shop_price(self, ctx: commands.Context, price: int, *, item: str):
-        """Change an item's price"""
-        if price <= 0:
-            return await ctx.send("price has to be at least 1.")
-        item = item.strip("@")
-        items = await self.config.guild(ctx.guild).items.get_raw()
-        roles = await self.config.guild(ctx.guild).roles.get_raw()
-        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
-
-        if item in items:
-            await self.config.guild(ctx.guild).items.set_raw(item, "price", value=price)
-            await ctx.send(f"**{item}'s** price changed to {price}.")
-        elif item in roles:
-            await self.config.guild(ctx.guild).roles.set_raw(item, "price", value=price)
-            await ctx.send(f"**{item}'s** price changed to {price}.")
-        elif item in certificates:
-            await self.config.guild(ctx.guild).certificates.set_raw(item, "price", value=price)
-            await ctx.send(f"**{item}'s** price changed to {price}.")
-        else:
-            await ctx.send("This item isn't in the shop. Add it first.")
-
-    @shop.command(name="stock")
-    async def shop_stock(self, ctx: commands.Context, stock: int, *, item: str):
-        """Change amount of an item the shop has in stock"""
-        if stock <= 0:
-            return await ctx.send("Amount in stock has to be at least 1.")
-        item = item.strip("@")
-        items = await self.config.guild(ctx.guild).items.get_raw()
-        roles = await self.config.guild(ctx.guild).roles.get_raw()
-        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
-
-        if item in items:
-            await self.config.guild(ctx.guild).items.set_raw(
-                item, "stock", value=stock
-            )
-            await ctx.send(f"**{item}'s** stock changed to {stock}.")
-        elif item in roles:
-            await self.config.guild(ctx.guild).roles.set_raw(
-                item, "stock", value=stock
-            )
-            await ctx.send(f"**{item}'s** stock changed to {stock}.")
-        elif item in certificates:
-            await self.config.guild(ctx.guild).certificates.set_raw(
-                item, "stock", value=stock
-            )
-            await ctx.send(f"**{item}'s** stock changed to {stock}.")
-        else:
-            await ctx.send("This item isn't in the shop. Add it first.")
-
-    @shop.command(name="redeemable")
-    async def shop_redeemable(
-        self, ctx: commands.Context, redeemable: bool, *, item: str
-    ):
-        """Change whether an item can be redeemed"""
-        items = await self.config.guild(ctx.guild).items.get_raw()
-        roles = await self.config.guild(ctx.guild).roles.get_raw()
-        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
-
-        item = item.strip("@")
-        if item in items:
-            await self.config.guild(ctx.guild).items.set_raw(
-                item, "redeemable", value=redeemable
-            )
-            await ctx.send(f"**{item}'s** redeemability changed to {redeemable}.")
-        elif item in roles:
-            await self.config.guild(ctx.guild).roles.set_raw(
-                item, "redeemable", value=redeemable
-            )
-            await ctx.send(f"**{item}'s** redeemability changed to {redeemable}.")
-        elif item in certificates:
-            await self.config.guild(ctx.guild).certificates.set_raw(
-                item, "redeemable", value=redeemable
-            )
-            await ctx.send(f"**{item}'s** redeemability changed to {redeemable}.")
-        else:
-            await ctx.send("This item isn't in the shop. Add it first.")
-
-    @shop.command(name="returnable")
-    async def shop_returnable(
-        self, ctx: commands.Context, returnable: bool, *, item: str
-    ):
-        """Change whether an item can be returned"""
-        items = await self.config.guild(ctx.guild).items.get_raw()
-        roles = await self.config.guild(ctx.guild).roles.get_raw()
-        certificates = await self.config.guild(ctx.guild).certificates.get_raw()
-
-        item = item.strip("@")
-        if item in items:
-            await self.config.guild(ctx.guild).items.set_raw(
-                item, "returnable", value=returnable
-            )
-            await ctx.send(f"**{item}'s** returnability changed to {returnable}.")
-        elif item in roles:
-            await self.config.guild(ctx.guild).roles.set_raw(
-                item, "returnable", value=returnable
-            )
-            await ctx.send(f"**{item}'s** returnability changed to {returnable}.")
-        elif item in certificates:
-            await self.config.guild(ctx.guild).certificates.set_raw(
-                item, "returnable", value=returnable
-            )
-            await ctx.send(f"**{item}'s** returnability changed to {returnable}.")
-        else:
-            await ctx.send("This item isn't in the shop. Add it first.")
-
-    @shop.command(name="reset")
-    async def shop_reset(self, ctx: commands.Context, confirmation: bool = False):
-        """Delete all items from the shop"""
-        if not confirmation:
-            return await ctx.send(
-                "This will delete **all** items. This action **cannot** be undone.\n"
-                f"If you're sure, type `{ctx.clean_prefix}shop reset yes`."
-            )
-        for i in await self.config.guild(ctx.guild).items.get_raw():
-            await self.config.guild(ctx.guild).items.clear_raw(i)
-        for r in await self.config.guild(ctx.guild).roles.get_raw():
-            await self.config.guild(ctx.guild).roles.clear_raw(r)
-        for g in await self.config.guild(ctx.guild).certificates.get_raw():
-            await self.config.guild(ctx.guild).certificates.clear_raw(i)
-        await ctx.send("All items have been deleted from the shop.")
-
-    @shop.command(name="ping")
-    async def shop_ping(
-        self, ctx: commands.Context, who: Union[discord.Member, discord.Role] = None
-    ):
-        """Set a role/member to be pinged when a member wants to redeem something.
-
-        Leave blank to see current pings"""
-        if not who:
-            ping_id = await self.config.guild(ctx.guild).ping()
-            if not ping_id:
-                return await ctx.send("No pings set.")
-            ping = get(ctx.guild.members, id=ping_id)
-            if not ping:
-                ping = get(ctx.guild.roles, id=ping_id)
-                if not ping:
-                    return await ctx.send(
-                        "The role must have been deleted or user must have left."
-                    )
-            return await ctx.send(f"{ping.name} is set to be pinged.")
-        await self.config.guild(ctx.guild).ping.set(who.id)
-        await ctx.send(
-            f"{who.name} will be pinged when a member wants to redeem something."
-        )
-
-    @shop.command(name="resetinventories")
-    async def shop_resetinventories(
-        self, ctx: commands.Context, confirmation: bool = False
-    ):
-        """Delete all items from all members' inventories"""
-        if not confirmation:
-            return await ctx.send(
-                "This will delete **all** items from all members' inventories. This action **cannot** be undone.\n"
-                f"If you're sure, type `{ctx.clean_prefix}shop resetinventories yes`."
-            )
-        for member in ctx.guild.members:
-            lunchbox = await self.config.member(member).lunchbox.get_raw()
-            for item in lunchbox:
-                await self.config.member(member).lunchbox.clear_raw(item)
-        await ctx.send("All items have been deleted from all members' inventories.")
-
-    @commands.command()
-    @commands.guild_only()
-    async def shop(self, ctx: commands.Context):
-        """See the marshmallow shop"""
-        enabled = await self.config.guild(ctx.guild).enabled()
-        if not enabled:
-            return await ctx.send("The Marshmallow shop is closed.")
-        page_list = await self._show_shop(ctx)
-        if len(page_list) > 1:
-            await menu(ctx, page_list, DEFAULT_CONTROLS)
-        else:
-            await ctx.send(embed=page_list[0])
 
     @commands.command()
     @commands.guild_only()
