@@ -130,7 +130,7 @@ class MarshmallowShop(commands.Cog):
                     return await ctx.send("You took too long. Try again.")
                 redeemable = pred_yn.result
                 ### START ADD CODE ###
-                if redeemable not 'yes' and not 'no' and not 'y' and not 'n':
+                if not redeemable:
                     return await ctx.send("Please respond y or n.")
                 await ctx.send("Is this returnable?")
                 try:
@@ -252,7 +252,7 @@ class MarshmallowShop(commands.Cog):
                     return await ctx.send("You took too long. Try again.")
                 redeemable = pred_yn.result
                 ### START ADD CODE ###
-                if redeemable not 'yes' and not 'no' and not 'y' and not 'n':
+                if not redeemable:
                     return await ctx.send("Please respond y or n.")
                 await ctx.send("Is this returnable?")
                 try:
