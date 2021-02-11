@@ -45,13 +45,13 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
 
     @commands.group(name="shopset", autohelp=True)
     @checks.admin_or_permissions(manage_guild=True)
-    @check_global_setting_admin()
+
     @commands.guild_only()
     async def shop_set(self, ctx):
         """Manage the Marshmallow shop"""
         pass
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="open")
     async def open_toggle(self, ctx: commands.Context, on_off: bool = None):
@@ -71,7 +71,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("The Marshmallow shop is now closed.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="add")
     async def shop_add(self, ctx: commands.Context):
@@ -294,7 +294,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("Huh?")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="delete")
     async def shop_delete(self, ctx: commands.Context, *, item: str):
@@ -322,7 +322,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
                 except KeyError:
                     await ctx.send("That item doesn't exist.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="price")
     async def shop_price(self, ctx: commands.Context, price: int, *, item: str):
@@ -346,7 +346,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("This item isn't in the shop. Add it first.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="stock")
     async def shop_stock(self, ctx: commands.Context, stock: int, *, item: str):
@@ -376,7 +376,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("This item isn't in the shop. Add it first.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="redeemable")
     async def shop_redeemable(
@@ -406,7 +406,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("This item isn't in the shop. Add it first.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="returnable")
     async def shop_returnable(
@@ -436,7 +436,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
         else:
             await ctx.send("This item isn't in the shop. Add it first.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="reset")
     async def shop_reset(self, ctx: commands.Context, confirmation: bool = False):
@@ -454,7 +454,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
             await self.config.guild(ctx.guild).certificates.clear_raw(i)
         await ctx.send("All items have been deleted from the shop.")
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="ping")
     async def shop_ping(
@@ -480,7 +480,7 @@ class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
             f"{who.name} will be pinged when a member wants to redeem something."
         )
 
-    @check_global_setting_admin()
+
     @commands.guild_only()
     @shop_set.command(name="resetinventories")
     async def shop_resetinventories(
