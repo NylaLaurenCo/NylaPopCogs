@@ -611,7 +611,7 @@ class MarshmallowShop(commands.Cog):
                     },
                 )
                 await ctx.send(f"You bought **{item}**. __This sale is final.__")
-            if not redeemable and is returnable:
+            if not redeemable and returnable:
                 await self.config.member(ctx.author).lunchbox.set_raw(
                     item,
                     value={
@@ -679,7 +679,7 @@ class MarshmallowShop(commands.Cog):
                     },
                 )
                 await ctx.send(f"You bought **{item}**. __This sale is final.__")
-            if not redeemable and is returnable:
+            if not redeemable and returnable:
                 await self.config.member(ctx.author).lunchbox.set_raw(
                     item,
                     value={
