@@ -12,18 +12,27 @@ from redbot.core.utils.chat_formatting import pagify, humanize_list, humanize_nu
 from redbot.core.utils.predicates import MessagePredicate
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
-from redbot.core.bot import Red
+#from redbot.core.bot import Red
 
+class CompositeMetaClass(type(commands.Cog), type(ABC)):
+    """This allows the metaclass used for proper type detection to coexist with discord.py's
+    metaclass."""
 
-class MarshmallowShop(commands.Cog):
+class MarshmallowShop(commands.Cog, metaclass=CompositeMetaClass):
     """
     Shop add-on for Marshmallows.
     """
 
-    __author__ = "NylaPop"
+    #__author__ = "NylaPop"
     __version__ = "1.0.0"
 
-    def __init__(self, bot: Red):
+    def format_help_for_context(self, ctx):
+        """Thanks Sinbad."""
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\nCog Version: {self.__version__}"
+
+    def __init__(self, bot):
+        super().__init__()
         self.bot = bot
         self.config = Config.get_conf(
             self, identifier=56198540690061319, force_registration=True, invoke_without_command=True
