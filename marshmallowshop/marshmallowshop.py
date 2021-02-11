@@ -104,7 +104,7 @@ class MarshmallowShop(commands.Cog):
                 except asyncio.TimeoutError:
                     return await ctx.send("You took too long. Try again.")
                 item_details = answer.content
-                if item_details = "":
+                if item_details == "":
                     return await ctx.send("Please enter a description.")
                 ### END ADD CODE ###
                 await ctx.send("How many marshmallows should this cost?")
