@@ -1,7 +1,5 @@
 {
-  "author": [
-    "NylaPop",
-  ],
+  "author": "NylaPop",
   "min_bot_version": "1.0",
   "description": "Pick up a shift at McDonald's to earn some quick cash!",
   "hidden": false,
